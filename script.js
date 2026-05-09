@@ -1,7 +1,7 @@
 /* ===================================================
    OdishaLearn — CHSE Odisha Platform Script
    Complete Class 11 & 12 Syllabus (2025-26)
-   Fixed: Career Page Restored, Mobile Overflow Fixed
+   Fixed: Heatmap width rendering & Mobile tap details
    =================================================== */
 
 // ===== SVG ICON LIBRARY =====
@@ -2353,7 +2353,6 @@ function videoCard(ch, subj, progress) {
   </div>`;
 }
 
-// THE FIX for "https://www.youtube.com/live/..." format
 function getYTId(url) {
   if (!url) return "";
   const m = url.match(
@@ -2571,7 +2570,7 @@ function renderExamPage(exam) {
   </div>`;
 }
 
-// ===== FULLSCREEN ENGINE (MOBILE LANDSCAPE FIX + AUTO HIDE) =====
+// ===== FULLSCREEN ENGINE =====
 function ensureFullscreenOverlay() {
   if (document.getElementById("ol-video-fullscreen-overlay")) return;
   const overlay = document.createElement("div");
@@ -2651,7 +2650,6 @@ function enterVideoFullscreen() {
     }
   }
 
-  // FALLBACK LOGIC
   fsContent.innerHTML = "";
   if (iframe) {
     const newIframe = document.createElement("iframe");
@@ -2964,7 +2962,8 @@ function autoSaveNote(id, val) {
   notes[id] = val;
   DB.set("notes", notes);
 }
-// ===== CAREER MODULE (RESTORED AND ENHANCED) =====
+
+// ===== CAREER MODULE =====
 function renderCareer() {
   const stream = STATE.currentCareerStream || "Science";
   const careers = CAREERS[stream] || CAREERS.Science;
@@ -3028,7 +3027,7 @@ function switchCareerStream(s) {
   if (mc) mc.innerHTML = renderCareer();
 }
 
-// ===== PROGRESS =====
+// ===== PROGRESS FIX =====
 function renderProgress() {
   const completed = DB.get("completedTopics") || {};
   const history = DB.get("watchHistory") || [];
@@ -3061,11 +3060,15 @@ function renderProgress() {
 
   const today = new Date();
   const weeks = [];
+
+  // FIX APPLIED HERE: Show a full year to naturally fill desktop width and scroll on mobile
+  const daysToDisplay = 364;
   const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - 182);
+  startDate.setDate(startDate.getDate() - daysToDisplay);
   const startDow = startDate.getDay();
   startDate.setDate(startDate.getDate() - startDow);
   let cur = new Date(startDate);
+
   while (cur <= today) {
     const week = [];
     for (let d = 0; d < 7; d++) {
@@ -3082,8 +3085,11 @@ function renderProgress() {
               : cnt < 6
                 ? "l3"
                 : "l4";
+
+      // FIX APPLIED HERE: Added onclick to trigger toast for mobile touch support
+      const infoText = `${ds}: ${cnt} videos`;
       week.push(
-        `<div class="hm-day ${level} ${isToday ? "today" : ""}" title="${ds}: ${cnt} videos"></div>`,
+        `<div class="hm-day ${level} ${isToday ? "today" : ""}" title="${infoText}" onclick="showToast('${infoText}', 'info')"></div>`,
       );
       cur.setDate(cur.getDate() + 1);
     }
@@ -3097,7 +3103,7 @@ function renderProgress() {
       <div>
         <div class="heatmap-card">
           <div class="heatmap-hdr">
-            <h3>Study Activity — Last 6 Months</h3>
+            <h3>Study Activity — Last 12 Months</h3>
             <span style="font-size:12px;color:var(--orange);display:flex;align-items:center;gap:4px">${icon("fire", 14)} ${streak.count} day streak</span>
           </div>
           <div class="heatmap-grid">${weeks.join("")}</div>

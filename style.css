@@ -2734,6 +2734,7 @@ em {
   padding-bottom: 10px;
   -webkit-overflow-scrolling: touch;
   width: 100%;
+  padding: 5px;
 }
 .heatmap-grid::-webkit-scrollbar {
   height: 6px;
