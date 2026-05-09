@@ -1,7 +1,7 @@
 /* ===================================================
    OdishaLearn — CHSE Odisha Platform Script
    Complete Class 11 & 12 Syllabus (2025-26)
-   Fixed: YouTube Live Links, Native Mobile Fullscreen, Auto-hide UI
+   Fixed: Career Page Restored, Mobile Overflow Fixed
    =================================================== */
 
 // ===== SVG ICON LIBRARY =====
@@ -399,7 +399,8 @@ const SYLLABUS = {
             id: "ch11_4_1",
             title: "Chemical Bonding and Molecular Structure",
             desc: "Ionic and covalent bonds. VSEPR theory. Hybridisation.",
-            videoUrl: "https://youtu.be/qle-q0CxtJk?si=Y-awdZRFpn4ujCdO",
+            videoUrl:
+              "https://www.youtube.com/live/1UicWFJtcLc?si=04v3Vw8Wk0-ldZpW",
           },
         ],
       },
@@ -422,7 +423,8 @@ const SYLLABUS = {
             id: "ch11_6_1",
             title: "Thermodynamics",
             desc: "First law. Enthalpy. Hess's law. Entropy. Spontaneity.",
-            videoUrl: "https://youtu.be/NzB2YwNndZw?si=ltpr1aKLdK3xrsRj",
+            videoUrl:
+              "https://www.youtube.com/live/1UicWFJtcLc?si=zECswl8G6D5HnEjr",
           },
         ],
       },
@@ -433,7 +435,7 @@ const SYLLABUS = {
             id: "ch11_7_1",
             title: "Equilibrium",
             desc: "Le Chatelier's principle. Ionic equilibrium. pH.",
-            videoUrl: "https://youtu.be/A4Ab8xZmTU4?si=zHGHqBTteAojpxH_",
+            videoUrl: "",
           },
         ],
       },
@@ -444,7 +446,7 @@ const SYLLABUS = {
             id: "ch11_8_1",
             title: "Redox Reactions",
             desc: "Oxidation number. Balancing redox reactions.",
-            videoUrl: "https://youtu.be/X86UraGJtNk?si=MSm7StPvaRDM9PIj",
+            videoUrl: "",
           },
         ],
       },
@@ -466,7 +468,7 @@ const SYLLABUS = {
             id: "ch11_10_1",
             title: "The s-Block Elements",
             desc: "Group 1 and 2 elements.",
-            videoUrl: "https://youtu.be/g6PfIsdpY-M?si=FB0r1BNwWj6xsEJ7",
+            videoUrl: "",
           },
         ],
       },
@@ -477,7 +479,7 @@ const SYLLABUS = {
             id: "ch11_11_1",
             title: "Some p-Block Elements",
             desc: "Group 13 and 14 elements.",
-            videoUrl: "https://youtu.be/SDhze1GBDdY?si=RWVC_UNhWQpUdR6z",
+            videoUrl: "",
           },
         ],
       },
@@ -488,7 +490,7 @@ const SYLLABUS = {
             id: "ch11_12_1",
             title: "Organic Chemistry: Basic Principles",
             desc: "IUPAC nomenclature. Electronic displacement.",
-            videoUrl: "https://youtu.be/soIba7r34ZM?si=bn4U2YYBbsfQ9Tlg",
+            videoUrl: "",
           },
         ],
       },
@@ -499,7 +501,7 @@ const SYLLABUS = {
             id: "ch11_13_1",
             title: "Hydrocarbons",
             desc: "Alkanes, alkenes, alkynes. Aromatic hydrocarbons.",
-            videoUrl: "https://youtu.be/m18cVrTgfGc?si=JvzEby6Na0uHIoLm",
+            videoUrl: "",
           },
         ],
       },
@@ -510,8 +512,7 @@ const SYLLABUS = {
             id: "ch11_14_1",
             title: "Environmental Chemistry",
             desc: "Atmospheric and water pollution. Green chemistry.",
-            videoUrl:
-              "https://www.youtube.com/live/dIQfjyOc7H0?si=bxI-4W7LP5EhcEVD",
+            videoUrl: "",
           },
         ],
       },
@@ -1666,12 +1667,12 @@ const CAREERS = {
       tag: "JEE / OJEE",
       icon: "lightning",
       color: "#4f8ef7",
-      desc: "Build the future through technology.",
-      eligibility: "PCM in Class 12",
-      exams: "JEE Main, JEE Advanced",
-      skills: "Mathematics, Physics",
+      desc: "Build the future through technology and innovation.",
+      eligibility: "PCM in Class 12 with minimum 50%",
+      exams: "JEE Main, JEE Advanced, OJEE",
+      skills: "Mathematics, Physics, Analytical Thinking",
       salary: "₹4–60 LPA",
-      scope: "Massive demand globally.",
+      scope: "Massive demand globally in IT, Core, and AI sectors.",
     },
     {
       title: "MBBS / Medicine",
@@ -1679,11 +1680,11 @@ const CAREERS = {
       icon: "hospital",
       color: "#f87171",
       desc: "Become a doctor — one of India's most respected careers.",
-      eligibility: "PCB in Class 12",
-      exams: "NEET-UG",
-      skills: "Biology, Clinical skills",
+      eligibility: "PCB in Class 12 with minimum 50%",
+      exams: "NEET-UG (National Eligibility cum Entrance Test)",
+      skills: "Biology, Memory, High Empathy & Clinical skills",
       salary: "₹6–80 LPA",
-      scope: "Acute doctor shortage in India.",
+      scope: "Acute doctor shortage ensures 100% job security.",
     },
   ],
   Commerce: [
@@ -1692,22 +1693,22 @@ const CAREERS = {
       tag: "CA / ICAI",
       icon: "briefcase",
       color: "#4f8ef7",
-      desc: "CA is among India's most respected qualifications.",
-      eligibility: "Any stream",
-      exams: "CA Foundation",
-      skills: "Accounting, Taxation",
+      desc: "CA is among India's most respected and rigorous qualifications.",
+      eligibility: "Any stream, ideally Commerce with Math",
+      exams: "CA Foundation, Intermediate, Final",
+      skills: "Accounting, Taxation, Corporate Law",
       salary: "₹7–60 LPA",
-      scope: "Mandatory for all registered companies.",
+      scope: "Mandatory for all registered companies globally.",
     },
     {
       title: "MBA and Management",
       tag: "CAT / MAT",
       icon: "graduation",
       color: "#9d6fff",
-      desc: "Management education opens doors to top MNCs.",
-      eligibility: "Any graduate",
-      exams: "CAT, MAT",
-      skills: "Leadership, Strategy",
+      desc: "Management education opens doors to top MNCs and leadership.",
+      eligibility: "Any graduation degree with 50%",
+      exams: "CAT, MAT, XAT",
+      skills: "Leadership, Business Strategy, Communication",
       salary: "₹8–50 LPA",
       scope: "Essential qualification for senior corporate roles.",
     },
@@ -1718,24 +1719,24 @@ const CAREERS = {
       tag: "UPSC / OPSC",
       icon: "trophy",
       color: "#4f8ef7",
-      desc: "India's most prestigious career path.",
-      eligibility: "Any graduate",
-      exams: "UPSC CSE",
-      skills: "General studies",
+      desc: "India's most prestigious and powerful administrative career path.",
+      eligibility: "Any graduation degree from a recognized university",
+      exams: "UPSC CSE (Prelims, Mains, Interview)",
+      skills: "General studies, Critical Analysis, Leadership",
       salary: "₹56,000–2.5L/month",
-      scope: "Unmatched authority and impact.",
+      scope: "Unmatched authority and ability to impact society.",
     },
     {
       title: "Law (LLB / LLM)",
       tag: "CLAT",
       icon: "scale",
       color: "#9d6fff",
-      desc: "Practice as an advocate or corporate lawyer.",
-      eligibility: "Any stream",
-      exams: "CLAT",
-      skills: "Logical reasoning",
+      desc: "Practice as an advocate, judge, or corporate lawyer.",
+      eligibility: "Any stream in Class 12 for 5-Year Integrated LLB",
+      exams: "CLAT, AILET",
+      skills: "Logical reasoning, Argumentation, Reading",
       salary: "₹4–60 LPA",
-      scope: "LegalTech is growing rapidly.",
+      scope: "Corporate law and LegalTech are growing rapidly.",
     },
   ],
 };
@@ -1803,10 +1804,8 @@ function init() {
 
   setupNavigationFixes();
 
-  // === SESSION HANDLING FIX ===
   const user = DB.get("user");
   if (user && user.name) {
-    // Modify Landing Page Buttons if Logged In
     const loginBtn = document.getElementById("loginBtnDesktop");
     const getStartedBtn = document.getElementById("getStartedBtnDesktop");
     const getStartedMob = document.getElementById("getStartedBtnMobile");
@@ -1855,7 +1854,7 @@ function init() {
     const nav = document.getElementById("landingNav");
     if (nav)
       nav.style.background =
-        window.scrollY > 40 ? "rgba(12,12,14,0.97)" : "rgba(12,12,14,0.85)";
+        window.scrollY > 40 ? "rgba(5,5,5,0.97)" : "rgba(5,5,5,0.6)";
   });
 }
 
@@ -1901,14 +1900,14 @@ function showOnboarding() {
     closeBtn.id = "ob-close-btn";
     closeBtn.innerHTML = icon("close", 20);
     closeBtn.style.cssText =
-      "position:absolute;top:16px;right:16px;color:var(--text-2);background:var(--bg-3);border:1px solid var(--border);border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all 0.2s;";
+      "position:absolute;top:16px;right:16px;color:var(--text-2);background:var(--bg-2);border:1px solid var(--border-md);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;transition:all 0.2s;";
     closeBtn.onmouseover = () => {
       closeBtn.style.color = "var(--text-1)";
-      closeBtn.style.background = "var(--bg-4)";
+      closeBtn.style.background = "var(--bg-3)";
     };
     closeBtn.onmouseout = () => {
       closeBtn.style.color = "var(--text-2)";
-      closeBtn.style.background = "var(--bg-3)";
+      closeBtn.style.background = "var(--bg-2)";
     };
     closeBtn.onclick = () => modal.classList.add("hidden");
     card.style.position = "relative";
@@ -2155,6 +2154,7 @@ function icon(key, size = 16, extraClass = "") {
     `<svg width="${size}" height="${size}" class="${extraClass}" `,
   );
 }
+
 // ===== DASHBOARD =====
 function renderDashboard() {
   const user = DB.get("user") || {
@@ -2356,7 +2356,6 @@ function videoCard(ch, subj, progress) {
 // THE FIX for "https://www.youtube.com/live/..." format
 function getYTId(url) {
   if (!url) return "";
-  // Expanded Regex to properly catch /live/ alongside /watch?v=, /embed/, and youtu.be/
   const m = url.match(
     /(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([^&\n?#]+)/,
   );
@@ -2571,12 +2570,12 @@ function renderExamPage(exam) {
     </div>
   </div>`;
 }
+
 // ===== FULLSCREEN ENGINE (MOBILE LANDSCAPE FIX + AUTO HIDE) =====
 function ensureFullscreenOverlay() {
   if (document.getElementById("ol-video-fullscreen-overlay")) return;
   const overlay = document.createElement("div");
   overlay.id = "ol-video-fullscreen-overlay";
-  // The hit-area covers the top portion to easily reveal the close button on touch/hover
   overlay.innerHTML = `
     <div id="ol-fs-top-hitarea" style="position:absolute;top:0;left:0;right:0;height:120px;z-index:9998;"></div>
     <button id="ol-fs-close-btn" onclick="exitVideoFullscreen()" title="Exit fullscreen" style="transition: opacity 0.3s; z-index:9999;">
@@ -2627,7 +2626,6 @@ function enterVideoFullscreen() {
 
   if (!overlay || !fsContent) return;
 
-  // FIX: Force Native Fullscreen even on mobile for true landscape laptop-like fit
   if (vc) {
     const reqFS =
       vc.requestFullscreen ||
@@ -2639,7 +2637,6 @@ function enterVideoFullscreen() {
       reqFS
         .call(vc)
         .then(() => {
-          // Automatically lock orientation to landscape when in native fullscreen
           if (screen.orientation && screen.orientation.lock) {
             screen.orientation.lock("landscape").catch(() => {});
           }
@@ -2654,7 +2651,7 @@ function enterVideoFullscreen() {
     }
   }
 
-  // FALLBACK LOGIC for browsers (like iOS Safari) that block arbitrary div fullscreen
+  // FALLBACK LOGIC
   fsContent.innerHTML = "";
   if (iframe) {
     const newIframe = document.createElement("iframe");
@@ -2678,7 +2675,6 @@ function enterVideoFullscreen() {
   STATE.isVideoFullscreen = true;
   updateFullscreenBtn(true);
 
-  // Trigger the close button to show, then fade out after 3 seconds
   wakeUpCloseBtn();
 
   if (screen.orientation && screen.orientation.lock) {
@@ -2968,6 +2964,69 @@ function autoSaveNote(id, val) {
   notes[id] = val;
   DB.set("notes", notes);
 }
+// ===== CAREER MODULE (RESTORED AND ENHANCED) =====
+function renderCareer() {
+  const stream = STATE.currentCareerStream || "Science";
+  const careers = CAREERS[stream] || CAREERS.Science;
+
+  return `
+  <div style="padding-bottom: 20px;">
+    <div class="section-head">
+      <h2>Career Paths</h2>
+      <p>Explore your future — Discover what to do and what is required for each path.</p>
+    </div>
+    <div class="career-tabs">
+      ${Object.keys(CAREERS)
+        .map(
+          (s) =>
+            `<div class="career-tab ${s === stream ? "active" : ""}" onclick="switchCareerStream('${s}')">${s}</div>`,
+        )
+        .join("")}
+    </div>
+    <div class="careers-grid">
+      ${careers
+        .map(
+          (c) => `
+        <div class="career-card">
+          <div class="career-card-top">
+            <div class="career-icon" style="background:${c.color}15;color:${c.color}">${icon(c.icon, 26)}</div>
+            <div>
+              <h3>${c.title}</h3>
+              <div class="career-ctag">${c.tag}</div>
+            </div>
+          </div>
+          <p class="career-desc">${c.desc}</p>
+          <div class="career-details">
+            <div class="cd-row">
+              <span style="display:flex;align-items:center;gap:6px">${icon("check", 14)} Required</span>
+              <span>${c.eligibility}</span>
+            </div>
+            <div class="cd-row">
+              <span style="display:flex;align-items:center;gap:6px">${icon("document", 14)} Exams</span>
+              <span>${c.exams}</span>
+            </div>
+            <div class="cd-row">
+              <span style="display:flex;align-items:center;gap:6px">${icon("brain", 14)} Skills</span>
+              <span>${c.skills}</span>
+            </div>
+            <div class="cd-row">
+              <span style="display:flex;align-items:center;gap:6px">${icon("target", 14)} Scope</span>
+              <span>${c.scope}</span>
+            </div>
+          </div>
+          <div class="salary-pill">${c.salary} Expected</div>
+        </div>`,
+        )
+        .join("")}
+    </div>
+  </div>`;
+}
+
+function switchCareerStream(s) {
+  STATE.currentCareerStream = s;
+  const mc = document.getElementById("appMain");
+  if (mc) mc.innerHTML = renderCareer();
+}
 
 // ===== PROGRESS =====
 function renderProgress() {
@@ -3106,7 +3165,7 @@ function renderProgress() {
             .map(
               (
                 s,
-              ) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border)">
+              ) => `<div style="display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--border-md)">
               <span style="font-size:13px;color:var(--text-2);display:flex;align-items:center;gap:7px">${icon(s.ikey, 14)} ${s.l}</span>
               <strong style="font-size:16px;font-weight:800;color:${s.c}">${s.v}</strong>
             </div>`,
@@ -3125,7 +3184,7 @@ function renderProgress() {
                     const info = findVideoById(h.id);
                     const col = SUBJ_ACCENT[h.subj] || "#4f8ef7";
                     return info
-                      ? `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border)">
+                      ? `<div style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border-md)">
                   <div style="width:7px;height:7px;border-radius:50%;background:${col};flex-shrink:0"></div>
                   <div style="flex:1;min-width:0">
                     <div style="font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${info.ch.title}</div>
