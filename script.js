@@ -1,7 +1,7 @@
 /* ===================================================
    OdishaLearn — CHSE Odisha Platform Script
    Complete Class 11 & 12 Syllabus (2025-26)
-   Fixed: Persistent Session on Landing Page, Mobile Sidebar Home, Landscape Fullscreen
+   Fixed: YouTube Live Links, Native Mobile Fullscreen, Auto-hide UI
    =================================================== */
 
 // ===== SVG ICON LIBRARY =====
@@ -399,7 +399,7 @@ const SYLLABUS = {
             id: "ch11_4_1",
             title: "Chemical Bonding and Molecular Structure",
             desc: "Ionic and covalent bonds. VSEPR theory. Hybridisation.",
-            videoUrl: "https://youtu.be/qle-q0CxtJk",
+            videoUrl: "https://youtu.be/qle-q0CxtJk?si=Y-awdZRFpn4ujCdO",
           },
         ],
       },
@@ -410,7 +410,8 @@ const SYLLABUS = {
             id: "ch11_5_1",
             title: "States of Matter: Gases and Liquids",
             desc: "Gas laws. Ideal gas equation.",
-            videoUrl: "",
+            videoUrl:
+              "https://www.youtube.com/live/1UicWFJtcLc?si=zECswl8G6D5HnEjr",
           },
         ],
       },
@@ -421,7 +422,7 @@ const SYLLABUS = {
             id: "ch11_6_1",
             title: "Thermodynamics",
             desc: "First law. Enthalpy. Hess's law. Entropy. Spontaneity.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/NzB2YwNndZw?si=ltpr1aKLdK3xrsRj",
           },
         ],
       },
@@ -432,7 +433,7 @@ const SYLLABUS = {
             id: "ch11_7_1",
             title: "Equilibrium",
             desc: "Le Chatelier's principle. Ionic equilibrium. pH.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/A4Ab8xZmTU4?si=zHGHqBTteAojpxH_",
           },
         ],
       },
@@ -443,7 +444,7 @@ const SYLLABUS = {
             id: "ch11_8_1",
             title: "Redox Reactions",
             desc: "Oxidation number. Balancing redox reactions.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/X86UraGJtNk?si=MSm7StPvaRDM9PIj",
           },
         ],
       },
@@ -465,7 +466,7 @@ const SYLLABUS = {
             id: "ch11_10_1",
             title: "The s-Block Elements",
             desc: "Group 1 and 2 elements.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/g6PfIsdpY-M?si=FB0r1BNwWj6xsEJ7",
           },
         ],
       },
@@ -476,7 +477,7 @@ const SYLLABUS = {
             id: "ch11_11_1",
             title: "Some p-Block Elements",
             desc: "Group 13 and 14 elements.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/SDhze1GBDdY?si=RWVC_UNhWQpUdR6z",
           },
         ],
       },
@@ -487,7 +488,7 @@ const SYLLABUS = {
             id: "ch11_12_1",
             title: "Organic Chemistry: Basic Principles",
             desc: "IUPAC nomenclature. Electronic displacement.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/soIba7r34ZM?si=bn4U2YYBbsfQ9Tlg",
           },
         ],
       },
@@ -498,7 +499,7 @@ const SYLLABUS = {
             id: "ch11_13_1",
             title: "Hydrocarbons",
             desc: "Alkanes, alkenes, alkynes. Aromatic hydrocarbons.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/m18cVrTgfGc?si=JvzEby6Na0uHIoLm",
           },
         ],
       },
@@ -509,7 +510,8 @@ const SYLLABUS = {
             id: "ch11_14_1",
             title: "Environmental Chemistry",
             desc: "Atmospheric and water pollution. Green chemistry.",
-            videoUrl: "",
+            videoUrl:
+              "https://www.youtube.com/live/dIQfjyOc7H0?si=bxI-4W7LP5EhcEVD",
           },
         ],
       },
@@ -1886,7 +1888,6 @@ let obClass = "",
 function showOnboarding() {
   const user = DB.get("user");
   if (user && user.name) {
-    // Strict session guard: If logged in, button clicks skip onboarding and go straight to app
     launchApp();
     return;
   }
@@ -1958,7 +1959,6 @@ function completeOnboarding() {
   document.getElementById("onboardingModal").classList.add("hidden");
   STATE.currentClass = obClass;
 
-  // Update Landing Buttons
   const loginBtn = document.getElementById("loginBtnDesktop");
   const getStartedBtn = document.getElementById("getStartedBtnDesktop");
   const heroStartBtn = document.getElementById("heroStartBtn");
@@ -1975,7 +1975,7 @@ function completeOnboarding() {
   launchApp();
   showToast("Welcome, " + name + "! Ready to ace CHSE?", "success");
 }
-// ===== LAUNCH APP =====
+
 function launchApp() {
   const user = DB.get("user");
   if (user) STATE.currentClass = user.class || "12";
@@ -2043,7 +2043,6 @@ function switchGlobalClass(cls) {
   showToast("Switched to Class " + cls, "info");
 }
 
-// ===== NAVIGATION =====
 function showSection(name) {
   STATE.currentSection = name;
   setActiveNav(name);
@@ -2148,7 +2147,6 @@ function smoothScrollTo(sel) {
   if (el) el.scrollIntoView({ behavior: "smooth" });
 }
 
-// ===== ICON HELPER =====
 function icon(key, size = 16, extraClass = "") {
   const svgContent = ICONS[key];
   if (!svgContent) return "";
@@ -2157,7 +2155,6 @@ function icon(key, size = 16, extraClass = "") {
     `<svg width="${size}" height="${size}" class="${extraClass}" `,
   );
 }
-
 // ===== DASHBOARD =====
 function renderDashboard() {
   const user = DB.get("user") || {
@@ -2325,7 +2322,7 @@ function renderDashboard() {
   </div>`;
 }
 
-// ===== VIDEO CARD =====
+// ===== VIDEO CARD & URL PARSING FIX =====
 function videoCard(ch, subj, progress) {
   const acc = SUBJ_ACCENT[subj] || "#4f8ef7";
   const completed = DB.get("completedTopics") || {};
@@ -2356,10 +2353,12 @@ function videoCard(ch, subj, progress) {
   </div>`;
 }
 
+// THE FIX for "https://www.youtube.com/live/..." format
 function getYTId(url) {
   if (!url) return "";
+  // Expanded Regex to properly catch /live/ alongside /watch?v=, /embed/, and youtu.be/
   const m = url.match(
-    /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+    /(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([^&\n?#]+)/,
   );
   return m ? m[1] : "";
 }
@@ -2497,7 +2496,257 @@ function toggleUnit(key, ui) {
   }
 }
 
-// ===== VIDEO PLAYER =====
+// ===== EXAM PAGE =====
+function renderExamPage(exam) {
+  const data = {
+    JEE: {
+      col: "linear-gradient(135deg,#1a3570,#2d5fb3)",
+      tag: "Joint Entrance Examination",
+      desc: "JEE Main and Advanced are the gateway to IITs, NITs and IIITs. Rigorous preparation in Physics, Chemistry and Mathematics is essential.",
+      stats: [
+        { l: "Questions", v: "75" },
+        { l: "Duration", v: "3 hrs" },
+        { l: "Subjects", v: "PCM" },
+        { l: "Max Marks", v: "300" },
+      ],
+      subjects: ["Physics", "Chemistry", "Mathematics"],
+    },
+    NEET: {
+      col: "linear-gradient(135deg,#4a0a0a,#8a2232)",
+      tag: "National Eligibility cum Entrance Test",
+      desc: "NEET-UG is the single entrance for MBBS, BDS and BAMS admissions across India. NCERT-based with strong Biology emphasis.",
+      stats: [
+        { l: "Questions", v: "180" },
+        { l: "Duration", v: "3.5 hrs" },
+        { l: "Subjects", v: "PCB" },
+        { l: "Max Marks", v: "720" },
+      ],
+      subjects: ["Physics", "Chemistry", "Biology"],
+    },
+    CHSE: {
+      col: "linear-gradient(135deg,#0a3520,#1e7a48)",
+      tag: "Council of Higher Secondary Education, Odisha",
+      desc: "CHSE Odisha conducts Class 11 and 12 board examinations, covering all subjects in Science, Commerce and Arts streams for students across Odisha.",
+      stats: [
+        { l: "Duration", v: "3 hrs" },
+        { l: "Subjects", v: "7+" },
+        { l: "Streams", v: "3" },
+        { l: "Classes", v: "11 & 12" },
+      ],
+      subjects: [
+        "Physics",
+        "Chemistry",
+        "Mathematics",
+        "Biology",
+        "IT",
+        "English",
+        "Odia",
+      ],
+    },
+  };
+  const d = data[exam];
+  if (!d) return "";
+  return `
+  <div>
+    <div class="section-head"><h2>${exam} Preparation</h2></div>
+    <div class="exam-hero" style="background:${d.col}">
+      <div class="hero-pattern"></div>
+      <h1>${exam}</h1>
+      <p style="font-weight:700;font-size:15px;position:relative">${d.tag}</p>
+      <p style="position:relative">${d.desc}</p>
+    </div>
+    <div class="exam-info-row">${d.stats.map((s) => `<div class="eir-card"><h4>${s.v}</h4><p>${s.l}</p></div>`).join("")}</div>
+    <div class="row-header" style="margin-bottom:14px"><h3>Subjects for ${exam}</h3></div>
+    <div class="subject-cards" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
+      ${d.subjects
+        .map(
+          (
+            s,
+          ) => `<div class="subj-card" onclick="showSubject('${s}','${STATE.currentClass}')" style="background:${SUBJ_COLORS[s]}">
+          <div class="subj-bg-grid"></div><div class="subj-card-icon">${icon(SUBJ_ICON_KEY[s] || "book", 28)}</div>
+          <h3>${s}</h3><div class="subj-count">Class ${STATE.currentClass}</div>
+        </div>`,
+        )
+        .join("")}
+    </div>
+  </div>`;
+}
+// ===== FULLSCREEN ENGINE (MOBILE LANDSCAPE FIX + AUTO HIDE) =====
+function ensureFullscreenOverlay() {
+  if (document.getElementById("ol-video-fullscreen-overlay")) return;
+  const overlay = document.createElement("div");
+  overlay.id = "ol-video-fullscreen-overlay";
+  // The hit-area covers the top portion to easily reveal the close button on touch/hover
+  overlay.innerHTML = `
+    <div id="ol-fs-top-hitarea" style="position:absolute;top:0;left:0;right:0;height:120px;z-index:9998;"></div>
+    <button id="ol-fs-close-btn" onclick="exitVideoFullscreen()" title="Exit fullscreen" style="transition: opacity 0.3s; z-index:9999;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div id="ol-fs-content" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"></div>
+    <div id="ol-fs-rotate-hint">Rotate device for best experience</div>
+  `;
+  document.body.appendChild(overlay);
+
+  const hitArea = document.getElementById("ol-fs-top-hitarea");
+  if (hitArea) {
+    hitArea.addEventListener("click", wakeUpCloseBtn);
+    hitArea.addEventListener("touchstart", wakeUpCloseBtn);
+    hitArea.addEventListener("mousemove", wakeUpCloseBtn);
+  }
+}
+
+let fsBtnTimeout;
+function wakeUpCloseBtn() {
+  const btn = document.getElementById("ol-fs-close-btn");
+  if (btn) {
+    btn.style.opacity = "1";
+    btn.style.pointerEvents = "auto";
+    clearTimeout(fsBtnTimeout);
+    fsBtnTimeout = setTimeout(() => {
+      btn.style.opacity = "0";
+      btn.style.pointerEvents = "none";
+    }, 3000);
+  }
+}
+
+function toggleVideoFullscreen() {
+  if (STATE.isVideoFullscreen) {
+    exitVideoFullscreen();
+  } else {
+    enterVideoFullscreen();
+  }
+}
+
+function enterVideoFullscreen() {
+  ensureFullscreenOverlay();
+  const vc = document.getElementById("videoContainer");
+  const iframe = vc ? vc.querySelector("iframe") : null;
+  const overlay = document.getElementById("ol-video-fullscreen-overlay");
+  const fsContent = document.getElementById("ol-fs-content");
+  const hint = document.getElementById("ol-fs-rotate-hint");
+
+  if (!overlay || !fsContent) return;
+
+  // FIX: Force Native Fullscreen even on mobile for true landscape laptop-like fit
+  if (vc) {
+    const reqFS =
+      vc.requestFullscreen ||
+      vc.webkitRequestFullscreen ||
+      vc.mozRequestFullScreen ||
+      vc.msRequestFullscreen;
+
+    if (reqFS) {
+      reqFS
+        .call(vc)
+        .then(() => {
+          // Automatically lock orientation to landscape when in native fullscreen
+          if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock("landscape").catch(() => {});
+          }
+        })
+        .catch((e) => {
+          console.log("Native fullscreen failed, using fallback.");
+        });
+
+      STATE.isVideoFullscreen = true;
+      updateFullscreenBtn(true);
+      return;
+    }
+  }
+
+  // FALLBACK LOGIC for browsers (like iOS Safari) that block arbitrary div fullscreen
+  fsContent.innerHTML = "";
+  if (iframe) {
+    const newIframe = document.createElement("iframe");
+    newIframe.src = iframe.src;
+    newIframe.setAttribute("allowfullscreen", "");
+    newIframe.setAttribute(
+      "allow",
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+    );
+    newIframe.style.cssText = "width:100%;height:100%;border:none;";
+    fsContent.appendChild(newIframe);
+  } else {
+    fsContent.innerHTML = `<div class="ol-fs-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:12px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/></svg>
+      <p style="font-size:16px;font-weight:700;">No video available</p>
+    </div>`;
+  }
+
+  overlay.classList.add("active");
+  document.body.style.overflow = "hidden";
+  STATE.isVideoFullscreen = true;
+  updateFullscreenBtn(true);
+
+  // Trigger the close button to show, then fade out after 3 seconds
+  wakeUpCloseBtn();
+
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock("landscape").catch(() => {});
+  }
+
+  if (hint) {
+    hint.style.opacity = "1";
+    setTimeout(() => {
+      hint.style.opacity = "0";
+    }, 3000);
+  }
+}
+
+function exitVideoFullscreen() {
+  const isNativeFS =
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement;
+
+  if (isNativeFS) {
+    const exitFS =
+      document.exitFullscreen ||
+      document.webkitExitFullscreen ||
+      document.mozCancelFullScreen ||
+      document.msExitFullscreen;
+    if (exitFS) exitFS.call(document);
+  }
+
+  const overlay = document.getElementById("ol-video-fullscreen-overlay");
+  if (overlay) {
+    overlay.classList.remove("active");
+    const fsContent = document.getElementById("ol-fs-content");
+    if (fsContent) fsContent.innerHTML = "";
+  }
+
+  document.body.style.overflow = "";
+  STATE.isVideoFullscreen = false;
+  updateFullscreenBtn(false);
+
+  if (screen.orientation && screen.orientation.unlock) {
+    screen.orientation.unlock();
+  }
+}
+
+function updateFullscreenBtn(isFS) {
+  const btn = document.getElementById("fullscreenBtn");
+  if (!btn) return;
+  btn.innerHTML = isFS ? icon("compress", 15) : icon("expand", 15);
+  btn.title = isFS ? "Exit Fullscreen" : "Fullscreen / Landscape";
+}
+
+function onFullscreenChange() {
+  const isNativeFS = !!(
+    document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement
+  );
+  if (!isNativeFS && STATE.isVideoFullscreen) {
+    STATE.isVideoFullscreen = false;
+    updateFullscreenBtn(false);
+    document.body.style.overflow = "";
+    if (screen.orientation && screen.orientation.unlock)
+      screen.orientation.unlock();
+  }
+}
+
+// ===== VIDEO PLAYER RENDER =====
 function playVideo(id, subj) {
   if (!subj) subj = STATE.currentSubject;
   const info = findVideoInSubject(id, subj, STATE.currentClass);
@@ -2636,146 +2885,6 @@ function renderVideoPlayer(ch, subj, cls, unitName) {
   </div>`;
 }
 
-// ===== FULLSCREEN VIDEO LOGIC (FIXED LANDSCAPE) =====
-function ensureFullscreenOverlay() {
-  if (document.getElementById("ol-video-fullscreen-overlay")) return;
-  const overlay = document.createElement("div");
-  overlay.id = "ol-video-fullscreen-overlay";
-  overlay.innerHTML = `
-    <button id="ol-fs-close-btn" onclick="exitVideoFullscreen()" title="Exit fullscreen">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><path d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-    <div id="ol-fs-content" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;"></div>
-    <div id="ol-fs-rotate-hint">Rotate device for best experience</div>
-  `;
-  document.body.appendChild(overlay);
-  overlay.addEventListener("click", function (e) {
-    if (e.target === overlay) exitVideoFullscreen();
-  });
-}
-
-function toggleVideoFullscreen() {
-  if (STATE.isVideoFullscreen) {
-    exitVideoFullscreen();
-  } else {
-    enterVideoFullscreen();
-  }
-}
-
-function enterVideoFullscreen() {
-  ensureFullscreenOverlay();
-  const vc = document.getElementById("videoContainer");
-  const iframe = vc ? vc.querySelector("iframe") : null;
-  const overlay = document.getElementById("ol-video-fullscreen-overlay");
-  const fsContent = document.getElementById("ol-fs-content");
-  const hint = document.getElementById("ol-fs-rotate-hint");
-
-  if (!overlay || !fsContent) return;
-
-  const isMobile =
-    window.innerWidth <= 768 || /Mobi|Android/i.test(navigator.userAgent);
-  if (!isMobile && vc) {
-    const reqFS =
-      vc.requestFullscreen ||
-      vc.webkitRequestFullscreen ||
-      vc.mozRequestFullScreen ||
-      vc.msRequestFullscreen;
-    if (reqFS) {
-      reqFS.call(vc);
-      STATE.isVideoFullscreen = true;
-      updateFullscreenBtn(true);
-      return;
-    }
-  }
-
-  // Mobile fallback logic: Inject iframe into our fixed overlay
-  fsContent.innerHTML = "";
-  if (iframe) {
-    const newIframe = document.createElement("iframe");
-    newIframe.src = iframe.src;
-    newIframe.setAttribute("allowfullscreen", "");
-    newIframe.setAttribute(
-      "allow",
-      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
-    );
-    newIframe.style.cssText = "width:100%;height:100%;border:none;";
-    fsContent.appendChild(newIframe);
-  } else {
-    fsContent.innerHTML = `<div class="ol-fs-placeholder" style="display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;gap:12px;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="56" height="56"><path d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/></svg>
-      <p style="font-size:16px;font-weight:700;">No video available</p>
-    </div>`;
-  }
-
-  overlay.classList.add("active");
-  document.body.style.overflow = "hidden";
-  STATE.isVideoFullscreen = true;
-  updateFullscreenBtn(true);
-
-  if (screen.orientation && screen.orientation.lock) {
-    screen.orientation.lock("landscape").catch(() => {});
-  }
-
-  if (hint) {
-    hint.style.opacity = "1";
-    setTimeout(() => {
-      hint.style.opacity = "0";
-    }, 3000);
-  }
-}
-
-function exitVideoFullscreen() {
-  const isNativeFS =
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement;
-  if (isNativeFS) {
-    const exitFS =
-      document.exitFullscreen ||
-      document.webkitExitFullscreen ||
-      document.mozCancelFullScreen ||
-      document.msExitFullscreen;
-    if (exitFS) exitFS.call(document);
-  }
-
-  const overlay = document.getElementById("ol-video-fullscreen-overlay");
-  if (overlay) {
-    overlay.classList.remove("active");
-    const fsContent = document.getElementById("ol-fs-content");
-    if (fsContent) fsContent.innerHTML = "";
-  }
-
-  document.body.style.overflow = "";
-  STATE.isVideoFullscreen = false;
-  updateFullscreenBtn(false);
-
-  if (screen.orientation && screen.orientation.unlock) {
-    screen.orientation.unlock();
-  }
-}
-
-function updateFullscreenBtn(isFS) {
-  const btn = document.getElementById("fullscreenBtn");
-  if (!btn) return;
-  btn.innerHTML = isFS ? icon("compress", 15) : icon("expand", 15);
-  btn.title = isFS ? "Exit Fullscreen" : "Fullscreen / Landscape";
-}
-
-function onFullscreenChange() {
-  const isNativeFS = !!(
-    document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement
-  );
-  if (!isNativeFS && STATE.isVideoFullscreen) {
-    STATE.isVideoFullscreen = false;
-    updateFullscreenBtn(false);
-    document.body.style.overflow = "";
-    if (screen.orientation && screen.orientation.unlock)
-      screen.orientation.unlock();
-  }
-}
-
 function switchPlayerTab(tab, btn) {
   document
     .querySelectorAll(".tab-pane")
@@ -2858,124 +2967,6 @@ function autoSaveNote(id, val) {
   const notes = DB.get("notes") || {};
   notes[id] = val;
   DB.set("notes", notes);
-}
-
-// ===== CAREER =====
-function renderCareer() {
-  const stream = STATE.currentCareerStream;
-  const careers = CAREERS[stream] || CAREERS.Science;
-  return `
-  <div>
-    <div class="section-head"><h2>Career Paths</h2><p>Explore your future — entrance exams, skills and salary expectations</p></div>
-    <div class="career-tabs">${Object.keys(CAREERS)
-      .map(
-        (s) =>
-          `<div class="career-tab ${s === stream ? "active" : ""}" onclick="switchCareerStream('${s}')">${s}</div>`,
-      )
-      .join("")}</div>
-    <div class="careers-grid">
-      ${careers
-        .map(
-          (c) => `
-        <div class="career-card">
-          <div class="career-card-top">
-            <div class="career-icon" style="background:${c.color}15;color:${c.color}">${icon(c.icon, 22)}</div>
-            <div><h3>${c.title}</h3><div class="career-ctag">${c.tag}</div></div>
-          </div>
-          <p class="career-desc">${c.desc}</p>
-          <div class="career-details">
-            <div class="cd-row"><span>Eligibility</span><span>${c.eligibility}</span></div>
-            <div class="cd-row"><span>Entrance Exams</span><span>${c.exams}</span></div>
-            <div class="cd-row"><span>Key Skills</span><span>${c.skills}</span></div>
-            <div class="cd-row"><span>Future Scope</span><span>${c.scope}</span></div>
-          </div>
-          <div class="salary-pill">${c.salary}</div>
-        </div>`,
-        )
-        .join("")}
-    </div>
-  </div>`;
-}
-
-function switchCareerStream(s) {
-  STATE.currentCareerStream = s;
-  document.getElementById("appMain").innerHTML = renderCareer();
-}
-
-// ===== EXAM PAGE =====
-function renderExamPage(exam) {
-  const data = {
-    JEE: {
-      col: "linear-gradient(135deg,#1a3570,#2d5fb3)",
-      tag: "Joint Entrance Examination",
-      desc: "JEE Main and Advanced are the gateway to IITs, NITs and IIITs. Rigorous preparation in Physics, Chemistry and Mathematics is essential.",
-      stats: [
-        { l: "Questions", v: "75" },
-        { l: "Duration", v: "3 hrs" },
-        { l: "Subjects", v: "PCM" },
-        { l: "Max Marks", v: "300" },
-      ],
-      subjects: ["Physics", "Chemistry", "Mathematics"],
-    },
-    NEET: {
-      col: "linear-gradient(135deg,#4a0a0a,#8a2232)",
-      tag: "National Eligibility cum Entrance Test",
-      desc: "NEET-UG is the single entrance for MBBS, BDS and BAMS admissions across India. NCERT-based with strong Biology emphasis.",
-      stats: [
-        { l: "Questions", v: "180" },
-        { l: "Duration", v: "3.5 hrs" },
-        { l: "Subjects", v: "PCB" },
-        { l: "Max Marks", v: "720" },
-      ],
-      subjects: ["Physics", "Chemistry", "Biology"],
-    },
-    CHSE: {
-      col: "linear-gradient(135deg,#0a3520,#1e7a48)",
-      tag: "Council of Higher Secondary Education, Odisha",
-      desc: "CHSE Odisha conducts Class 11 and 12 board examinations, covering all subjects in Science, Commerce and Arts streams for students across Odisha.",
-      stats: [
-        { l: "Duration", v: "3 hrs" },
-        { l: "Subjects", v: "7+" },
-        { l: "Streams", v: "3" },
-        { l: "Classes", v: "11 & 12" },
-      ],
-      subjects: [
-        "Physics",
-        "Chemistry",
-        "Mathematics",
-        "Biology",
-        "IT",
-        "English",
-        "Odia",
-      ],
-    },
-  };
-  const d = data[exam];
-  if (!d) return "";
-  return `
-  <div>
-    <div class="section-head"><h2>${exam} Preparation</h2></div>
-    <div class="exam-hero" style="background:${d.col}">
-      <div class="hero-pattern"></div>
-      <h1>${exam}</h1>
-      <p style="font-weight:700;font-size:15px;position:relative">${d.tag}</p>
-      <p style="position:relative">${d.desc}</p>
-    </div>
-    <div class="exam-info-row">${d.stats.map((s) => `<div class="eir-card"><h4>${s.v}</h4><p>${s.l}</p></div>`).join("")}</div>
-    <div class="row-header" style="margin-bottom:14px"><h3>Subjects for ${exam}</h3></div>
-    <div class="subject-cards" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr))">
-      ${d.subjects
-        .map(
-          (
-            s,
-          ) => `<div class="subj-card" onclick="showSubject('${s}','${STATE.currentClass}')" style="background:${SUBJ_COLORS[s]}">
-          <div class="subj-bg-grid"></div><div class="subj-card-icon">${icon(SUBJ_ICON_KEY[s] || "book", 28)}</div>
-          <h3>${s}</h3><div class="subj-count">Class ${STATE.currentClass}</div>
-        </div>`,
-        )
-        .join("")}
-    </div>
-  </div>`;
 }
 
 // ===== PROGRESS =====
