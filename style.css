@@ -1383,7 +1383,6 @@ em {
   object-fit: cover;
   border-radius: 50%;
 }
-
 /* MOBILE MENU */
 .mobile-menu {
   position: fixed;
@@ -3359,6 +3358,13 @@ em {
   }
   .stats-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 16px; /* Optimized gap */
+  }
+  .sg-item {
+    padding: 24px 16px; /* Optimized padding to fix squeeze */
+  }
+  .sg-item strong {
+    font-size: 30px; /* Reduced to fix overflow */
   }
   .landing-footer .footer-inner {
     padding: 40px 20px 30px;
@@ -3434,6 +3440,13 @@ em {
   }
   .stats-grid {
     grid-template-columns: 1fr 1fr;
+    gap: 12px; /* Better optimized gap for 600px */
+  }
+  .sg-item {
+    padding: 20px 12px; /* Smoother padding scaling */
+  }
+  .sg-item strong {
+    font-size: 26px; /* Smooth scale down */
   }
   .exam-info-row {
     grid-template-columns: repeat(2, 1fr);
@@ -3519,5 +3532,18 @@ em {
   }
   .features-grid {
     grid-template-columns: 1fr;
+  }
+  /* Ultra-small screen fix based on screenshot */
+  .stats-grid {
+    gap: 10px;
+  }
+  .sg-item {
+    padding: 16px 10px; /* Fixes overlap/squishing entirely */
+  }
+  .sg-item strong {
+    font-size: 24px;
+  }
+  .sg-item span {
+    font-size: 13px;
   }
 }
