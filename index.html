@@ -39,7 +39,6 @@
                 <div class="stream-cards">
                     <div class="stream-card" data-stream="Science" onclick="selectStream(this)">
                         <div class="sc-icon">
-                            <!-- Flask / Science SVG -->
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24"
                                 height="24">
                                 <path d="M9 3h6m-5 0v6.5L5.52 17A2 2 0 007 21h10a2 2 0 001.48-3.5L14 9.5V3" />
@@ -51,7 +50,6 @@
                     </div>
                     <div class="stream-card" data-stream="Commerce" onclick="selectStream(this)">
                         <div class="sc-icon">
-                            <!-- Chart bar SVG -->
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24"
                                 height="24">
                                 <path
@@ -63,7 +61,6 @@
                     </div>
                     <div class="stream-card" data-stream="Arts" onclick="selectStream(this)">
                         <div class="sc-icon">
-                            <!-- Academic cap SVG -->
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="24"
                                 height="24">
                                 <path
@@ -113,7 +110,6 @@
 
         <!-- ===== LANDING PAGE ===== -->
         <section id="landing" class="landing">
-
             <!-- TOP NAV -->
             <nav class="landing-nav" id="landingNav">
                 <div class="nav-brand">
@@ -121,15 +117,17 @@
                     <span class="logo-text">OdishaLearn</span>
                 </div>
                 <div class="nav-links">
-                    <a onclick="showSection('dashboard')">Dashboard</a>
+                    <a onclick="launchApp()">Dashboard</a>
                     <a onclick="smoothScrollTo('.features-grid')">Features</a>
-                    <a onclick="showSection('career')">Careers</a>
+                    <a onclick="showSection('career'); launchApp();">Careers</a>
                 </div>
-                <div class="nav-cta">
-                    <button class="btn-ghost" onclick="showOnboarding()">Log In</button>
-                    <button class="btn-primary" onclick="showOnboarding()">Get Started</button>
+                <div class="nav-cta" id="navCtaGroup">
+                    <button class="btn-ghost" id="loginBtnDesktop" onclick="showOnboarding()">Log In</button>
+                    <button class="btn-primary" id="getStartedBtnDesktop" onclick="showOnboarding()">Get
+                        Started</button>
                 </div>
-                <button class="mobile-hamburger btn-primary" onclick="showOnboarding()">Get Started</button>
+                <button class="mobile-hamburger btn-primary" id="getStartedBtnMobile" onclick="showOnboarding()">Get
+                    Started</button>
             </nav>
 
             <!-- HERO -->
@@ -147,11 +145,10 @@
                             CHSE Odisha Official Syllabus Platform
                         </div>
                         <h1>Master Your<br><em>CHSE Exam</em><br>From Odisha</h1>
-                        <p class="hero-sub">Complete Class 11 &amp; 12 preparation for Science, Commerce &amp; Arts
-                            streams.
+                        <p class="hero-sub">Complete Class 11 & 12 preparation for Science, Commerce & Arts streams.
                             Unit-wise structured video learning, career guidance, and real-time progress tracking.</p>
-                        <div class="hero-actions">
-                            <button class="btn-primary large" onclick="showOnboarding()">
+                        <div class="hero-actions" id="heroActionsGroup">
+                            <button class="btn-primary large" id="heroStartBtn" onclick="showOnboarding()">
                                 Start Learning Free
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16"
                                     height="16">
@@ -203,24 +200,21 @@
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="11"
                                     height="11">
                                     <polyline points="20 6 9 17 4 12" />
-                                </svg>
-                                Physics Done
+                                </svg> Physics Done
                             </div>
                             <div class="mockup-float f2">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="11"
                                     height="11">
                                     <path
                                         d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
-                                </svg>
-                                12 day streak
+                                </svg> 12 day streak
                             </div>
                             <div class="mockup-float f3">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="11"
                                     height="11">
                                     <circle cx="12" cy="12" r="9" />
                                     <path d="M12 6v6l4 2" />
-                                </svg>
-                                Chemistry 55%
+                                </svg> Chemistry 55%
                             </div>
                         </div>
                     </div>
@@ -231,63 +225,42 @@
             <div class="subjects-preview">
                 <p class="sp-label">CHSE ODISHA — ALL SUBJECTS COVERED</p>
                 <div class="subjects-strip">
-                    <div class="ss-item blue">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                            height="13">
+                    <div class="ss-item blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" width="13" height="13">
                             <circle cx="12" cy="12" r="2" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
                             <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                        </svg>
-                        Physics
-                    </div>
-                    <div class="ss-item purple">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                            height="13">
+                        </svg> Physics</div>
+                    <div class="ss-item purple"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" width="13" height="13">
                             <path d="M9 3h6m-5 0v6.5L5.52 17A2 2 0 007 21h10a2 2 0 001.48-3.5L14 9.5V3" />
                             <path d="M6 17h12" />
-                        </svg>
-                        Chemistry
-                    </div>
-                    <div class="ss-item cyan">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                            height="13">
+                        </svg> Chemistry</div>
+                    <div class="ss-item cyan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" width="13" height="13">
                             <path d="M18 4H6l7 8-7 8h12" />
-                        </svg>
-                        Mathematics
-                    </div>
-                    <div class="ss-item green">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                            height="13">
+                        </svg> Mathematics</div>
+                    <div class="ss-item green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" width="13" height="13">
                             <path d="M12 22V12m0 0C12 6 6 3 2 5c0 6 4 9 8 9a7 7 0 007-7c0-4-2-7-6-7-3.5 0-6 2.5-6 6" />
-                        </svg>
-                        Biology
-                    </div>
-                    <div class="ss-item orange">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                            height="13">
+                        </svg> Biology</div>
+                    <div class="ss-item orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" width="13" height="13">
                             <rect x="2" y="3" width="20" height="14" rx="2" />
                             <path d="M8 21h8m-4-4v4" />
-                        </svg>
-                        IT / Computer
-                    </div>
-                    <div class="ss-item red">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                            height="13">
+                        </svg> IT / Computer</div>
+                    <div class="ss-item red"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" width="13" height="13">
                             <path
                                 d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                        </svg>
-                        English
-                    </div>
-                    <div class="ss-item teal">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                            height="13">
+                        </svg> English</div>
+                    <div class="ss-item teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5" width="13" height="13">
                             <path d="M12 3C7 3 4 7 4 12s3 9 8 9 8-4 8-9-3-9-8-9z" />
                             <path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4" />
                             <path d="M12 8v8" />
-                        </svg>
-                        Odia
-                    </div>
+                        </svg> Odia</div>
                 </div>
             </div>
 
@@ -301,50 +274,46 @@
                 </div>
                 <div class="features-grid">
                     <div class="feat-card">
-                        <div class="feat-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6">
-                            <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                        <div class="feat-icon" style="background:rgba(59,130,246,0.12);color:#3b82f6"><svg
+                                viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
                                 <polygon points="5 3 19 12 5 21 5 3" />
-                            </svg>
-                        </div>
+                            </svg></div>
                         <h3>Unit-wise Video Learning</h3>
                         <p>CHSE syllabus-aligned video lessons organized by unit and chapter. Never miss a topic.</p>
                     </div>
                     <div class="feat-card">
-                        <div class="feat-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
+                        <div class="feat-icon" style="background:rgba(139,92,246,0.12);color:#8b5cf6"><svg
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
                                 height="20">
                                 <path
                                     d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                            </svg>
-                        </div>
+                            </svg></div>
                         <h3>Progress Heatmap</h3>
                         <p>GitHub-style daily study tracker. Build streaks, hit weekly goals, stay consistent.</p>
                     </div>
                     <div class="feat-card">
-                        <div class="feat-icon" style="background:rgba(6,182,212,0.12);color:#06b6d4">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
+                        <div class="feat-icon" style="background:rgba(6,182,212,0.12);color:#06b6d4"><svg
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
                                 height="20">
                                 <path
-                                    d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-                            </svg>
-                        </div>
+                                    d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c-.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+                            </svg></div>
                         <h3>Career Roadmaps</h3>
                         <p>Explore 50+ career paths — JEE, NEET, UPSC, Law with eligibility and salary data.</p>
                     </div>
                     <div class="feat-card">
-                        <div class="feat-icon" style="background:rgba(34,197,94,0.12);color:#22c55e">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
+                        <div class="feat-icon" style="background:rgba(34,197,94,0.12);color:#22c55e"><svg
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
                                 height="20">
                                 <path
                                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
-                            </svg>
-                        </div>
+                            </svg></div>
                         <h3>Smart Notes</h3>
                         <p>Take video-synced notes, organize by subject, export anytime as text files.</p>
                     </div>
                     <div class="feat-card">
-                        <div class="feat-icon" style="background:rgba(249,115,22,0.12);color:#f97316">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
+                        <div class="feat-icon" style="background:rgba(249,115,22,0.12);color:#f97316"><svg
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
                                 height="20">
                                 <circle cx="12" cy="12" r="9" />
                                 <circle cx="12" cy="12" r="4" />
@@ -352,19 +321,17 @@
                                 <line x1="12" y1="20" x2="12" y2="22" />
                                 <line x1="2" y1="12" x2="4" y2="12" />
                                 <line x1="20" y1="12" x2="22" y2="12" />
-                            </svg>
-                        </div>
-                        <h3>Class 11 &amp; 12 Both</h3>
+                            </svg></div>
+                        <h3>Class 11 & 12 Both</h3>
                         <p>Complete CHSE syllabus for both classes — switch between them anytime.</p>
                     </div>
                     <div class="feat-card">
-                        <div class="feat-icon" style="background:rgba(239,68,68,0.12);color:#ef4444">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
+                        <div class="feat-icon" style="background:rgba(239,68,68,0.12);color:#ef4444"><svg
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
                                 height="20">
                                 <path
                                     d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
-                            </svg>
-                        </div>
+                            </svg></div>
                         <h3>YouTube Integration</h3>
                         <p>Add any YouTube video link and watch it directly within our structured unit framework.</p>
                     </div>
@@ -401,10 +368,9 @@
                     <div class="footer-col">
                         <div class="footer-col-title">Navigate</div>
                         <div class="footer-links">
-                            <a onclick="showSection('career')">Career Paths</a>
-                            <a onclick="showSection('progress')">Progress Tracker</a>
-                            <a onclick="showSection('notes')">Notes</a>
-                            <a onclick="showSection('settings')">Settings</a>
+                            <a onclick="showSection('career'); launchApp();">Career Paths</a>
+                            <a onclick="showSection('progress'); launchApp();">Progress Tracker</a>
+                            <a onclick="showSection('notes'); launchApp();">Notes</a>
                         </div>
                     </div>
                     <div class="footer-col">
@@ -421,11 +387,10 @@
                         </div>
                         <span>OdishaLearn</span>
                     </div>
-                    <p>© 2025 OdishaLearn — Built for CHSE Odisha Class 11 &amp; 12 Students · All subjects, all units,
-                        all chapters.</p>
+                    <p>© 2025 OdishaLearn — Built for CHSE Odisha Class 11 & 12 Students</p>
                     <div class="footer-bottom-links">
-                        <a onclick="showSection('settings')">Privacy</a>
-                        <a onclick="showSection('settings')">Terms</a>
+                        <a>Privacy</a>
+                        <a>Terms</a>
                     </div>
                 </div>
             </footer>
@@ -448,7 +413,8 @@
 
                 <!-- Desktop Nav Links -->
                 <nav class="topnav-links" id="topnavLinks">
-                    <a class="tnl" data-section="dashboard" onclick="showSection('dashboard')">
+                    <!-- Home button is dynamically injected here by JS via setupNavigationFixes -->
+                    <a class="tnl active" data-section="dashboard" onclick="showSection('dashboard')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
                             height="15">
                             <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -456,7 +422,7 @@
                             <rect x="14" y="14" width="7" height="7" rx="1" />
                             <rect x="3" y="14" width="7" height="7" rx="1" />
                         </svg>
-                        Home
+                        Dashboard
                     </a>
                     <div class="tnl dropdown" id="subjectsDropdown">
                         <button class="tnl-btn" onclick="toggleDropdown('subjectsMenu')">
@@ -473,123 +439,21 @@
                         </button>
                         <div class="dropdown-menu" id="subjectsMenu">
                             <div class="dm-section">Class 11</div>
-                            <a onclick="showSubject('Physics','11')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <circle cx="12" cy="12" r="2" />
-                                    <ellipse cx="12" cy="12" rx="10" ry="4" />
-                                    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                                    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                                </svg>
-                                Physics
-                            </a>
-                            <a onclick="showSubject('Chemistry','11')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path d="M9 3h6m-5 0v6.5L5.52 17A2 2 0 007 21h10a2 2 0 001.48-3.5L14 9.5V3" />
-                                    <path d="M6 17h12" />
-                                </svg>
-                                Chemistry
-                            </a>
-                            <a onclick="showSubject('Mathematics','11')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path d="M18 4H6l7 8-7 8h12" />
-                                </svg>
-                                Mathematics
-                            </a>
-                            <a onclick="showSubject('Biology','11')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path
-                                        d="M12 22V12m0 0C12 6 6 3 2 5c0 6 4 9 8 9a7 7 0 007-7c0-4-2-7-6-7-3.5 0-6 2.5-6 6" />
-                                </svg>
-                                Biology
-                            </a>
-                            <a onclick="showSubject('IT','11')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <rect x="2" y="3" width="20" height="14" rx="2" />
-                                    <path d="M8 21h8m-4-4v4" />
-                                </svg>
-                                Information Technology
-                            </a>
-                            <a onclick="showSubject('English','11')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path
-                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                </svg>
-                                English
-                            </a>
-                            <a onclick="showSubject('Odia','11')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path d="M12 3C7 3 4 7 4 12s3 9 8 9 8-4 8-9-3-9-8-9z" />
-                                    <path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4" />
-                                    <path d="M12 8v8" />
-                                </svg>
-                                Odia
-                            </a>
+                            <a onclick="showSubject('Physics','11')">Physics</a>
+                            <a onclick="showSubject('Chemistry','11')">Chemistry</a>
+                            <a onclick="showSubject('Mathematics','11')">Mathematics</a>
+                            <a onclick="showSubject('Biology','11')">Biology</a>
+                            <a onclick="showSubject('IT','11')">IT / Computer</a>
+                            <a onclick="showSubject('English','11')">English</a>
+                            <a onclick="showSubject('Odia','11')">Odia</a>
                             <div class="dm-section">Class 12</div>
-                            <a onclick="showSubject('Physics','12')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <circle cx="12" cy="12" r="2" />
-                                    <ellipse cx="12" cy="12" rx="10" ry="4" />
-                                    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                                    <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                                </svg>
-                                Physics
-                            </a>
-                            <a onclick="showSubject('Chemistry','12')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path d="M9 3h6m-5 0v6.5L5.52 17A2 2 0 007 21h10a2 2 0 001.48-3.5L14 9.5V3" />
-                                    <path d="M6 17h12" />
-                                </svg>
-                                Chemistry
-                            </a>
-                            <a onclick="showSubject('Mathematics','12')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path d="M18 4H6l7 8-7 8h12" />
-                                </svg>
-                                Mathematics
-                            </a>
-                            <a onclick="showSubject('Biology','12')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path
-                                        d="M12 22V12m0 0C12 6 6 3 2 5c0 6 4 9 8 9a7 7 0 007-7c0-4-2-7-6-7-3.5 0-6 2.5-6 6" />
-                                </svg>
-                                Biology
-                            </a>
-                            <a onclick="showSubject('IT','12')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <rect x="2" y="3" width="20" height="14" rx="2" />
-                                    <path d="M8 21h8m-4-4v4" />
-                                </svg>
-                                Information Technology
-                            </a>
-                            <a onclick="showSubject('English','12')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path
-                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                </svg>
-                                English
-                            </a>
-                            <a onclick="showSubject('Odia','12')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path d="M12 3C7 3 4 7 4 12s3 9 8 9 8-4 8-9-3-9-8-9z" />
-                                    <path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4" />
-                                    <path d="M12 8v8" />
-                                </svg>
-                                Odia
-                            </a>
+                            <a onclick="showSubject('Physics','12')">Physics</a>
+                            <a onclick="showSubject('Chemistry','12')">Chemistry</a>
+                            <a onclick="showSubject('Mathematics','12')">Mathematics</a>
+                            <a onclick="showSubject('Biology','12')">Biology</a>
+                            <a onclick="showSubject('IT','12')">IT / Computer</a>
+                            <a onclick="showSubject('English','12')">English</a>
+                            <a onclick="showSubject('Odia','12')">Odia</a>
                         </div>
                     </div>
                     <div class="tnl dropdown" id="examsDropdown">
@@ -606,47 +470,13 @@
                             </svg>
                         </button>
                         <div class="dropdown-menu" id="examsMenu">
-                            <a onclick="showExam('JEE')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                                </svg>
-                                JEE Preparation
-                            </a>
-                            <a onclick="showExam('NEET')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path
-                                        d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-                                </svg>
-                                NEET Preparation
-                            </a>
-                            <a onclick="showExam('CHSE')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13"
-                                    height="13">
-                                    <path
-                                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                                </svg>
-                                CHSE Board Exam
-                            </a>
+                            <a onclick="showExam('JEE')">JEE Preparation</a>
+                            <a onclick="showExam('NEET')">NEET Preparation</a>
+                            <a onclick="showExam('CHSE')">CHSE Board Exam</a>
                         </div>
                     </div>
-                    <a class="tnl" data-section="career" onclick="showSection('career')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c-.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-                        </svg>
-                        Careers
-                    </a>
-                    <a class="tnl" data-section="progress" onclick="showSection('progress')">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
-                        </svg>
-                        Progress
-                    </a>
+                    <a class="tnl" data-section="career" onclick="showSection('career')">Careers</a>
+                    <a class="tnl" data-section="progress" onclick="showSection('progress')">Progress</a>
                 </nav>
 
                 <div class="topnav-right">
@@ -696,6 +526,15 @@
                     </button>
                 </div>
                 <nav class="mm-nav">
+                    <!-- Dashboard -> Home Redirect -->
+                    <a onclick="goToLandingFromApp();toggleMobileMenu()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16"
+                            height="16">
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            <polyline points="9 22 9 12 15 12 15 22" />
+                        </svg>
+                        Home
+                    </a>
                     <a onclick="showSection('dashboard');toggleMobileMenu()">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16"
                             height="16">
@@ -706,187 +545,32 @@
                         </svg>
                         Dashboard
                     </a>
+
                     <div class="mm-section">Class 11 Subjects</div>
-                    <a onclick="showSubject('Physics','11');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <circle cx="12" cy="12" r="2" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                        </svg>
-                        Physics
-                    </a>
-                    <a onclick="showSubject('Chemistry','11');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M9 3h6m-5 0v6.5L5.52 17A2 2 0 007 21h10a2 2 0 001.48-3.5L14 9.5V3" />
-                            <path d="M6 17h12" />
-                        </svg>
-                        Chemistry
-                    </a>
-                    <a onclick="showSubject('Mathematics','11');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M18 4H6l7 8-7 8h12" />
-                        </svg>
-                        Mathematics
-                    </a>
-                    <a onclick="showSubject('Biology','11');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M12 22V12m0 0C12 6 6 3 2 5c0 6 4 9 8 9a7 7 0 007-7c0-4-2-7-6-7-3.5 0-6 2.5-6 6" />
-                        </svg>
-                        Biology
-                    </a>
-                    <a onclick="showSubject('IT','11');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <rect x="2" y="3" width="20" height="14" rx="2" />
-                            <path d="M8 21h8m-4-4v4" />
-                        </svg>
-                        IT / Computer
-                    </a>
-                    <a onclick="showSubject('English','11');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                        </svg>
-                        English
-                    </a>
-                    <a onclick="showSubject('Odia','11');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M12 3C7 3 4 7 4 12s3 9 8 9 8-4 8-9-3-9-8-9z" />
-                            <path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4" />
-                            <path d="M12 8v8" />
-                        </svg>
-                        Odia
-                    </a>
+                    <a onclick="showSubject('Physics','11');toggleMobileMenu()">Physics</a>
+                    <a onclick="showSubject('Chemistry','11');toggleMobileMenu()">Chemistry</a>
+                    <a onclick="showSubject('Mathematics','11');toggleMobileMenu()">Mathematics</a>
+                    <a onclick="showSubject('Biology','11');toggleMobileMenu()">Biology</a>
+                    <a onclick="showSubject('IT','11');toggleMobileMenu()">IT / Computer</a>
+                    <a onclick="showSubject('English','11');toggleMobileMenu()">English</a>
+                    <a onclick="showSubject('Odia','11');toggleMobileMenu()">Odia</a>
                     <div class="mm-section">Class 12 Subjects</div>
-                    <a onclick="showSubject('Physics','12');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <circle cx="12" cy="12" r="2" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" />
-                            <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" />
-                        </svg>
-                        Physics
-                    </a>
-                    <a onclick="showSubject('Chemistry','12');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M9 3h6m-5 0v6.5L5.52 17A2 2 0 007 21h10a2 2 0 001.48-3.5L14 9.5V3" />
-                            <path d="M6 17h12" />
-                        </svg>
-                        Chemistry
-                    </a>
-                    <a onclick="showSubject('Mathematics','12');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M18 4H6l7 8-7 8h12" />
-                        </svg>
-                        Mathematics
-                    </a>
-                    <a onclick="showSubject('Biology','12');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M12 22V12m0 0C12 6 6 3 2 5c0 6 4 9 8 9a7 7 0 007-7c0-4-2-7-6-7-3.5 0-6 2.5-6 6" />
-                        </svg>
-                        Biology
-                    </a>
-                    <a onclick="showSubject('IT','12');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <rect x="2" y="3" width="20" height="14" rx="2" />
-                            <path d="M8 21h8m-4-4v4" />
-                        </svg>
-                        IT / Computer
-                    </a>
-                    <a onclick="showSubject('English','12');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                        </svg>
-                        English
-                    </a>
-                    <a onclick="showSubject('Odia','12');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M12 3C7 3 4 7 4 12s3 9 8 9 8-4 8-9-3-9-8-9z" />
-                            <path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4" />
-                            <path d="M12 8v8" />
-                        </svg>
-                        Odia
-                    </a>
+                    <a onclick="showSubject('Physics','12');toggleMobileMenu()">Physics</a>
+                    <a onclick="showSubject('Chemistry','12');toggleMobileMenu()">Chemistry</a>
+                    <a onclick="showSubject('Mathematics','12');toggleMobileMenu()">Mathematics</a>
+                    <a onclick="showSubject('Biology','12');toggleMobileMenu()">Biology</a>
+                    <a onclick="showSubject('IT','12');toggleMobileMenu()">IT / Computer</a>
+                    <a onclick="showSubject('English','12');toggleMobileMenu()">English</a>
+                    <a onclick="showSubject('Odia','12');toggleMobileMenu()">Odia</a>
                     <div class="mm-section">More</div>
-                    <a onclick="showSection('career');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
-                        </svg>
-                        Career Paths
-                    </a>
-                    <a onclick="showSection('progress');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625z" />
-                        </svg>
-                        My Progress
-                    </a>
-                    <a onclick="showSection('saved');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" />
-                        </svg>
-                        Saved Videos
-                    </a>
-                    <a onclick="showSection('notes');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />
-                        </svg>
-                        My Notes
-                    </a>
-                    <a onclick="showSection('profile');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0" />
-                        </svg>
-                        Profile
-                    </a>
-                    <a onclick="showSection('settings');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-                            <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        Settings
-                    </a>
-                    <a onclick="showExam('JEE');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
-                        </svg>
-                        JEE Prep
-                    </a>
-                    <a onclick="showExam('NEET');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15"
-                            height="15">
-                            <path
-                                d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />
-                        </svg>
-                        NEET Prep
-                    </a>
+                    <a onclick="showSection('career');toggleMobileMenu()">Career Paths</a>
+                    <a onclick="showSection('progress');toggleMobileMenu()">My Progress</a>
+                    <a onclick="showSection('saved');toggleMobileMenu()">Saved Videos</a>
+                    <a onclick="showSection('notes');toggleMobileMenu()">My Notes</a>
+                    <a onclick="showSection('profile');toggleMobileMenu()">Profile</a>
+                    <a onclick="showSection('settings');toggleMobileMenu()">Settings</a>
+                    <a onclick="showExam('JEE');toggleMobileMenu()">JEE Prep</a>
+                    <a onclick="showExam('NEET');toggleMobileMenu()">NEET Prep</a>
                 </nav>
             </div>
             <div class="mobile-menu-overlay hidden" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
@@ -903,7 +587,7 @@
                         <div class="logo-mark sm"><span>O</span></div>
                         <div>
                             <div class="logo-text">OdishaLearn</div>
-                            <div class="footer-tagline">CHSE Odisha · Class 11 &amp; 12</div>
+                            <div class="footer-tagline">CHSE Odisha · Class 11 & 12</div>
                         </div>
                     </div>
                     <div class="af-links">
@@ -930,7 +614,7 @@
                         <rect x="14" y="14" width="7" height="7" rx="1" />
                         <rect x="3" y="14" width="7" height="7" rx="1" />
                     </svg>
-                    <span>Home</span>
+                    <span>Dashboard</span> <!-- Updated from Home -->
                 </a>
                 <a class="bn-item" onclick="toggleMobileMenu()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
@@ -944,7 +628,7 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20"
                         height="20">
                         <path
-                            d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+                            d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c-.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
                     </svg>
                     <span>Careers</span>
                 </a>
@@ -966,7 +650,6 @@
                 </a>
             </nav>
         </div>
-
     </div>
 
     <script src="script.js"></script>
