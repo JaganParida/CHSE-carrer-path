@@ -1,7 +1,7 @@
 /* ===================================================
    OdishaLearn — CHSE Odisha Platform Script
    Complete Class 11 & 12 Syllabus (2025-26)
-   Fixed: Modern Bottom Sheet Navigation for Mobile
+   Streams: Science, Commerce, Arts (Fully Dynamic)
    =================================================== */
 
 // ===== SVG ICON LIBRARY =====
@@ -12,6 +12,7 @@ const ICONS = {
   map: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c-.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"/></svg>`,
   chart: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>`,
   user: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>`,
+  users: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>`,
   search: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>`,
   bookmark: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/></svg>`,
   bookmarkFilled: `<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.5"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z"/></svg>`,
@@ -53,6 +54,7 @@ const ICONS = {
   clock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>`,
   star: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"/></svg>`,
   trophy: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0"/></svg>`,
+  globe: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>`,
   odia: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3C7 3 4 7 4 12s3 9 8 9 8-4 8-9-3-9-8-9z"/><path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4"/><path d="M12 8v8"/></svg>`,
 };
 
@@ -67,6 +69,29 @@ const DB = {
   },
   set: (k, v) => localStorage.setItem("ol_" + k, JSON.stringify(v)),
   del: (k) => localStorage.removeItem("ol_" + k),
+};
+
+// ===== STREAM CONFIGURATION =====
+const STREAM_SUBJECTS = {
+  Science: [
+    "Physics",
+    "Chemistry",
+    "Mathematics",
+    "Biology",
+    "IT",
+    "English",
+    "Odia",
+  ],
+  Commerce: ["Accountancy", "BSM", "BMS", "Economics", "IT", "English", "Odia"],
+  Arts: [
+    "History",
+    "Political Science",
+    "Economics",
+    "Logic",
+    "Sociology",
+    "English",
+    "Odia",
+  ],
 };
 
 // ===== COMPLETE CHSE ODISHA SYLLABUS DATA (2025-26) =====
@@ -1658,6 +1683,916 @@ const SYLLABUS = {
       },
     ],
   },
+  // ===== NEW SUBJECTS (COMMERCE & ARTS) =====
+  Accountancy: {
+    11: [
+      {
+        unit: "Unit I: Theoretical Framework",
+        chapters: [
+          {
+            id: "acc11_1_1",
+            title: "Intro to Accounting",
+            desc: "Objectives, advantages, and limitations.",
+            videoUrl: "",
+          },
+          {
+            id: "acc11_1_2",
+            title: "Basic Accounting Terms",
+            desc: "Assets, liabilities, capital, revenues.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Accounting Process",
+        chapters: [
+          {
+            id: "acc11_2_1",
+            title: "Recording of Transactions",
+            desc: "Journal, Ledger, Cash Book.",
+            videoUrl: "",
+          },
+          {
+            id: "acc11_2_2",
+            title: "Bank Reconciliation Statement",
+            desc: "Need and preparation of BRS.",
+            videoUrl: "",
+          },
+          {
+            id: "acc11_2_3",
+            title: "Depreciation",
+            desc: "SLM and WDV methods.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit III: Financial Statements",
+        chapters: [
+          {
+            id: "acc11_3_1",
+            title: "Final Accounts",
+            desc: "Trading, P&L Account, and Balance Sheet.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Partnership Accounts",
+        chapters: [
+          {
+            id: "acc12_1_1",
+            title: "Fundamentals of Partnership",
+            desc: "Partnership deed, P&L Appropriation.",
+            videoUrl: "",
+          },
+          {
+            id: "acc12_1_2",
+            title: "Admission of a Partner",
+            desc: "Goodwill, Revaluation of Assets.",
+            videoUrl: "",
+          },
+          {
+            id: "acc12_1_3",
+            title: "Retirement and Death",
+            desc: "Calculation of gaining ratio and settlement.",
+            videoUrl: "",
+          },
+          {
+            id: "acc12_1_4",
+            title: "Dissolution",
+            desc: "Realisation account setup.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Company Accounts",
+        chapters: [
+          {
+            id: "acc12_2_1",
+            title: "Accounting for Share Capital",
+            desc: "Issue and forfeiture of shares.",
+            videoUrl: "",
+          },
+          {
+            id: "acc12_2_2",
+            title: "Issue of Debentures",
+            desc: "Debentures issued as collateral.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit III: Financial Statement Analysis",
+        chapters: [
+          {
+            id: "acc12_3_1",
+            title: "Ratio Analysis",
+            desc: "Liquidity, Solvency, Activity ratios.",
+            videoUrl: "",
+          },
+          {
+            id: "acc12_3_2",
+            title: "Cash Flow Statement",
+            desc: "Operating, Investing, Financing activities.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
+  BSM: {
+    11: [
+      {
+        unit: "Unit I: Foundations of Business",
+        chapters: [
+          {
+            id: "bsm11_1_1",
+            title: "Nature and Purpose",
+            desc: "Economic and non-economic activities.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm11_1_2",
+            title: "Forms of Business Organisations",
+            desc: "Sole proprietorship, Partnership, Company.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Business Organizations",
+        chapters: [
+          {
+            id: "bsm11_2_1",
+            title: "Public, Private & Global Enterprises",
+            desc: "Departmental undertakings, MNCs.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit III: Operations",
+        chapters: [
+          {
+            id: "bsm11_3_1",
+            title: "Business Services",
+            desc: "Banking, Insurance, Communication.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm11_3_2",
+            title: "Internal Trade",
+            desc: "Wholesale and Retail trade.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Principles of Management",
+        chapters: [
+          {
+            id: "bsm12_1_1",
+            title: "Nature and Significance",
+            desc: "Management as an art, science and profession.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm12_1_2",
+            title: "Principles of Management",
+            desc: "Fayol and Taylor's principles.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm12_1_3",
+            title: "Business Environment",
+            desc: "Economic, Social, Legal environment.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Management Functions",
+        chapters: [
+          {
+            id: "bsm12_2_1",
+            title: "Planning",
+            desc: "Importance, limitations, and process.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm12_2_2",
+            title: "Organising",
+            desc: "Structure, delegation, and decentralization.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm12_2_3",
+            title: "Staffing & Directing",
+            desc: "Recruitment, selection, motivation, leadership.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm12_2_4",
+            title: "Controlling",
+            desc: "Relationship between planning and controlling.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit III: Business Finance & Marketing",
+        chapters: [
+          {
+            id: "bsm12_3_1",
+            title: "Financial Management",
+            desc: "Capital structure, fixed and working capital.",
+            videoUrl: "",
+          },
+          {
+            id: "bsm12_3_2",
+            title: "Marketing Management",
+            desc: "Marketing mix (4Ps).",
+            videoUrl: "",
+          },
+          {
+            id: "bsm12_3_3",
+            title: "Consumer Protection",
+            desc: "Rights and responsibilities of consumers.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
+  BMS: {
+    11: [
+      {
+        unit: "Unit I: Mathematics",
+        chapters: [
+          {
+            id: "bms11_1_1",
+            title: "Sets & Relations",
+            desc: "Venn diagrams, basic set operations.",
+            videoUrl: "",
+          },
+          {
+            id: "bms11_1_2",
+            title: "Determinants & Matrices",
+            desc: "Cramer's rule and matrix algebra.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Statistics",
+        chapters: [
+          {
+            id: "bms11_2_1",
+            title: "Measures of Central Tendency",
+            desc: "Mean, Median, Mode.",
+            videoUrl: "",
+          },
+          {
+            id: "bms11_2_2",
+            title: "Measures of Dispersion",
+            desc: "Standard deviation, Variance.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Calculus & LP",
+        chapters: [
+          {
+            id: "bms12_1_1",
+            title: "Differentiation & Integration",
+            desc: "Basic commercial applications of calculus.",
+            videoUrl: "",
+          },
+          {
+            id: "bms12_1_2",
+            title: "Linear Programming",
+            desc: "Graphical solutions.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Advanced Statistics",
+        chapters: [
+          {
+            id: "bms12_2_1",
+            title: "Probability",
+            desc: "Mathematical expectation.",
+            videoUrl: "",
+          },
+          {
+            id: "bms12_2_2",
+            title: "Time Series Analysis",
+            desc: "Components and moving averages.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
+  Economics: {
+    11: [
+      {
+        unit: "Unit I: Statistics for Economics",
+        chapters: [
+          {
+            id: "eco11_1_1",
+            title: "Collection of Data",
+            desc: "Primary and secondary data.",
+            videoUrl: "",
+          },
+          {
+            id: "eco11_1_2",
+            title: "Organization & Presentation",
+            desc: "Graphs and diagrams.",
+            videoUrl: "",
+          },
+          {
+            id: "eco11_1_3",
+            title: "Statistical Tools",
+            desc: "Correlation and Index Numbers.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Indian Economic Development",
+        chapters: [
+          {
+            id: "eco11_2_1",
+            title: "Development Policies",
+            desc: "Economic planning and reforms since 1991.",
+            videoUrl: "",
+          },
+          {
+            id: "eco11_2_2",
+            title: "Current Challenges",
+            desc: "Poverty, Human Capital, Employment.",
+            videoUrl: "",
+          },
+          {
+            id: "eco11_2_3",
+            title: "Development Experience",
+            desc: "Comparison with neighbours.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Introductory Microeconomics",
+        chapters: [
+          {
+            id: "eco12_1_1",
+            title: "Consumer's Behavior",
+            desc: "Utility, Indifference curve, Demand.",
+            videoUrl: "",
+          },
+          {
+            id: "eco12_1_2",
+            title: "Producer Behavior",
+            desc: "Production function, Cost, Revenue, Supply.",
+            videoUrl: "",
+          },
+          {
+            id: "eco12_1_3",
+            title: "Forms of Market",
+            desc: "Perfect competition and price determination.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Introductory Macroeconomics",
+        chapters: [
+          {
+            id: "eco12_2_1",
+            title: "National Income",
+            desc: "Circular flow, GDP, GNP.",
+            videoUrl: "",
+          },
+          {
+            id: "eco12_2_2",
+            title: "Money and Banking",
+            desc: "Functions of RBI and commercial banks.",
+            videoUrl: "",
+          },
+          {
+            id: "eco12_2_3",
+            title: "Government Budget",
+            desc: "Revenue and Capital receipts.",
+            videoUrl: "",
+          },
+          {
+            id: "eco12_2_4",
+            title: "Balance of Payments",
+            desc: "Forex rates, BoP account.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
+  History: {
+    11: [
+      {
+        unit: "Unit I: Early Societies",
+        chapters: [
+          {
+            id: "his11_1_1",
+            title: "From the Beginning of Time",
+            desc: "Early human evolution.",
+            videoUrl: "",
+          },
+          {
+            id: "his11_1_2",
+            title: "Early Cities",
+            desc: "Mesopotamia and urbanization.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Empires",
+        chapters: [
+          {
+            id: "his11_2_1",
+            title: "An Empire Across Three Continents",
+            desc: "The Roman Empire.",
+            videoUrl: "",
+          },
+          {
+            id: "his11_2_2",
+            title: "Central Islamic Lands",
+            desc: "Rise and expansion of Islam.",
+            videoUrl: "",
+          },
+          {
+            id: "his11_2_3",
+            title: "Nomadic Empires",
+            desc: "The Mongols.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit III: Changing Traditions",
+        chapters: [
+          {
+            id: "his11_3_1",
+            title: "Three Orders",
+            desc: "Feudalism in Europe.",
+            videoUrl: "",
+          },
+          {
+            id: "his11_3_2",
+            title: "Changing Cultural Traditions",
+            desc: "Renaissance and Reformation.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit IV: Paths to Modernization",
+        chapters: [
+          {
+            id: "his11_4_1",
+            title: "Industrial Revolution",
+            desc: "Britain's transformation.",
+            videoUrl: "",
+          },
+          {
+            id: "his11_4_2",
+            title: "Modernization in Asia",
+            desc: "Japan and China.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Ancient India",
+        chapters: [
+          {
+            id: "his12_1_1",
+            title: "Bricks, Beads and Bones",
+            desc: "The Harappan Civilization.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_1_2",
+            title: "Kings, Farmers and Towns",
+            desc: "Early States and Economies (Mauryan).",
+            videoUrl: "",
+          },
+          {
+            id: "his12_1_3",
+            title: "Kinship, Caste and Class",
+            desc: "Early Societies (Mahabharata).",
+            videoUrl: "",
+          },
+          {
+            id: "his12_1_4",
+            title: "Thinkers, Beliefs and Buildings",
+            desc: "Cultural Developments (Buddhism, Jainism).",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Medieval India",
+        chapters: [
+          {
+            id: "his12_2_1",
+            title: "Through the Eyes of Travellers",
+            desc: "Accounts of Al-Biruni, Ibn Battuta.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_2_2",
+            title: "Bhakti-Sufi Traditions",
+            desc: "Changes in Religious Beliefs.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_2_3",
+            title: "An Imperial Capital",
+            desc: "Vijayanagara Empire.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_2_4",
+            title: "Agrarian Society and Mughal Empire",
+            desc: "Ain-i-Akbari insights.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_2_5",
+            title: "Kings and Chronicles",
+            desc: "Mughal Courts.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit III: Modern India",
+        chapters: [
+          {
+            id: "his12_3_1",
+            title: "Colonialism and the Countryside",
+            desc: "Official Archives and Revenue.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_3_2",
+            title: "Rebels and the Raj",
+            desc: "The Revolt of 1857.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_3_3",
+            title: "Mahatma Gandhi and National Movement",
+            desc: "Civil Disobedience and beyond.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_3_4",
+            title: "Understanding Partition",
+            desc: "Politics, Memories, Experiences.",
+            videoUrl: "",
+          },
+          {
+            id: "his12_3_5",
+            title: "Framing the Constitution",
+            desc: "The beginning of a new era.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
+  "Political Science": {
+    11: [
+      {
+        unit: "Unit I: Political Theory",
+        chapters: [
+          {
+            id: "pol11_1_1",
+            title: "Introduction to Political Theory",
+            desc: "Concepts and significance.",
+            videoUrl: "",
+          },
+          {
+            id: "pol11_1_2",
+            title: "Freedom and Equality",
+            desc: "Liberty, Equality, Justice.",
+            videoUrl: "",
+          },
+          {
+            id: "pol11_1_3",
+            title: "Rights and Citizenship",
+            desc: "Rights, Secularism, Nationalism.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Indian Constitution at Work",
+        chapters: [
+          {
+            id: "pol11_2_1",
+            title: "Constitution",
+            desc: "Why and How? Rights in the Constitution.",
+            videoUrl: "",
+          },
+          {
+            id: "pol11_2_2",
+            title: "Elections & Representation",
+            desc: "Electoral systems.",
+            videoUrl: "",
+          },
+          {
+            id: "pol11_2_3",
+            title: "Executive, Legislature, Judiciary",
+            desc: "Structure of Indian Democracy.",
+            videoUrl: "",
+          },
+          {
+            id: "pol11_2_4",
+            title: "Federalism & Local Governments",
+            desc: "Decentralization.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Contemporary World Politics",
+        chapters: [
+          {
+            id: "pol12_1_1",
+            title: "Cold War Era & Nonaligned Movement",
+            desc: "Post-WW2 global dynamics.",
+            videoUrl: "",
+          },
+          {
+            id: "pol12_1_2",
+            title: "The End of Bipolarity",
+            desc: "Collapse of Soviet Union.",
+            videoUrl: "",
+          },
+          {
+            id: "pol12_1_3",
+            title: "US Hegemony & Alternative Centers",
+            desc: "EU, ASEAN, and China.",
+            videoUrl: "",
+          },
+          {
+            id: "pol12_1_4",
+            title: "International Organizations",
+            desc: "UN and its agencies.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Politics in India since Independence",
+        chapters: [
+          {
+            id: "pol12_2_1",
+            title: "Challenges of Nation Building",
+            desc: "Integration of States.",
+            videoUrl: "",
+          },
+          {
+            id: "pol12_2_2",
+            title: "Era of One-Party Dominance",
+            desc: "Congress system.",
+            videoUrl: "",
+          },
+          {
+            id: "pol12_2_3",
+            title: "Politics of Planned Development",
+            desc: "Five Year Plans.",
+            videoUrl: "",
+          },
+          {
+            id: "pol12_2_4",
+            title: "India's External Relations",
+            desc: "Foreign policy and Non-Alignment.",
+            videoUrl: "",
+          },
+          {
+            id: "pol12_2_5",
+            title: "Recent Developments in Indian Politics",
+            desc: "Coalition era.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
+  Logic: {
+    11: [
+      {
+        unit: "Unit I: Introduction",
+        chapters: [
+          {
+            id: "log11_1_1",
+            title: "Nature of Logic",
+            desc: "Definition, Scope and Uses.",
+            videoUrl: "",
+          },
+          {
+            id: "log11_1_2",
+            title: "Terms and Propositions",
+            desc: "Logical form, Distribution of Terms.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Inference",
+        chapters: [
+          {
+            id: "log11_2_1",
+            title: "Immediate Inference",
+            desc: "Opposition of propositions, Eduction.",
+            videoUrl: "",
+          },
+          {
+            id: "log11_2_2",
+            title: "Syllogism",
+            desc: "Categorical, Hypothetical and Disjunctive.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Inductive Logic",
+        chapters: [
+          {
+            id: "log12_1_1",
+            title: "Nature of Induction",
+            desc: "Inductive leap, Postulates of Induction.",
+            videoUrl: "",
+          },
+          {
+            id: "log12_1_2",
+            title: "Mill's Experimental Methods",
+            desc: "Agreement, Difference, Joint Method.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Scientific Method",
+        chapters: [
+          {
+            id: "log12_2_1",
+            title: "Hypothesis",
+            desc: "Conditions, Proof, and Verification.",
+            videoUrl: "",
+          },
+          {
+            id: "log12_2_2",
+            title: "Scientific Explanation",
+            desc: "Scientific vs Unscientific explanation.",
+            videoUrl: "",
+          },
+          {
+            id: "log12_2_3",
+            title: "Logical Fallacies",
+            desc: "Formal and material fallacies.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
+  Sociology: {
+    11: [
+      {
+        unit: "Unit I: Introducing Sociology",
+        chapters: [
+          {
+            id: "soc11_1_1",
+            title: "Sociology and Society",
+            desc: "Relationship with other social sciences.",
+            videoUrl: "",
+          },
+          {
+            id: "soc11_1_2",
+            title: "Terms, Concepts and Use",
+            desc: "Social groups, Status and Role.",
+            videoUrl: "",
+          },
+          {
+            id: "soc11_1_3",
+            title: "Understanding Social Institutions",
+            desc: "Family, Marriage, Religion, Education.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Understanding Society",
+        chapters: [
+          {
+            id: "soc11_2_1",
+            title: "Culture and Socialization",
+            desc: "Dimensions of culture.",
+            videoUrl: "",
+          },
+          {
+            id: "soc11_2_2",
+            title: "Doing Sociology",
+            desc: "Research Methods.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+    12: [
+      {
+        unit: "Unit I: Indian Society",
+        chapters: [
+          {
+            id: "soc12_1_1",
+            title: "Demographic Structure",
+            desc: "Theories, Indian context.",
+            videoUrl: "",
+          },
+          {
+            id: "soc12_1_2",
+            title: "Social Institutions",
+            desc: "Caste, Tribe, and Family.",
+            videoUrl: "",
+          },
+          {
+            id: "soc12_1_3",
+            title: "Market as a Social Institution",
+            desc: "Sociological perspectives on markets.",
+            videoUrl: "",
+          },
+          {
+            id: "soc12_1_4",
+            title: "Patterns of Social Inequality",
+            desc: "Caste, Class, Gender, Disabilities.",
+            videoUrl: "",
+          },
+        ],
+      },
+      {
+        unit: "Unit II: Social Change and Development",
+        chapters: [
+          {
+            id: "soc12_2_1",
+            title: "Cultural Change",
+            desc: "Sanskritization, Modernization, Westernization.",
+            videoUrl: "",
+          },
+          {
+            id: "soc12_2_2",
+            title: "Change in Rural Society",
+            desc: "Agrarian structure, Green Revolution.",
+            videoUrl: "",
+          },
+          {
+            id: "soc12_2_3",
+            title: "Change in Industrial Society",
+            desc: "Industrialization in India.",
+            videoUrl: "",
+          },
+          {
+            id: "soc12_2_4",
+            title: "Social Movements",
+            desc: "Peasant, Workers, Women, Dalit movements.",
+            videoUrl: "",
+          },
+        ],
+      },
+    ],
+  },
 };
 
 // ===== CAREERS DATA =====
@@ -1764,6 +2699,14 @@ const SUBJ_COLORS = {
   IT: "linear-gradient(135deg, #4a2d10, #8a5520)",
   English: "linear-gradient(135deg, #4a101a, #8a2232)",
   Odia: "linear-gradient(135deg, #1a3a4a, #2a6070)",
+  Accountancy: "linear-gradient(135deg, #064e3b, #10b981)",
+  BSM: "linear-gradient(135deg, #1e3a8a, #3b82f6)",
+  BMS: "linear-gradient(135deg, #4c1d95, #8b5cf6)",
+  Economics: "linear-gradient(135deg, #78350f, #f59e0b)",
+  History: "linear-gradient(135deg, #713f12, #d97706)",
+  "Political Science": "linear-gradient(135deg, #7f1d1d, #ef4444)",
+  Logic: "linear-gradient(135deg, #083344, #06b6d4)",
+  Sociology: "linear-gradient(135deg, #831843, #ec4899)",
 };
 const SUBJ_ACCENT = {
   Physics: "#4f8ef7",
@@ -1773,6 +2716,14 @@ const SUBJ_ACCENT = {
   IT: "#fb923c",
   English: "#f87171",
   Odia: "#2dd4bf",
+  Accountancy: "#10b981",
+  BSM: "#3b82f6",
+  BMS: "#8b5cf6",
+  Economics: "#f59e0b",
+  History: "#d97706",
+  "Political Science": "#ef4444",
+  Logic: "#06b6d4",
+  Sociology: "#ec4899",
 };
 const SUBJ_ICON_KEY = {
   Physics: "atom",
@@ -1782,6 +2733,14 @@ const SUBJ_ICON_KEY = {
   IT: "computer",
   English: "document",
   Odia: "odia",
+  Accountancy: "chart",
+  BSM: "briefcase",
+  BMS: "sigma",
+  Economics: "globe",
+  History: "map",
+  "Political Science": "scale",
+  Logic: "brain",
+  Sociology: "users",
 };
 
 function subjIcon(subj, size = 20) {
@@ -1938,6 +2897,51 @@ function injectNavbarItems() {
     const settingsBtn = document.getElementById("nav-settings-btn");
     if (settingsBtn) topnavRight.insertBefore(notifWrapper, settingsBtn);
   }
+}
+
+// ===== DYNAMIC NAVIGATION UPDATER =====
+function updateDynamicNavigation() {
+  const user = DB.get("user");
+  const stream = user ? user.stream || "Science" : "Science";
+  const subjs = STREAM_SUBJECTS[stream] || STREAM_SUBJECTS["Science"];
+
+  // Update Topnav Subjects Menu
+  const subjMenu = document.getElementById("subjectsMenu");
+  if (subjMenu) {
+    let html = `<div class="dm-section">Class 11</div>`;
+    subjs.forEach(
+      (s) => (html += `<a onclick="showSubject('${s}','11')">${s}</a>`),
+    );
+    html += `<div class="dm-section">Class 12</div>`;
+    subjs.forEach(
+      (s) => (html += `<a onclick="showSubject('${s}','12')">${s}</a>`),
+    );
+    subjMenu.innerHTML = html;
+  }
+
+  // Update Bottom Sheet Menu for Mobile
+  const subjSheet = document.getElementById("subjectsSheet");
+  if (subjSheet) {
+    const nav = subjSheet.querySelector(".mm-nav");
+    if (nav) {
+      let html = `<div class="mm-section">Class 12 Subjects</div>`;
+      subjs.forEach(
+        (s) =>
+          (html += `<a onclick="showSubject('${s}','12');closeMobileOverlays()">${s}</a>`),
+      );
+      html += `<div class="mm-section">Class 11 Subjects</div>`;
+      subjs.forEach(
+        (s) =>
+          (html += `<a onclick="showSubject('${s}','11');closeMobileOverlays()">${s}</a>`),
+      );
+      nav.innerHTML = html;
+    }
+  }
+
+  // Update Footer Subject Lists
+  document.querySelectorAll(".footer-subjects, .af-subjects").forEach((el) => {
+    el.innerHTML = subjs.map((s) => `<span>${s}</span>`).join("");
+  });
 }
 
 function syncAvailableVideos() {
@@ -2136,6 +3140,9 @@ function completeOnboarding() {
 function launchApp() {
   const user = DB.get("user");
   if (user) STATE.currentClass = user.class || "12";
+
+  updateDynamicNavigation(); // Updates all subject dropdowns & footers
+
   document.getElementById("landing").classList.add("hidden");
   document.getElementById("mainApp").classList.remove("hidden");
   updateUserUI(user);
@@ -2184,18 +3191,18 @@ function updateClassToggleUI() {
 function switchGlobalClass(cls) {
   STATE.currentClass = cls;
   updateClassToggleUI();
+
+  const user = DB.get("user");
+  const stream = user ? user.stream || "Science" : "Science";
+  const activeStreamSubjects = STREAM_SUBJECTS[stream];
+
   if (
-    [
-      "Physics",
-      "Chemistry",
-      "Mathematics",
-      "Biology",
-      "IT",
-      "English",
-      "Odia",
-    ].includes(STATE.currentSubject)
+    activeStreamSubjects &&
+    activeStreamSubjects.includes(STATE.currentSubject)
   ) {
     showSubject(STATE.currentSubject, cls);
+  } else {
+    showSection("dashboard");
   }
   showToast("Switched to Class " + cls, "info");
 }
@@ -2373,15 +3380,10 @@ function renderDashboard() {
   const hour = new Date().getHours();
   const greet =
     hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
-  const subjects = [
-    "Physics",
-    "Chemistry",
-    "Mathematics",
-    "Biology",
-    "IT",
-    "English",
-    "Odia",
-  ];
+
+  // DYNAMIC SUBJECTS FETCH
+  const stream = user.stream || "Science";
+  const subjects = STREAM_SUBJECTS[stream] || STREAM_SUBJECTS["Science"];
 
   const getProgress = (s, cls) => {
     const syll = SYLLABUS[s] && SYLLABUS[s][cls];
@@ -2439,7 +3441,7 @@ function renderDashboard() {
     </div>
 
     <div class="row-header">
-      <h3>Class ${cls} — All Subjects</h3>
+      <h3>Class ${cls} — ${user.stream} Subjects</h3>
       <a onclick="switchGlobalClass(STATE.currentClass === '11' ? '12' : '11')">Switch to Class ${cls === "11" ? "12" : "11"} ${icon("arrowRight", 13)}</a>
     </div>
     <div class="subject-cards">
@@ -2598,7 +3600,7 @@ function renderSubjectPage(subj, cls) {
 
   return `
   <div>
-    <div class="subj-hero" style="background:${SUBJ_COLORS[subj]}">
+    <div class="subj-hero" style="background:${SUBJ_COLORS[subj] || SUBJ_COLORS["Physics"]}">
       <div class="hero-pattern"></div>
       <div class="subj-hero-inner">
         <div class="subj-hero-icon">${icon(SUBJ_ICON_KEY[subj] || "book", 40)}</div>
@@ -2629,19 +3631,33 @@ function renderSubjectPage(subj, cls) {
 function getSubjectDesc(subj) {
   const d = {
     Physics:
-      "Complete CHSE Physics — Mechanics, Thermodynamics, Waves, Optics, Modern Physics. Covers JEE and NEET requirements.",
+      "Complete CHSE Physics — Mechanics, Thermodynamics, Waves, Optics, Modern Physics.",
     Chemistry:
-      "Full CHSE Chemistry — Physical, Organic and Inorganic Chemistry with all reactions, mechanisms and concepts.",
+      "Full CHSE Chemistry — Physical, Organic and Inorganic Chemistry.",
     Mathematics:
-      "CHSE Mathematics — Algebra, Calculus, Coordinate Geometry, Vectors and Probability for JEE.",
+      "CHSE Mathematics — Algebra, Calculus, Coordinate Geometry, Vectors and Probability.",
     Biology:
-      "Complete CHSE Biology — Cell Biology, Genetics, Ecology and Human Physiology for NEET.",
+      "Complete CHSE Biology — Cell Biology, Genetics, Ecology and Human Physiology.",
     IT: "CHSE Information Technology — Python Programming, DBMS, Web Technologies and Emerging Tech.",
     English:
       "CHSE English — Flamingo, Hornbill, Vistas, Snapshots with Writing Skills and Grammar.",
     Odia: "CHSE MIL Odia — ଗଦ୍ୟ, ପଦ୍ୟ, ଗଳ୍ପ, ଏକାଙ୍କ ଓ ବ୍ୟାକରଣ। ଉଭୟ ପ୍ରଥମ ଓ ଦ୍ୱିତୀୟ ବର୍ଷ।",
+    Accountancy:
+      "Complete CHSE Accountancy — Recording of Transactions, Partnership, Company Accounts and Financial Statements.",
+    BSM: "CHSE Business Studies & Management — Forms of Organization, Principles of Management and Marketing.",
+    BMS: "CHSE Business Mathematics & Statistics — Calculus, Probability, Determinants and Time Series.",
+    Economics:
+      "CHSE Economics — Microeconomics, Macroeconomics, Indian Economy and Statistical Tools.",
+    History:
+      "CHSE History — Ancient, Medieval and Modern India, early societies and global empires.",
+    "Political Science":
+      "CHSE Political Science — Political Theory, Indian Constitution, and Contemporary World Politics.",
+    Logic:
+      "CHSE Logic — Deductive and Inductive Logic, Syllogisms, and Scientific Methods.",
+    Sociology:
+      "CHSE Sociology — Understanding Society, Indian Institutions, Social Change and Development.",
   };
-  return d[subj] || "";
+  return d[subj] || `Complete CHSE Syllabus for ${subj}.`;
 }
 
 function renderUnitBlock(unit, ui, subj, cls, completed) {
@@ -2743,19 +3759,11 @@ function renderExamPage(exam) {
       desc: "CHSE Odisha conducts Class 11 and 12 board examinations, covering all subjects in Science, Commerce and Arts streams for students across Odisha.",
       stats: [
         { l: "Duration", v: "3 hrs" },
-        { l: "Subjects", v: "7+" },
+        { l: "Subjects", v: "15+" },
         { l: "Streams", v: "3" },
         { l: "Classes", v: "11 & 12" },
       ],
-      subjects: [
-        "Physics",
-        "Chemistry",
-        "Mathematics",
-        "Biology",
-        "IT",
-        "English",
-        "Odia",
-      ],
+      subjects: ["Physics", "Accountancy", "History", "IT", "English", "Odia"], // Just showing a snapshot here for visual appeal
     },
   };
   const d = data[exam];
@@ -2776,7 +3784,7 @@ function renderExamPage(exam) {
         .map(
           (
             s,
-          ) => `<div class="subj-card" onclick="showSubject('${s}','${STATE.currentClass}')" style="background:${SUBJ_COLORS[s]}">
+          ) => `<div class="subj-card" onclick="showSubject('${s}','${STATE.currentClass}')" style="background:${SUBJ_COLORS[s] || SUBJ_COLORS["Physics"]}">
           <div class="subj-bg-grid"></div><div class="subj-card-icon">${icon(SUBJ_ICON_KEY[s] || "book", 28)}</div>
           <h3>${s}</h3><div class="subj-count">Class ${STATE.currentClass}</div>
         </div>`,
@@ -3223,7 +4231,9 @@ function autoSaveNote(id, val) {
 
 // ===== CAREER MODULE =====
 function renderCareer() {
-  const stream = STATE.currentCareerStream || "Science";
+  const user = DB.get("user");
+  const defaultStream = user ? user.stream || "Science" : "Science";
+  const stream = STATE.currentCareerStream || defaultStream;
   const careers = CAREERS[stream] || CAREERS.Science;
 
   return `
@@ -3278,15 +4288,9 @@ function renderProgress() {
   const completed = DB.get("completedTopics") || {};
   const history = DB.get("watchHistory") || [];
   const streak = DB.get("streak") || { count: 0 };
-  const subjects = [
-    "Physics",
-    "Chemistry",
-    "Mathematics",
-    "Biology",
-    "IT",
-    "English",
-    "Odia",
-  ];
+  const user = DB.get("user");
+  const stream = user ? user.stream || "Science" : "Science";
+  const subjects = STREAM_SUBJECTS[stream] || STREAM_SUBJECTS["Science"];
   const cls = STATE.currentClass;
 
   const getSubjPct = (s) => {
@@ -3362,7 +4366,7 @@ function renderProgress() {
             ${subjects
               .map((s) => {
                 const pct = getSubjPct(s);
-                const col = SUBJ_ACCENT[s];
+                const col = SUBJ_ACCENT[s] || "#4f8ef7";
                 return `<div class="sp-row">
                 <div class="sp-row-hdr">
                   <span style="color:${col};font-weight:700;display:flex;align-items:center;gap:6px">${icon(SUBJ_ICON_KEY[s] || "book", 13)} ${s}</span>
@@ -3592,6 +4596,8 @@ function renderProfile() {
     stream: "Science",
     joined: new Date().toISOString(),
   };
+  const stream = user.stream || "Science";
+  const subjects = STREAM_SUBJECTS[stream] || STREAM_SUBJECTS["Science"];
   const streak = DB.get("streak") || { count: 0 };
   const history = DB.get("watchHistory") || [];
   const completed = DB.get("completedTopics") || {};
@@ -3629,7 +4635,7 @@ function renderProfile() {
         <div class="pdc">
           <div class="pdc-hdr"><h3>Learning Statistics</h3></div>
           <div style="display:flex;flex-direction:column;gap:10px">
-            ${["Physics", "Chemistry", "Mathematics", "Biology"]
+            ${subjects
               .map((s) => {
                 const units =
                   SYLLABUS[s] && SYLLABUS[s][user.class]
@@ -3641,8 +4647,8 @@ function renderProfile() {
                 ).length;
                 const pct = total ? Math.round((done / total) * 100) : 0;
                 return `<div>
-                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:${SUBJ_ACCENT[s]};font-weight:700">${s}</span><span>${done}/${total} chapters</span></div>
-                <div class="sp-bar-track" style="height:6px"><div class="sp-bar-fill" style="width:${pct}%;background:${SUBJ_ACCENT[s]}"></div></div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:${SUBJ_ACCENT[s] || "#4f8ef7"};font-weight:700">${s}</span><span>${done}/${total} chapters</span></div>
+                <div class="sp-bar-track" style="height:6px"><div class="sp-bar-fill" style="width:${pct}%;background:${SUBJ_ACCENT[s] || "#4f8ef7"}"></div></div>
               </div>`;
               })
               .join("")}
@@ -3663,7 +4669,13 @@ function saveProfile() {
   STATE.currentClass = user.class;
   updateUserUI(user);
   updateClassToggleUI();
+  updateDynamicNavigation();
   showToast("Profile saved!", "success");
+
+  // Re-render profile dynamically
+  if (STATE.currentSection === "profile") {
+    showSection("profile");
+  }
 }
 
 function changeAvatar(input) {
