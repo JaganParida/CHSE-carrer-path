@@ -257,6 +257,8 @@ em {
   max-width: 520px;
   box-shadow: var(--shadow), var(--shadow-blue);
   animation: slideUp 0.3s ease;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 .onboarding-card h2 {
   font-size: 28px;
@@ -3472,6 +3474,8 @@ em {
     padding: 32px 24px;
     max-width: 90vw;
     border-radius: 20px;
+    max-height: 85vh; /* Prevents overflow on mobile browsers with bottom navigation bars */
+    overflow-y: auto;
   }
   .onboarding-card h2 {
     font-size: 24px;
