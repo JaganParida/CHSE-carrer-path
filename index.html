@@ -10,7 +10,6 @@
         href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <!-- Modern Favicon Setup -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -18,7 +17,6 @@
 
 <body>
 
-    <!-- ONBOARDING MODAL -->
     <div id="onboardingModal" class="modal-overlay hidden">
         <div class="modal-card onboarding-card">
             <div class="onboard-logo">
@@ -89,7 +87,6 @@
         </div>
     </div>
 
-    <!-- SEARCH OVERLAY -->
     <div id="searchOverlay" class="search-overlay hidden">
         <div class="search-inner">
             <div class="search-bar-big">
@@ -109,15 +106,11 @@
         </div>
     </div>
 
-    <!-- TOAST -->
     <div id="toastContainer" class="toast-container"></div>
 
-    <!-- APP WRAPPER -->
     <div id="app">
 
-        <!-- ===== LANDING PAGE ===== -->
         <section id="landing" class="landing">
-            <!-- TOP NAV -->
             <nav class="landing-nav" id="landingNav">
                 <div class="nav-brand">
                     <div class="logo-mark sm">
@@ -142,7 +135,6 @@
                     Started</button>
             </nav>
 
-            <!-- HERO -->
             <div class="hero">
                 <div class="hero-bg">
                     <div class="hero-grid"></div>
@@ -233,7 +225,6 @@
                 </div>
             </div>
 
-            <!-- SUBJECTS PREVIEW -->
             <div class="subjects-preview">
                 <p class="sp-label">CHSE ODISHA — ALL SUBJECTS COVERED</p>
                 <div class="subjects-strip">
@@ -276,7 +267,6 @@
                 </div>
             </div>
 
-            <!-- FEATURES -->
             <div class="features-section">
                 <div class="features-header">
                     <p class="section-tag">FEATURES</p>
@@ -350,7 +340,6 @@
                 </div>
             </div>
 
-            <!-- STATS -->
             <div class="stats-section">
                 <div class="stats-inner">
                     <div class="stats-text">
@@ -367,7 +356,6 @@
                 </div>
             </div>
 
-            <!-- FOOTER -->
             <footer class="landing-footer">
                 <div class="footer-inner">
                     <div class="footer-brand">
@@ -416,15 +404,10 @@
             </footer>
         </section>
 
-        <!-- ===== MAIN APP ===== -->
         <div id="mainApp" class="main-app hidden">
 
-            <!-- TOP NAVIGATION BAR -->
             <header class="app-topnav" id="appTopnav">
                 <div class="topnav-left">
-                    <button class="hamburger-btn" onclick="toggleMobileMenu()" id="hamburgerBtn">
-                        <span></span><span></span><span></span>
-                    </button>
                     <div class="nav-brand" onclick="showSection('dashboard')" style="cursor:pointer">
                         <div class="logo-mark sm">
                             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -436,9 +419,7 @@
                     </div>
                 </div>
 
-                <!-- Desktop Nav Links -->
                 <nav class="topnav-links" id="topnavLinks">
-                    <!-- Home button is dynamically injected here by JS via setupNavigationFixes -->
                     <a class="tnl active" data-section="dashboard" onclick="showSection('dashboard')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
@@ -535,38 +516,32 @@
                 </div>
             </header>
 
-            <!-- MOBILE MENU OVERLAY -->
+            <div class="mobile-menu-overlay hidden" id="mobileMenuOverlay" onclick="closeMobileOverlays()"></div>
+
             <div class="mobile-menu hidden" id="mobileMenu">
+                <div class="sheet-handle"></div>
                 <div class="mm-header">
-                    <div class="nav-brand">
-                        <div class="logo-mark sm">
-                            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                                    stroke-linecap="round" stroke-linejoin="round" width="60%" height="60%">
-                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                </svg></span>
-                        </div>
-                        <span class="logo-text">OdishaLearn</span>
-                    </div>
-                    <button onclick="toggleMobileMenu()">
+                    <h3>More</h3>
+                    <button onclick="closeMobileOverlays()">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" width="22" height="22">
+                            stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
                             <path d="M18 6 6 18M6 6l12 12" />
                         </svg>
                     </button>
                 </div>
                 <nav class="mm-nav">
-                    <!-- Dashboard -> Home Redirect -->
-                    <a onclick="goToLandingFromApp();toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16"
-                            height="16">
+                    <div class="mm-section">Menu</div>
+                    <a onclick="goToLandingFromApp();closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
                             <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
                             <polyline points="9 22 9 12 15 12 15 22" />
                         </svg>
                         Home
                     </a>
-                    <a onclick="showSection('dashboard');toggleMobileMenu()">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16"
-                            height="16">
+                    <a onclick="showSection('dashboard');closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
                             <rect x="3" y="3" width="7" height="7" rx="1" />
                             <rect x="14" y="3" width="7" height="7" rx="1" />
                             <rect x="14" y="14" width="7" height="7" rx="1" />
@@ -574,42 +549,97 @@
                         </svg>
                         Dashboard
                     </a>
+                    <a onclick="showSection('profile');closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        Profile
+                    </a>
+                    <a onclick="showSection('settings');closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
+                            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                            <path
+                                d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z" />
+                        </svg>
+                        Settings
+                    </a>
 
-                    <div class="mm-section">Class 11 Subjects</div>
-                    <a onclick="showSubject('Physics','11');toggleMobileMenu()">Physics</a>
-                    <a onclick="showSubject('Chemistry','11');toggleMobileMenu()">Chemistry</a>
-                    <a onclick="showSubject('Mathematics','11');toggleMobileMenu()">Mathematics</a>
-                    <a onclick="showSubject('Biology','11');toggleMobileMenu()">Biology</a>
-                    <a onclick="showSubject('IT','11');toggleMobileMenu()">IT / Computer</a>
-                    <a onclick="showSubject('English','11');toggleMobileMenu()">English</a>
-                    <a onclick="showSubject('Odia','11');toggleMobileMenu()">Odia</a>
-                    <div class="mm-section">Class 12 Subjects</div>
-                    <a onclick="showSubject('Physics','12');toggleMobileMenu()">Physics</a>
-                    <a onclick="showSubject('Chemistry','12');toggleMobileMenu()">Chemistry</a>
-                    <a onclick="showSubject('Mathematics','12');toggleMobileMenu()">Mathematics</a>
-                    <a onclick="showSubject('Biology','12');toggleMobileMenu()">Biology</a>
-                    <a onclick="showSubject('IT','12');toggleMobileMenu()">IT / Computer</a>
-                    <a onclick="showSubject('English','12');toggleMobileMenu()">English</a>
-                    <a onclick="showSubject('Odia','12');toggleMobileMenu()">Odia</a>
-                    <div class="mm-section">More</div>
-                    <a onclick="showSection('career');toggleMobileMenu()">Career Paths</a>
-                    <a onclick="showSection('progress');toggleMobileMenu()">My Progress</a>
-                    <a onclick="showSection('saved');toggleMobileMenu()">Saved Videos</a>
-                    <a onclick="showSection('notes');toggleMobileMenu()">My Notes</a>
-                    <a onclick="showSection('profile');toggleMobileMenu()">Profile</a>
-                    <a onclick="showSection('settings');toggleMobileMenu()">Settings</a>
-                    <a onclick="showExam('JEE');toggleMobileMenu()">JEE Prep</a>
-                    <a onclick="showExam('NEET');toggleMobileMenu()">NEET Prep</a>
+                    <div class="mm-section">Study Material</div>
+                    <a onclick="showSection('saved');closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
+                        </svg>
+                        Saved Videos
+                    </a>
+                    <a onclick="showSection('notes');closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                            <polyline points="14 2 14 8 20 8" />
+                        </svg>
+                        My Notes
+                    </a>
+
+                    <div class="mm-section">Exams</div>
+                    <a onclick="showExam('JEE');closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                            <path d="M2 17l10 5 10-5" />
+                            <path d="M2 12l10 5 10-5" />
+                        </svg>
+                        JEE Prep
+                    </a>
+                    <a onclick="showExam('NEET');closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18"
+                            height="18">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                            <line x1="7" y1="7" x2="7.01" y2="7" />
+                        </svg>
+                        NEET Prep
+                    </a>
                 </nav>
             </div>
-            <div class="mobile-menu-overlay hidden" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
 
-            <!-- MAIN CONTENT -->
+            <div class="bottom-sheet hidden" id="subjectsSheet">
+                <div class="sheet-handle"></div>
+                <div class="mm-header">
+                    <h3>Subjects</h3>
+                    <button onclick="closeMobileOverlays()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                            <path d="M18 6 6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                <nav class="mm-nav">
+                    <div class="mm-section">Class 12 Subjects</div>
+                    <a onclick="showSubject('Physics','12');closeMobileOverlays()">Physics</a>
+                    <a onclick="showSubject('Chemistry','12');closeMobileOverlays()">Chemistry</a>
+                    <a onclick="showSubject('Mathematics','12');closeMobileOverlays()">Mathematics</a>
+                    <a onclick="showSubject('Biology','12');closeMobileOverlays()">Biology</a>
+                    <a onclick="showSubject('IT','12');closeMobileOverlays()">IT / Computer</a>
+                    <a onclick="showSubject('English','12');closeMobileOverlays()">English</a>
+                    <a onclick="showSubject('Odia','12');closeMobileOverlays()">Odia</a>
+
+                    <div class="mm-section">Class 11 Subjects</div>
+                    <a onclick="showSubject('Physics','11');closeMobileOverlays()">Physics</a>
+                    <a onclick="showSubject('Chemistry','11');closeMobileOverlays()">Chemistry</a>
+                    <a onclick="showSubject('Mathematics','11');closeMobileOverlays()">Mathematics</a>
+                    <a onclick="showSubject('Biology','11');closeMobileOverlays()">Biology</a>
+                    <a onclick="showSubject('IT','11');closeMobileOverlays()">IT / Computer</a>
+                    <a onclick="showSubject('English','11');closeMobileOverlays()">English</a>
+                    <a onclick="showSubject('Odia','11');closeMobileOverlays()">Odia</a>
+                </nav>
+            </div>
+
             <main class="app-main" id="appMain">
-                <!-- Content injected by JS -->
             </main>
 
-            <!-- APP FOOTER -->
             <footer class="app-footer">
                 <div class="app-footer-inner">
                     <div class="af-brand">
@@ -640,9 +670,9 @@
                 </div>
             </footer>
 
-            <!-- BOTTOM NAV (mobile) -->
             <nav class="bottom-nav" id="bottomNav">
-                <a class="bn-item active" data-section="dashboard" onclick="showSection('dashboard')">
+                <a class="bn-item active" data-section="dashboard"
+                    onclick="showSection('dashboard');closeMobileOverlays()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" width="22" height="22">
                         <rect x="3" y="3" width="7" height="7" rx="1" />
@@ -652,7 +682,7 @@
                     </svg>
                     <span>Dashboard</span>
                 </a>
-                <a class="bn-item" onclick="toggleMobileMenu()">
+                <a class="bn-item" onclick="toggleSubjectsSheet()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" width="22" height="22">
                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
@@ -660,27 +690,28 @@
                     </svg>
                     <span>Subjects</span>
                 </a>
-                <a class="bn-item" data-section="career" onclick="showSection('career')">
+                <a class="bn-item" data-section="career" onclick="showSection('career');closeMobileOverlays()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" width="22" height="22">
                         <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                     </svg>
                     <span>Careers</span>
                 </a>
-                <a class="bn-item" data-section="progress" onclick="showSection('progress')">
+                <a class="bn-item" data-section="progress" onclick="showSection('progress');closeMobileOverlays()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" width="22" height="22">
                         <path d="M12 20v-6M6 20V10M18 20V4" />
                     </svg>
                     <span>Progress</span>
                 </a>
-                <a class="bn-item" data-section="profile" onclick="showSection('profile')">
+                <a class="bn-item" onclick="toggleMobileMenu()">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" width="22" height="22">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                        <circle cx="12" cy="7" r="4" />
+                        <circle cx="12" cy="12" r="1" />
+                        <circle cx="19" cy="12" r="1" />
+                        <circle cx="5" cy="12" r="1" />
                     </svg>
-                    <span>Profile</span>
+                    <span>More</span>
                 </a>
             </nav>
         </div>
