@@ -3471,10 +3471,10 @@ em {
     margin: 0 16px 0 0;
   }
   .modal-card {
-    padding: 32px 24px;
-    max-width: 90vw;
+    padding: 24px 20px; /* Padding thodi aur kam ki taaki andar jagah bache */
+    max-width: 92vw;
     border-radius: 20px;
-    max-height: 85vh; /* Prevents overflow on mobile browsers with bottom navigation bars */
+    max-height: 75vh; /* 85vh se ghata kar 75vh kiya taaki screen se bahar bilkul na jaye */
     overflow-y: auto;
   }
   .onboarding-card h2 {
@@ -3510,6 +3510,28 @@ em {
     width: 100%;
     flex: none;
     margin-top: 8px;
+  }
+  /* ===== ULTRA-PREMIUM MAC-STYLE SCROLLBAR ===== */
+  .modal-card::-webkit-scrollbar {
+    width: 8px; /* Overall width 8px rakhi hai taaki touch karne mein aasan ho */
+  }
+
+  .modal-card::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 24px 0; /* Upar aur niche se aur zyada gap de diya taaki pill jaisa lage */
+  }
+
+  .modal-card::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 100px; /* Ekdum capsule/pill shape */
+
+    /* MAGIC TRICK HERE */
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  .modal-card::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.4);
   }
 }
 @media (max-width: 400px) {
@@ -3550,5 +3572,17 @@ em {
   }
   .sg-item span {
     font-size: 13px;
+  }
+  .modal-card {
+    padding: 20px 16px; /* Ultra-small screen ke liye aur compact */
+    max-height: 70vh;
+  }
+
+  .onboarding-card h2 {
+    font-size: 22px; /* Heading thodi choti ki jagah bachane ke liye */
+  }
+
+  .ob-form label {
+    margin-bottom: 6px;
   }
 }
