@@ -1,7 +1,7 @@
 /* ===================================================
    OdishaLearn — CHSE Odisha Platform Script
    Complete Class 11 & 12 Syllabus (2025-26)
-   Fixed: Heatmap width rendering & Mobile tap details
+   Fixed: Modern Bottom Sheet Navigation for Mobile
    =================================================== */
 
 // ===== SVG ICON LIBRARY =====
@@ -136,7 +136,7 @@ const SYLLABUS = {
             id: "ph11_5_1",
             title: "System of Particles and Rotational Motion",
             desc: "Centre of mass. Moment of inertia. Torque. Angular momentum.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/eACeA8W0tCQ",
           },
         ],
       },
@@ -147,7 +147,7 @@ const SYLLABUS = {
             id: "ph11_6_1",
             title: "Gravitation",
             desc: "Kepler's laws. Universal law of gravitation. Escape speed.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/eACeA8W0tCQ",
           },
         ],
       },
@@ -158,7 +158,7 @@ const SYLLABUS = {
             id: "ph11_7_1",
             title: "Mechanical Properties of Solids",
             desc: "Stress and strain. Hooke's law. Elastic moduli.",
-            videoUrl: "",
+            videoUrl: "https://youtu.be/eACeA8W0tCQ",
           },
           {
             id: "ph11_7_2",
@@ -479,7 +479,8 @@ const SYLLABUS = {
             id: "ch11_11_1",
             title: "Some p-Block Elements",
             desc: "Group 13 and 14 elements.",
-            videoUrl: "",
+            videoUrl:
+              "https://www.youtube.com/live/1UicWFJtcLc?si=zECswl8G6D5HnEjr",
           },
         ],
       },
@@ -1681,7 +1682,7 @@ const CAREERS = {
       color: "#f87171",
       desc: "Become a doctor — one of India's most respected careers.",
       eligibility: "PCB in Class 12 with minimum 50%",
-      exams: "NEET-UG (National Eligibility cum Entrance Test)",
+      exams: "NEET-UG",
       skills: "Biology, Memory, High Empathy & Clinical skills",
       salary: "₹6–80 LPA",
       scope: "Acute doctor shortage ensures 100% job security.",
@@ -1721,7 +1722,7 @@ const CAREERS = {
       color: "#4f8ef7",
       desc: "India's most prestigious and powerful administrative career path.",
       eligibility: "Any graduation degree from a recognized university",
-      exams: "UPSC CSE (Prelims, Mains, Interview)",
+      exams: "UPSC CSE",
       skills: "General studies, Critical Analysis, Leadership",
       salary: "₹56,000–2.5L/month",
       scope: "Unmatched authority and ability to impact society.",
@@ -1790,6 +1791,17 @@ function subjIcon(subj, size = 20) {
 
 // ===== INIT & SESSION LOGIC =====
 function init() {
+  if (!window.YT) {
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    if (firstScriptTag) {
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    } else {
+      document.head.appendChild(tag);
+    }
+  }
+
   const customUrls = DB.get("videoUrls") || {};
   Object.entries(customUrls).forEach(([id, url]) => {
     for (const subj of Object.keys(SYLLABUS)) {
@@ -1803,6 +1815,9 @@ function init() {
   });
 
   setupNavigationFixes();
+  injectNavbarItems();
+  syncAvailableVideos();
+  checkNotifications();
 
   const user = DB.get("user");
   if (user && user.name) {
@@ -1812,7 +1827,6 @@ function init() {
     const heroStartBtn = document.getElementById("heroStartBtn");
 
     if (loginBtn) loginBtn.classList.add("hidden");
-
     if (getStartedBtn) {
       getStartedBtn.innerHTML = "Go to Dashboard";
       getStartedBtn.onclick = launchApp;
@@ -1879,6 +1893,150 @@ function setupNavigationFixes() {
       "Dashboard",
     );
   }
+}
+
+function injectNavbarItems() {
+  const topnavRight = document.querySelector(".topnav-right");
+  if (!topnavRight) return;
+
+  const classToggle = topnavRight.querySelector(".class-toggle");
+  if (classToggle) classToggle.style.display = "none";
+
+  if (!document.getElementById("nav-settings-btn")) {
+    const settingsBtn = document.createElement("button");
+    settingsBtn.className = "icon-link-btn";
+    settingsBtn.id = "nav-settings-btn";
+    settingsBtn.title = "Settings";
+    settingsBtn.innerHTML = icon("settings", 18);
+    settingsBtn.onclick = () => showSection("settings");
+    const userMenu = document.getElementById("userMenuBtn");
+    if (userMenu) topnavRight.insertBefore(settingsBtn, userMenu);
+    else topnavRight.appendChild(settingsBtn);
+  }
+
+  if (!document.getElementById("nav-notif-wrapper")) {
+    const notifWrapper = document.createElement("div");
+    notifWrapper.id = "nav-notif-wrapper";
+    notifWrapper.className = "dropdown";
+    notifWrapper.style.display = "flex";
+    notifWrapper.style.alignItems = "center";
+
+    notifWrapper.innerHTML = `
+      <button class="icon-link-btn" id="nav-notif-btn" title="Notifications" onclick="toggleDropdown('notif-menu')">
+        ${icon("bell", 18)}
+        <span id="notif-badge" style="position:absolute;top:5px;right:5px;width:8px;height:8px;background:var(--red);border-radius:50%;display:none;box-shadow:0 0 0 2px var(--bg-2);"></span>
+      </button>
+      <div class="dropdown-menu" id="notif-menu" style="right:0;left:auto;min-width:320px;padding:16px;top:calc(100% + 10px);cursor:default;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <h4 style="font-size:15px;font-weight:800;color:var(--text-1);margin:0;">Notifications</h4>
+          <span style="font-size:12px;color:var(--blue);cursor:pointer;" onclick="clearNotifications()">Mark all read</span>
+        </div>
+        <div id="notif-list" style="display:flex;flex-direction:column;gap:10px;max-height:300px;overflow-y:auto;">
+          </div>
+      </div>
+    `;
+    const settingsBtn = document.getElementById("nav-settings-btn");
+    if (settingsBtn) topnavRight.insertBefore(notifWrapper, settingsBtn);
+  }
+}
+
+function syncAvailableVideos() {
+  let currentAvailable = [];
+  for (const subj in SYLLABUS) {
+    for (const cls in SYLLABUS[subj]) {
+      for (const unit of SYLLABUS[subj][cls]) {
+        for (const ch of unit.chapters) {
+          if (ch.videoUrl && ch.videoUrl.trim() !== "") {
+            currentAvailable.push(ch.id);
+          }
+        }
+      }
+    }
+  }
+
+  const knownVideos = DB.get("knownVideos");
+  let unreadNotifs = DB.get("unreadNotifs") || [];
+
+  if (!knownVideos) {
+    DB.set("knownVideos", currentAvailable);
+    DB.set("unreadNotifs", []);
+    return;
+  }
+
+  const newVideos = currentAvailable.filter((id) => !knownVideos.includes(id));
+  if (newVideos.length > 0) {
+    newVideos.forEach((id) => {
+      if (!unreadNotifs.includes(id)) unreadNotifs.push(id);
+    });
+    DB.set("unreadNotifs", unreadNotifs);
+    DB.set("knownVideos", currentAvailable);
+  }
+}
+
+function checkNotifications() {
+  const unreadNotifs = DB.get("unreadNotifs") || [];
+  const readHistory = DB.get("readNotifHistory") || [];
+
+  const notifList = document.getElementById("notif-list");
+  const badge = document.getElementById("notif-badge");
+  if (!notifList || !badge) return;
+
+  if (unreadNotifs.length > 0) {
+    badge.style.display = "block";
+    if (!sessionStorage.getItem("notified_session")) {
+      showToast(`${unreadNotifs.length} new video(s) unlocked!`, "success");
+      sessionStorage.setItem("notified_session", "true");
+    }
+  } else {
+    badge.style.display = "none";
+  }
+
+  const allToDisplay = [...unreadNotifs, ...readHistory].slice(0, 6);
+
+  if (allToDisplay.length > 0) {
+    let html = "";
+    allToDisplay.forEach((id) => {
+      const info = findVideoById(id);
+      if (info) {
+        const isUnread = unreadNotifs.includes(id);
+        const bg = isUnread ? "var(--bg-3)" : "var(--bg-2)";
+        const borderCol = isUnread ? "var(--blue)" : "var(--border-md)";
+        const dot = isUnread
+          ? `<span style="width:8px;height:8px;background:var(--blue);border-radius:50%;display:inline-block;margin-left:auto;"></span>`
+          : "";
+
+        html += `
+          <div style="padding:12px;background:${bg};border-radius:10px;font-size:13px;border-left:3px solid ${borderCol};cursor:pointer;transition:all 0.2s;display:flex;flex-direction:column;margin-bottom:8px;" 
+               onclick="toggleDropdown('notif-menu');playVideo('${id}','${info.subj}')" 
+               onmouseover="this.style.background='var(--bg-4)'" 
+               onmouseout="this.style.background='${bg}'">
+            <div style="color:var(--text-1);font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:6px;">
+              ${icon("video", 14)} New Content Unlocked! ${dot}
+            </div>
+            <div style="color:var(--text-2);line-height:1.4;">The video for <b style="color:var(--text-1)">${info.ch.title}</b> is now available!</div>
+            <div style="color:var(--text-3);font-size:11px;margin-top:6px;font-weight:600;">${info.subj} &middot; Class ${info.cls}</div>
+          </div>
+        `;
+      }
+    });
+    notifList.innerHTML = html;
+  } else {
+    badge.style.display = "none";
+    notifList.innerHTML = `<div style="color:var(--text-3);font-size:13px;text-align:center;padding:20px 0;">No new updates yet. Check back later!</div>`;
+  }
+}
+
+function clearNotifications() {
+  let unreadNotifs = DB.get("unreadNotifs") || [];
+  let readHistory = DB.get("readNotifHistory") || [];
+
+  readHistory = [...unreadNotifs, ...readHistory].slice(0, 15);
+  DB.set("readNotifHistory", readHistory);
+  DB.set("unreadNotifs", []);
+
+  document.getElementById("notif-badge").style.display = "none";
+  checkNotifications();
+  showToast("All caught up!", "info");
 }
 
 let obClass = "",
@@ -2132,13 +2290,55 @@ function toggleDropdown(id) {
   if (el) el.classList.toggle("open");
 }
 
+/* ===== NEW BOTTOM SHEET LOGIC ===== */
 function toggleMobileMenu() {
   const menu = document.getElementById("mobileMenu");
+  const subjectsSheet = document.getElementById("subjectsSheet");
   const overlay = document.getElementById("mobileMenuOverlay");
+
+  if (subjectsSheet && !subjectsSheet.classList.contains("hidden")) {
+    subjectsSheet.classList.add("hidden");
+  }
+
   const isOpen = !menu.classList.contains("hidden");
-  menu.classList.toggle("hidden");
-  overlay.classList.toggle("hidden");
-  document.body.style.overflow = isOpen ? "" : "hidden";
+  if (isOpen) {
+    closeMobileOverlays();
+  } else {
+    menu.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function toggleSubjectsSheet() {
+  const sheet = document.getElementById("subjectsSheet");
+  const menu = document.getElementById("mobileMenu");
+  const overlay = document.getElementById("mobileMenuOverlay");
+
+  if (menu && !menu.classList.contains("hidden")) {
+    menu.classList.add("hidden");
+  }
+
+  const isOpen = !sheet.classList.contains("hidden");
+  if (isOpen) {
+    closeMobileOverlays();
+  } else {
+    sheet.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeMobileOverlays() {
+  const menu = document.getElementById("mobileMenu");
+  const subjectsSheet = document.getElementById("subjectsSheet");
+  const overlay = document.getElementById("mobileMenuOverlay");
+
+  if (menu) menu.classList.add("hidden");
+  if (subjectsSheet) subjectsSheet.classList.add("hidden");
+  if (overlay) overlay.classList.add("hidden");
+
+  document.body.style.overflow = "";
 }
 
 function smoothScrollTo(sel) {
@@ -2165,6 +2365,11 @@ function renderDashboard() {
   const streak = DB.get("streak") || { count: 0 };
   const watchHistory = DB.get("watchHistory") || [];
   const completed = DB.get("completedTopics") || {};
+  const settings = Object.assign(
+    { showProgress: true },
+    DB.get("settings") || {},
+  );
+
   const hour = new Date().getHours();
   const greet =
     hour < 12 ? "Good Morning" : hour < 18 ? "Good Afternoon" : "Good Evening";
@@ -2250,10 +2455,15 @@ function renderDashboard() {
           <div class="subj-card-icon">${icon(SUBJ_ICON_KEY[s] || "book", 28)}</div>
           <h3>${s}</h3>
           <div class="subj-count">${totalChaps} chapters &middot; Class ${cls}</div>
+          ${
+            settings.showProgress
+              ? `
           <div class="subj-prog-wrap">
             <div class="subj-prog-bar"><div class="spb-fill" style="width:${pct}%"></div></div>
             <span class="subj-pct">${pct}%</span>
-          </div>
+          </div>`
+              : `<div style="height:24px"></div>`
+          }
         </div>`;
         })
         .join("")}
@@ -2322,7 +2532,7 @@ function renderDashboard() {
   </div>`;
 }
 
-// ===== VIDEO CARD & URL PARSING FIX =====
+// ===== VIDEO CARD & URL PARSING =====
 function videoCard(ch, subj, progress) {
   const acc = SUBJ_ACCENT[subj] || "#4f8ef7";
   const completed = DB.get("completedTopics") || {};
@@ -2444,6 +2654,9 @@ function renderUnitBlock(unit, ui, subj, cls, completed) {
     ? Math.round((done / unit.chapters.length) * 100)
     : 0;
 
+  const settings = Object.assign({ compact: false }, DB.get("settings") || {});
+  const isCompact = settings.compact;
+
   return `
   <div class="unit-block">
     <div class="unit-header" onclick="toggleUnit('${unitKey}',${ui})">
@@ -2460,20 +2673,23 @@ function renderUnitBlock(unit, ui, subj, cls, completed) {
       </div>
     </div>
     <div class="unit-body" id="unit-body-${ui}" style="display:${isOpen ? "block" : "none"}">
-      <div class="videos-grid">
+      <div class="videos-grid" style="${isCompact ? "grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;" : ""}">
         ${unit.chapters
           .map((ch) => {
             const isDone = completed[subj + "_" + cls + "_" + ch.id];
             const ytId = getYTId(ch.videoUrl);
-            return `<div class="video-item" onclick="playVideo('${ch.id}','${subj}')">
-            <div class="vi-thumb">
+            return `<div class="video-item" onclick="playVideo('${ch.id}','${subj}')" style="${isCompact ? "padding: 12px; align-items: center;" : ""}">
+            <div class="vi-thumb" style="${isCompact ? "width: 80px; height: 50px;" : ""}">
               ${
                 ytId
                   ? `<img src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:7px" onerror="this.parentElement.style.background='var(--bg-4)'" alt="thumb"><div class="vi-thumb-overlay">${icon("play", 14)}</div>`
                   : `<div style="width:100%;height:100%;background:linear-gradient(135deg, #1f2937, #111827);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:7px;color:var(--orange);border:1px solid rgba(255,255,255,0.05);">${icon("clock", 16)}<span style="font-size:8px;font-weight:800;margin-top:4px;text-transform:uppercase;letter-spacing:0.5px">Soon</span></div>`
               }
             </div>
-            <div class="vi-info"><h4>${ch.title}</h4><p>${ch.desc.substring(0, 70)}...</p></div>
+            <div class="vi-info">
+              <h4 style="${isCompact ? "font-size: 14px; margin-bottom: 2px;" : ""}">${ch.title}</h4>
+              ${isCompact ? "" : `<p>${ch.desc.substring(0, 70)}...</p>`}
+            </div>
             <div class="vi-status">${isDone ? `<div class="vi-done">${icon("check", 16)}</div>` : ""}</div>
           </div>`;
           })
@@ -2631,19 +2847,16 @@ function enterVideoFullscreen() {
       vc.webkitRequestFullscreen ||
       vc.mozRequestFullScreen ||
       vc.msRequestFullscreen;
-
     if (reqFS) {
       reqFS
         .call(vc)
         .then(() => {
-          if (screen.orientation && screen.orientation.lock) {
+          if (screen.orientation && screen.orientation.lock)
             screen.orientation.lock("landscape").catch(() => {});
-          }
         })
-        .catch((e) => {
+        .catch(() => {
           console.log("Native fullscreen failed, using fallback.");
         });
-
       STATE.isVideoFullscreen = true;
       updateFullscreenBtn(true);
       return;
@@ -2675,9 +2888,8 @@ function enterVideoFullscreen() {
 
   wakeUpCloseBtn();
 
-  if (screen.orientation && screen.orientation.lock) {
+  if (screen.orientation && screen.orientation.lock)
     screen.orientation.lock("landscape").catch(() => {});
-  }
 
   if (hint) {
     hint.style.opacity = "1";
@@ -2692,7 +2904,6 @@ function exitVideoFullscreen() {
     document.fullscreenElement ||
     document.webkitFullscreenElement ||
     document.mozFullScreenElement;
-
   if (isNativeFS) {
     const exitFS =
       document.exitFullscreen ||
@@ -2712,10 +2923,8 @@ function exitVideoFullscreen() {
   document.body.style.overflow = "";
   STATE.isVideoFullscreen = false;
   updateFullscreenBtn(false);
-
-  if (screen.orientation && screen.orientation.unlock) {
+  if (screen.orientation && screen.orientation.unlock)
     screen.orientation.unlock();
-  }
 }
 
 function updateFullscreenBtn(isFS) {
@@ -2737,6 +2946,53 @@ function onFullscreenChange() {
     document.body.style.overflow = "";
     if (screen.orientation && screen.orientation.unlock)
       screen.orientation.unlock();
+  }
+}
+
+// ===== YOUTUBE AUTOPLAY & API FIX =====
+let ytPlayer;
+
+function initYouTubePlayer() {
+  if (!document.getElementById("ytIframe")) return;
+  if (window.YT && YT.Player) {
+    ytPlayer = new YT.Player("ytIframe", {
+      events: {
+        onStateChange: function (event) {
+          if (event.data === YT.PlayerState.ENDED) {
+            if (
+              STATE.currentVideo &&
+              STATE.currentSubject &&
+              STATE.currentClass
+            ) {
+              const key =
+                STATE.currentSubject +
+                "_" +
+                STATE.currentClass +
+                "_" +
+                STATE.currentVideo.id;
+              const topics = DB.get("completedTopics") || {};
+              if (!topics[key]) {
+                topics[key] = new Date().toISOString();
+                DB.set("completedTopics", topics);
+                const btn = document.getElementById("markDoneBtn");
+                if (btn) {
+                  btn.classList.add("done");
+                  btn.innerHTML = `${icon("check", 14)} Completed`;
+                }
+                showToast("Chapter auto-marked as complete!", "success");
+              }
+            }
+            const settings = DB.get("settings") || {};
+            if (settings.autoplay)
+              setTimeout(() => {
+                navigateVideo(1, STATE.currentSubject, STATE.currentClass);
+              }, 1500);
+          }
+        },
+      },
+    });
+  } else {
+    setTimeout(initYouTubePlayer, 300);
   }
 }
 
@@ -2762,6 +3018,7 @@ function playVideo(id, subj) {
     mc.style.transition = "opacity 0.2s ease";
     mc.style.opacity = "1";
     window.scrollTo(0, 0);
+    initYouTubePlayer();
   }, 60);
   trackWatch(id, subj);
 }
@@ -2805,7 +3062,7 @@ function renderVideoPlayer(ch, subj, cls, unitName) {
         <div class="video-container" id="videoContainer">
           ${
             ytId
-              ? `<iframe id="ytIframe" src="https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="${ch.title}"></iframe>`
+              ? `<iframe id="ytIframe" src="https://www.youtube.com/embed/${ytId}?rel=0&modestbranding=1&enablejsapi=1&autoplay=1" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="${ch.title}"></iframe>`
               : `<div style="width:100%;height:100%;background:linear-gradient(135deg, #0f172a, #1f2937);display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:12px;color:#f3f4f6;text-align:center;position:absolute;inset:0;padding:20px;box-sizing:border-box;">
                  <div style="width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--orange);box-shadow:0 0 30px rgba(251, 146, 60, 0.1);">${icon("clock", 30)}</div>
                  <h2 style="font-size:clamp(18px, 5vw, 24px);font-weight:800;margin-bottom:8px;letter-spacing:0.5px;line-height:1.2;">Video Coming Soon!</h2>
@@ -2860,17 +3117,17 @@ function renderVideoPlayer(ch, subj, cls, unitName) {
               const isVidDone = completed[subj + "_" + cls + "_" + vid.id];
               const vYtId = getYTId(vid.videoUrl);
               return `<div class="pl-item ${isActive ? "active" : ""}" onclick="playVideo('${vid.id}','${subj}')">
-              <div class="pl-thumb">
-                ${vYtId ? `<img src="https://img.youtube.com/vi/${vYtId}/default.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:5px" onerror="this.style.display='none'" alt="thumb">` : ""}
-                ${!vYtId ? `<div class="pl-thumb-empty" style="background:var(--bg-3);color:var(--text-3);border:1px dashed var(--border)">${icon("clock", 12)}</div>` : ""}
-                <span class="pl-num">${i + 1}</span>
-                ${isActive ? `<div class="pl-active-overlay">${icon("play", 12)}</div>` : ""}
-              </div>
-              <div class="pl-info">
-                <h4>${vid.title}</h4><span>${vid.unit ? vid.unit.split(":")[0] : ""}</span>
-                ${isVidDone ? `<div class="pl-done-mark">${icon("check", 10)} Done</div>` : ""}
-              </div>
-            </div>`;
+            <div class="pl-thumb">
+              ${vYtId ? `<img src="https://img.youtube.com/vi/${vYtId}/default.jpg" style="width:100%;height:100%;object-fit:cover;border-radius:5px" onerror="this.style.display='none'" alt="thumb">` : ""}
+              ${!vYtId ? `<div class="pl-thumb-empty" style="background:var(--bg-3);color:var(--text-3);border:1px dashed var(--border)">${icon("clock", 12)}</div>` : ""}
+              <span class="pl-num">${i + 1}</span>
+              ${isActive ? `<div class="pl-active-overlay">${icon("play", 12)}</div>` : ""}
+            </div>
+            <div class="pl-info">
+              <h4>${vid.title}</h4><span>${vid.unit ? vid.unit.split(":")[0] : ""}</span>
+              ${isVidDone ? `<div class="pl-done-mark">${icon("check", 10)} Done</div>` : ""}
+            </div>
+          </div>`;
             })
             .join("")}
         </div>
@@ -2893,13 +3150,14 @@ function switchPlayerTab(tab, btn) {
 
 function navigateVideo(dir, subj, cls) {
   if (!STATE.currentVideo) return;
+  const s = subj || STATE.currentSubject;
+  const c = cls || STATE.currentClass;
   const allChs = [];
-  const units =
-    SYLLABUS[subj] && SYLLABUS[subj][cls] ? SYLLABUS[subj][cls] : [];
-  units.forEach((u) => u.chapters.forEach((c) => allChs.push(c)));
-  const idx = allChs.findIndex((c) => c.id === STATE.currentVideo.id);
+  const units = SYLLABUS[s] && SYLLABUS[s][c] ? SYLLABUS[s][c] : [];
+  units.forEach((u) => u.chapters.forEach((ch) => allChs.push(ch)));
+  const idx = allChs.findIndex((ch) => ch.id === STATE.currentVideo.id);
   const next = allChs[idx + dir];
-  if (next) playVideo(next.id, subj);
+  if (next) playVideo(next.id, s);
   else
     showToast(
       dir > 0 ? "Last chapter in subject" : "First chapter in subject",
@@ -2996,22 +3254,10 @@ function renderCareer() {
           </div>
           <p class="career-desc">${c.desc}</p>
           <div class="career-details">
-            <div class="cd-row">
-              <span style="display:flex;align-items:center;gap:6px">${icon("check", 14)} Required</span>
-              <span>${c.eligibility}</span>
-            </div>
-            <div class="cd-row">
-              <span style="display:flex;align-items:center;gap:6px">${icon("document", 14)} Exams</span>
-              <span>${c.exams}</span>
-            </div>
-            <div class="cd-row">
-              <span style="display:flex;align-items:center;gap:6px">${icon("brain", 14)} Skills</span>
-              <span>${c.skills}</span>
-            </div>
-            <div class="cd-row">
-              <span style="display:flex;align-items:center;gap:6px">${icon("target", 14)} Scope</span>
-              <span>${c.scope}</span>
-            </div>
+            <div class="cd-row"><span style="display:flex;align-items:center;gap:6px">${icon("check", 14)} Required</span><span>${c.eligibility}</span></div>
+            <div class="cd-row"><span style="display:flex;align-items:center;gap:6px">${icon("document", 14)} Exams</span><span>${c.exams}</span></div>
+            <div class="cd-row"><span style="display:flex;align-items:center;gap:6px">${icon("brain", 14)} Skills</span><span>${c.skills}</span></div>
+            <div class="cd-row"><span style="display:flex;align-items:center;gap:6px">${icon("target", 14)} Scope</span><span>${c.scope}</span></div>
           </div>
           <div class="salary-pill">${c.salary} Expected</div>
         </div>`,
@@ -3027,7 +3273,7 @@ function switchCareerStream(s) {
   if (mc) mc.innerHTML = renderCareer();
 }
 
-// ===== PROGRESS FIX =====
+// ===== PROGRESS =====
 function renderProgress() {
   const completed = DB.get("completedTopics") || {};
   const history = DB.get("watchHistory") || [];
@@ -3060,8 +3306,6 @@ function renderProgress() {
 
   const today = new Date();
   const weeks = [];
-
-  // FIX APPLIED HERE: Show a full year to naturally fill desktop width and scroll on mobile
   const daysToDisplay = 364;
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() - daysToDisplay);
@@ -3085,8 +3329,6 @@ function renderProgress() {
               : cnt < 6
                 ? "l3"
                 : "l4";
-
-      // FIX APPLIED HERE: Added onclick to trigger toast for mobile touch support
       const infoText = `${ds}: ${cnt} videos`;
       week.push(
         `<div class="hm-day ${level} ${isToday ? "today" : ""}" title="${infoText}" onclick="showToast('${infoText}', 'info')"></div>`,
@@ -3437,6 +3679,37 @@ function changeAvatar(input) {
   reader.readAsDataURL(file);
 }
 
+// ===== CUSTOM MODAL FOR DELETION =====
+function createCustomModal(
+  title,
+  message,
+  confirmText,
+  confirmColor,
+  onConfirm,
+) {
+  const overlay = document.createElement("div");
+  overlay.className = "modal-overlay";
+  overlay.style.zIndex = "3000";
+  overlay.innerHTML = `
+    <div class="modal-card" style="max-width:400px;text-align:center;padding:32px 24px;">
+      <div style="width:56px;height:56px;border-radius:50%;background:${confirmColor}22;color:${confirmColor};display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        ${icon("trash", 28)}
+      </div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:12px;">${title}</h2>
+      <p style="color:var(--text-2);font-size:15px;margin-bottom:24px;line-height:1.6;">${message}</p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button class="btn-ghost" style="flex:1;" onclick="this.closest('.modal-overlay').remove()">Cancel</button>
+        <button class="btn-primary" style="flex:1;background:${confirmColor};box-shadow:0 4px 15px ${confirmColor}30;" id="custom-modal-confirm">${confirmText}</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  document.getElementById("custom-modal-confirm").onclick = () => {
+    onConfirm();
+    overlay.remove();
+  };
+}
+
 // ===== SETTINGS =====
 function renderSettings() {
   const tab = STATE.settingsTab || "general";
@@ -3501,7 +3774,7 @@ function renderSettings() {
             <h3>Display</h3>
             <div class="settings-row">
               <div class="sr-info"><h4>Active Class</h4><p>Switch between Class 11 and Class 12 syllabus</p></div>
-              <div class="class-toggle">
+              <div class="class-toggle" style="display:flex">
                 <button class="ct-btn ${STATE.currentClass === "11" ? "active" : ""}" id="settings-ct11" onclick="switchClassFromSettings('11')">11</button>
                 <button class="ct-btn ${STATE.currentClass === "12" ? "active" : ""}" id="settings-ct12" onclick="switchClassFromSettings('12')">12</button>
               </div>
@@ -3541,7 +3814,7 @@ function renderSettings() {
             <div class="settings-row"><div class="sr-info"><h4>Clear watch history</h4><p>Remove all video watch records</p></div><button class="btn-ghost btn-sm" onclick="clearData('watchHistory')">Clear</button></div>
             <div class="settings-row"><div class="sr-info"><h4>Reset all progress</h4><p>Clear completed topics — cannot be undone</p></div><button class="btn-ghost btn-sm" style="color:var(--red);border-color:var(--red-dim)" onclick="clearData('completedTopics')">Reset</button></div>
             <div class="settings-row"><div class="sr-info"><h4>Clear saved videos</h4><p>Remove all bookmarked videos</p></div><button class="btn-ghost btn-sm" onclick="clearData('savedVideos')">Clear</button></div>
-            <div class="settings-row"><div class="sr-info"><h4>Reset everything</h4><p>Delete ALL data and start fresh — cannot be undone</p></div><button class="btn-ghost btn-sm" style="color:var(--red);border-color:var(--red-dim)" onclick="resetEverything()">Reset All</button></div>
+            <div class="settings-row"><div class="sr-info"><h4>Delete account & reset</h4><p>Delete ALL data and start fresh — cannot be undone</p></div><button class="btn-ghost btn-sm" style="color:var(--red);border-color:var(--red-dim);background:var(--red-dim);" onclick="resetEverything()">${icon("trash", 13)} Delete Account</button></div>
           </div>`
         }
       </div>
@@ -3565,7 +3838,10 @@ function toggleSetting(key) {
   settings[key] = !settings[key];
   DB.set("settings", settings);
   const el = document.getElementById("toggle-" + key);
-  if (el) el.classList.toggle("on", !!settings[key]);
+  if (el) {
+    if (settings[key]) el.classList.add("on");
+    else el.classList.remove("on");
+  }
   showToast(settings[key] ? "Enabled" : "Disabled", "info");
 }
 
@@ -3580,8 +3856,14 @@ function switchClassFromSettings(cls) {
   updateClassToggleUI();
   const btn11 = document.getElementById("settings-ct11");
   const btn12 = document.getElementById("settings-ct12");
-  if (btn11) btn11.classList.toggle("active", cls === "11");
-  if (btn12) btn12.classList.toggle("active", cls === "12");
+  if (btn11) {
+    btn11.classList.add("active");
+    btn12.classList.remove("active");
+  }
+  if (cls === "12" && btn12) {
+    btn12.classList.add("active");
+    btn11.classList.remove("active");
+  }
   showToast("Switched to Class " + cls, "info");
 }
 
@@ -3592,40 +3874,42 @@ function clearData(key) {
     savedVideos: "saved videos",
   };
   const label = labels[key] || key;
-  if (
-    confirm(
-      "Are you sure you want to clear your " +
-        label +
-        "? This cannot be undone.",
-    )
-  ) {
-    DB.del(key);
-    showToast(
-      label.charAt(0).toUpperCase() + label.slice(1) + " cleared",
-      "success",
-    );
-  }
+  createCustomModal(
+    "Clear " + label.replace(/\b\w/g, (c) => c.toUpperCase()),
+    `Are you sure you want to clear your ${label}? This cannot be undone.`,
+    "Clear Data",
+    "var(--red)",
+    () => {
+      DB.del(key);
+      showToast(
+        label.charAt(0).toUpperCase() + label.slice(1) + " cleared",
+        "success",
+      );
+    },
+  );
 }
 
 function resetEverything() {
-  if (
-    confirm(
-      "This will delete ALL your data including progress, notes, history and settings. This CANNOT be undone. Are you sure?",
-    )
-  ) {
-    [
-      "watchHistory",
-      "completedTopics",
-      "savedVideos",
-      "notes",
-      "settings",
-      "streak",
-      "videoUrls",
-      "user",
-    ].forEach((k) => DB.del(k));
-    showToast("All data cleared. Refreshing...", "info");
-    setTimeout(() => location.reload(), 1500);
-  }
+  createCustomModal(
+    "Delete Account & Data",
+    "This will completely erase your profile, study progress, notes, settings, and watch history. This action <b>CANNOT be undone</b>. Are you absolutely sure?",
+    "Delete Everything",
+    "#ef4444",
+    () => {
+      [
+        "watchHistory",
+        "completedTopics",
+        "savedVideos",
+        "notes",
+        "settings",
+        "streak",
+        "videoUrls",
+        "user",
+      ].forEach((k) => DB.del(k));
+      showToast("Account deleted successfully. Restarting...", "info");
+      setTimeout(() => location.reload(), 1500);
+    },
+  );
 }
 
 // ===== SEARCH =====
