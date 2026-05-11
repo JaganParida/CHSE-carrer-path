@@ -3556,3 +3556,312 @@ em {
     margin-bottom: 6px;
   }
 }
+
+/* ===================================================
+   MODERN UI / UX ANIMATIONS (Features & How to Use)
+   =================================================== */
+
+/* --- 1. Features Animated Updates --- */
+.feat-card {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+.feat-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  padding: 2px; /* Border thickness */
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0)
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  z-index: -1;
+  transition: all 0.4s ease;
+}
+.feat-card:hover::before {
+  background: linear-gradient(
+    135deg,
+    var(--blue),
+    var(--purple),
+    var(--orange)
+  );
+  background-size: 200% 200%;
+  animation: gradientBorder 3s ease infinite;
+}
+@keyframes gradientBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.feat-card:hover .feat-icon {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+.feat-icon {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* --- 2. How to Use Section --- */
+.how-to-use-section {
+  padding: 100px 46px;
+  background: var(--bg-1);
+  border-top: 1px solid var(--border-md);
+  position: relative;
+  overflow: hidden;
+}
+.htu-timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 60px auto 0;
+  position: relative;
+}
+
+/* Connecting Line Background */
+.htu-timeline::before {
+  content: "";
+  position: absolute;
+  top: 30px; /* Align with numbers */
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--border-md);
+  z-index: 0;
+}
+/* Connecting Line Animated Progress */
+.htu-timeline::after {
+  content: "";
+  position: absolute;
+  top: 30px;
+  left: 10%;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--blue), var(--purple));
+  z-index: 1;
+  animation: progressLine 4s ease-out forwards infinite;
+}
+@keyframes progressLine {
+  0% {
+    width: 0%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    width: 80%;
+    opacity: 1;
+  }
+  100% {
+    width: 80%;
+    opacity: 0;
+  }
+}
+
+/* Step Container */
+.htu-step {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+}
+.htu-step:hover {
+  transform: translateY(-10px);
+}
+
+/* Step Numbers */
+.htu-number {
+  width: 60px;
+  height: 60px;
+  background: var(--bg-2);
+  border: 2px solid var(--border-md);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-1);
+  margin-bottom: 30px;
+  position: relative;
+  transition: all 0.4s ease;
+  box-shadow: var(--shadow);
+}
+.htu-step:hover .htu-number {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 20px var(--blue-dim);
+}
+
+/* Spinning Ring around Numbers */
+.htu-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px dashed var(--blue);
+  animation: spin 10s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.htu-step:hover .htu-ring {
+  opacity: 0.5;
+}
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Content Cards */
+.htu-content {
+  background: var(--bg-2);
+  border: 1px solid var(--border-md);
+  border-radius: var(--radius-xl);
+  padding: 30px 20px;
+  width: 100%;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.htu-step:hover .htu-content {
+  border-color: var(--border-hover);
+  background: var(--bg-3);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* Floating Icons */
+.htu-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.htu-step:hover .htu-icon {
+  transform: scale(1.15) rotate(5deg);
+}
+.htu-content h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.htu-content p {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.6;
+}
+
+/* --- Responsive Timeline & How To Use --- */
+@media (max-width: 900px) {
+  .htu-timeline {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* Convert Line to Vertical */
+  .htu-timeline::before {
+    top: 0;
+    bottom: 0;
+    left: 30px; /* Align with new number position */
+    width: 2px;
+    height: auto;
+    right: auto;
+  }
+  .htu-timeline::after {
+    top: 0;
+    left: 30px;
+    width: 2px;
+    height: 0%;
+    bottom: auto;
+    animation: progressLineVert 4s ease-out forwards infinite;
+  }
+  @keyframes progressLineVert {
+    0% {
+      height: 0%;
+      opacity: 0;
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      height: 100%;
+      opacity: 1;
+    }
+    100% {
+      height: 100%;
+      opacity: 0;
+    }
+  }
+
+  .htu-step {
+    flex-direction: row;
+    text-align: left;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .htu-number {
+    margin-bottom: 0;
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    z-index: 10;
+  }
+  .htu-content {
+    padding: 24px;
+  }
+  .htu-icon {
+    margin: 0 0 16px 0;
+  }
+}
+@media (max-width: 768px) {
+  .how-to-use-section {
+    padding: 60px 20px;
+  }
+  .htu-timeline::before,
+  .htu-timeline::after {
+    left: 25px; /* Adjust line position for smaller screen */
+  }
+}
+.features-grid {
+  display: grid;
+  /* Force 3 columns on large screens to perfectly fit 6 cards */
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1200px; /* Constrains width so it looks modern and balanced */
+  margin: 0 auto;
+}
+
+/* Tablet / Small Laptop */
+@media (max-width: 1024px) {
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
