@@ -3845,10 +3845,9 @@ em {
 }
 .features-grid {
   display: grid;
-  /* Force 3 columns on large screens to perfectly fit 6 cards */
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  max-width: 1200px; /* Constrains width so it looks modern and balanced */
+  max-width: 1200px; 
   margin: 0 auto;
 }
 
