@@ -3636,7 +3636,7 @@ em {
 .htu-timeline::before {
   content: "";
   position: absolute;
-  top: 30px; /* Align with numbers */
+  top: 30px; 
   left: 10%;
   right: 10%;
   height: 2px;
