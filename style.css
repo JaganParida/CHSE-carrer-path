@@ -3782,7 +3782,7 @@ em {
   .htu-timeline::before {
     top: 0;
     bottom: 0;
-    left: 30px; /* Align with new number position */
+    left: 30px; 
     width: 2px;
     height: auto;
     right: auto;
@@ -3840,7 +3840,7 @@ em {
   }
   .htu-timeline::before,
   .htu-timeline::after {
-    left: 25px; /* Adjust line position for smaller screen */
+    left: 25px;
   }
 }
 .features-grid {
