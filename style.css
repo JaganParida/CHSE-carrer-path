@@ -3771,7 +3771,6 @@ em {
   line-height: 1.6;
 }
 
-/* --- Responsive Timeline & How To Use --- */
 @media (max-width: 900px) {
   .htu-timeline {
     grid-template-columns: 1fr;
