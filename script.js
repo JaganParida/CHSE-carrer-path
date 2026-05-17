@@ -51,7 +51,7 @@ const ICONS = {
   odia: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3C7 3 4 7 4 12s3 9 8 9 8-4 8-9-3-9-8-9z"/><path d="M8 12c0-2 1.5-4 4-4s4 2 4 4-1.5 4-4 4"/><path d="M12 8v8"/></svg>`,
 };
 
-// ===== DATA STORE =====
+
 const DB = {
   get: (k) => {
     try {
@@ -64,7 +64,6 @@ const DB = {
   del: (k) => localStorage.removeItem("ol_" + k),
 };
 
-// ===== STREAM CONFIGURATION =====
 const STREAM_SUBJECTS = {
   Science: [
     "Physics",
@@ -2585,7 +2584,6 @@ const SYLLABUS = {
   },
 };
 
-// ===== CAREERS DATA =====
 const CAREERS = {
   Science: [
     {
@@ -4219,11 +4217,6 @@ function autoSaveNote(id, val) {
   DB.set("notes", notes);
 }
 
-// ===================================================================
-// COMPLETE renderCareer() FUNCTION — FULLY RESPONSIVE DROP-IN
-// Replaces the entire renderCareer() function in your script.js
-// Do NOT change any other functions, IDs, class names or logic.
-// ===================================================================
 
 function renderCareer() {
   const user = DB.get("user");
