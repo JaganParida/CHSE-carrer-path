@@ -2,13 +2,22 @@
   "name": "chsetube-saas",
   "version": "2.0.0",
   "private": true,
-  "description": "CHSETube — CHSE Odisha Career & Learning Portal (Production MERN Stack on Vercel)",
+  "description": "CHSE Odisha Career & Learning Portal (Production MERN Stack on Vercel)",
   "scripts": {
     "dev:frontend": "cd frontend && npm run dev",
     "dev:backend": "cd backend && npm run dev",
-    "build": "cd frontend && npm run build",
-    "start": "cd backend && node server.js",
+    "build": "cd frontend && npm install --include=dev && npm run build",
+    "start": "node api/index.js",
     "seed": "cd backend && node seed.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.1"
   },
   "keywords": [
     "chse",
