@@ -91,7 +91,7 @@ router.post("/register", async (req, res) => {
           stream: stream || "Science",
           class: userClass || "12",
           school: school ? school.trim() : "",
-          role: role === "admin" ? "admin" : "student",
+          role: "student",
         });
       } catch (createErr) {
         console.warn("MongoDB User.create error:", createErr.message);

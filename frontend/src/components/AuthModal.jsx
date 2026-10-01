@@ -12,7 +12,6 @@ export const AuthModal = () => {
   const [password, setPassword] = useState("");
   const [stream, setStream] = useState("Science");
   const [userClass, setUserClass] = useState("12");
-  const [role, setRole] = useState("student");
   const [loading, setLoading] = useState(false);
 
   if (!authModalOpen) return null;
@@ -31,10 +30,11 @@ export const AuthModal = () => {
         showToast(res.message || "Invalid email or password.", "error");
       }
     } else {
-      const res = await register({ name, email, password, stream, class: userClass, role });
+      // Registration is strictly for student accounts
+      const res = await register({ name, email, password, stream, class: userClass, role: "student" });
       setLoading(false);
       if (res.success) {
-        showToast("Account created successfully!", "success");
+        showToast("Student account created successfully!", "success");
         setAuthModalOpen(false);
       } else {
         showToast(res.message || "Registration failed.", "error");
@@ -61,15 +61,15 @@ export const AuthModal = () => {
         {/* Modal Header */}
         <div className="text-center mb-6">
           <div className="w-10 h-10 rounded-lg bg-[#18191d] border border-[#27292f] mx-auto flex items-center justify-center text-zinc-200 mb-3 shadow-sm">
-            {authMode === "login" ? <IconUser size={18} /> : <IconCrown size={18} />}
+            <IconUser size={18} />
           </div>
           <h2 className="text-xl font-bold text-zinc-100 tracking-tight">
             {authMode === "login" ? "Sign In to CHSETube" : "Create Student Account"}
           </h2>
           <p className="text-xs text-zinc-400 mt-1 max-w-xs mx-auto">
             {authMode === "login"
-              ? "Access your saved chapters, personalized study streak, and notes"
-              : "Register to save your CHSE syllabus progress across all your devices"}
+              ? "Access your enrolled syllabus, study streaks, and autosaved notes"
+              : "Register your free student profile to sync your CHSE syllabus progress"}
           </p>
         </div>
 
@@ -83,7 +83,7 @@ export const AuthModal = () => {
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your name"
+                placeholder="Enter your student name"
                 className="w-full px-3.5 py-2.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-sm text-zinc-100 placeholder-zinc-500 focus:border-zinc-400 outline-none transition-colors"
               />
             </div>
@@ -114,70 +114,40 @@ export const AuthModal = () => {
           </div>
 
           {authMode === "register" && (
-            <>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs font-semibold text-zinc-300 block mb-1">Class</label>
-                  <div className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-[#0c0d0f] border border-[#23252a]">
-                    {["11", "12"].map((cls) => (
-                      <button
-                        key={cls}
-                        type="button"
-                        onClick={() => setUserClass(cls)}
-                        className={`py-1.5 rounded-md text-xs font-semibold transition-all ${
-                          userClass === cls
-                            ? "bg-zinc-100 text-zinc-950 shadow-sm"
-                            : "text-zinc-400 hover:text-zinc-200"
-                        }`}
-                      >
-                        Class {cls}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold text-zinc-300 block mb-1">Stream</label>
-                  <select
-                    value={stream}
-                    onChange={(e) => setStream(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-xs font-semibold text-zinc-200 focus:border-zinc-400 outline-none transition-colors"
-                  >
-                    <option value="Science">Science</option>
-                    <option value="Commerce">Commerce</option>
-                    <option value="Arts">Arts</option>
-                  </select>
+            <div className="grid grid-cols-2 gap-3 pt-1">
+              <div>
+                <label className="text-xs font-semibold text-zinc-300 block mb-1">Class (+2)</label>
+                <div className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-[#0c0d0f] border border-[#23252a]">
+                  {["11", "12"].map((cls) => (
+                    <button
+                      key={cls}
+                      type="button"
+                      onClick={() => setUserClass(cls)}
+                      className={`py-1.5 rounded-md text-xs font-semibold transition-all ${
+                        userClass === cls
+                          ? "bg-zinc-100 text-zinc-950 shadow-sm"
+                          : "text-zinc-400 hover:text-zinc-200"
+                      }`}
+                    >
+                      Class {cls}
+                    </button>
+                  ))}
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-300 block mb-1">Account Role</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setRole("student")}
-                    className={`py-2 rounded-lg text-xs font-semibold border transition-all ${
-                      role === "student"
-                        ? "bg-zinc-100 text-zinc-950 border-white shadow-sm"
-                        : "bg-[#0c0d0f] text-zinc-400 border-[#23252a] hover:text-zinc-200"
-                    }`}
-                  >
-                    Student
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRole("admin")}
-                    className={`py-2 rounded-lg text-xs font-semibold border transition-all ${
-                      role === "admin"
-                        ? "bg-zinc-100 text-zinc-950 border-white shadow-sm"
-                        : "bg-[#0c0d0f] text-zinc-400 border-[#23252a] hover:text-zinc-200"
-                    }`}
-                  >
-                    Admin
-                  </button>
-                </div>
+                <label className="text-xs font-semibold text-zinc-300 block mb-1">Stream</label>
+                <select
+                  value={stream}
+                  onChange={(e) => setStream(e.target.value)}
+                  className="w-full px-3 py-2.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-xs font-semibold text-zinc-200 focus:border-zinc-400 outline-none transition-colors"
+                >
+                  <option value="Science">Science</option>
+                  <option value="Commerce">Commerce</option>
+                  <option value="Arts">Arts</option>
+                </select>
               </div>
-            </>
+            </div>
           )}
 
           <button
