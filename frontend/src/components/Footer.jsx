@@ -30,7 +30,7 @@ export default function Footer() {
                 <IconLogo size={18} />
               </div>
               <span className="font-extrabold text-base text-white tracking-tight">
-                Odisha<span className="text-blue-500">Learn</span>
+                CHSE<span className="text-blue-500">Tube</span>
               </span>
             </div>
             <p className="text-slate-400 text-xs leading-relaxed">

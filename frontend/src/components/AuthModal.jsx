@@ -64,7 +64,7 @@ export const AuthModal = () => {
             {authMode === "login" ? <IconUser size={22} /> : <IconCrown size={22} />}
           </div>
           <h2 className="text-xl font-black text-white tracking-tight">
-            {authMode === "login" ? "Sign In to OdishaLearn" : "Create Student Account"}
+            {authMode === "login" ? "Sign In to CHSETube" : "Create Student Account"}
           </h2>
           <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
             {authMode === "login"
