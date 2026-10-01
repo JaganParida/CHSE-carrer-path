@@ -25,18 +25,26 @@ export async function connectDB() {
     return cached.conn;
   }
 
-  const uri = process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/chsetube";
+  const uri = process.env.MONGODB_URI;
+
+  // On Vercel / Production, never hang on localhost if MONGODB_URI is not configured
+  if (!uri && (process.env.VERCEL || process.env.NODE_ENV === "production")) {
+    console.warn("MONGODB_URI is not configured in environment variables.");
+    return null;
+  }
+
+  const effectiveUri = uri || "mongodb://127.0.0.1:27017/chsetube";
 
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
       maxPoolSize: 10, // Optimal for serverless to prevent connection leakage
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
+      serverSelectionTimeoutMS: 4000,
+      socketTimeoutMS: 30000,
     };
 
     cached.promise = mongoose
-      .connect(uri, opts)
+      .connect(effectiveUri, opts)
       .then((m) => {
         console.log("Connected to MongoDB via Serverless Singleton");
         return m;
@@ -44,7 +52,7 @@ export async function connectDB() {
       .catch((err) => {
         cached.promise = null;
         console.warn("MongoDB connection failed:", err.message);
-        throw err;
+        return null;
       });
   }
 
@@ -52,7 +60,7 @@ export async function connectDB() {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
-    throw e;
+    return null;
   }
 
   return cached.conn;

@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import connectDB from "./lib/db.js";
 
 import authRoutes from "./routes/auth.js";
@@ -31,7 +32,48 @@ app.use(cookieParser());
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 
-// Serverless DB Connection Middleware:
+// Hardened Security Headers
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  next();
+});
+
+// Immediate Health check endpoint (Instantly responds without waiting for DB)
+app.get(["/api/health", "/health"], (req, res) => {
+  const dbStates = {
+    0: "disconnected",
+    1: "connected",
+    2: "connecting",
+    3: "disconnecting",
+  };
+  const currentState = dbStates[mongoose.connection.readyState] || "unknown";
+
+  res.status(200).json({
+    status: "online",
+    platform: "CHSETube MERN SaaS API",
+    version: "2.0.0",
+    serverless: Boolean(process.env.VERCEL),
+    database: currentState,
+    hasMongoUri: Boolean(process.env.MONGODB_URI),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get(["/api", "/"], (req, res, next) => {
+  // If request is specifically for the API status
+  if (req.path === "/api" || req.path === "/api/") {
+    return res.status(200).json({
+      message: "CHSE Odisha Learning Portal Backend API",
+      status: "active",
+      version: "2.0.0",
+    });
+  }
+  next();
+});
+
+// Serverless DB Connection Middleware for operational API routes:
 // Reuses cached Mongoose singleton across Vercel function invocations
 app.use(async (req, res, next) => {
   try {
@@ -42,40 +84,23 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Hardened Security Headers
-app.use((req, res, next) => {
-  res.setHeader("X-Content-Type-Options", "nosniff");
-  res.setHeader("X-Frame-Options", "SAMEORIGIN");
-  res.setHeader("X-XSS-Protection", "1; mode=block");
-  next();
-});
-
 // API Route Mounts
 app.use("/api/auth", authRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/user", userRoutes);
 
-// Health check endpoint
-app.get("/api/health", (req, res) => {
-  res.json({
-    status: "online",
-    platform: "CHSETube MERN SaaS API",
-    version: "2.0.0",
-    serverless: true,
-    timestamp: new Date().toISOString(),
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error("Internal Server Error:", err);
+  res.status(500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
   });
 });
 
-app.get("/api", (req, res) => {
-  res.json({
-    message: "CHSE Odisha Learning Portal Backend API",
-    status: "active",
-  });
-});
-
-// Start local listener in development or standalone node process
-if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+// Start local listener only in standalone node development (NEVER on Vercel)
+if (!process.env.VERCEL && process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`CHSETube Backend running on http://localhost:${PORT}`);
   });
