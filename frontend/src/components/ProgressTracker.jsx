@@ -2,24 +2,26 @@ import React from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import { STREAM_SUBJECTS, SYLLABUS_DATA } from "../data/syllabusData.js";
-import { IconCheck, IconFire, IconVideo, IconClock, IconSparkles } from "./Icons.jsx";
+import { IconCheck, IconFire, IconVideo, IconClock, IconSparkles, IconBook } from "./Icons.jsx";
 
 export const ProgressTracker = () => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
-  const { currentStream, currentClass, setCurrentClass } = useApp();
+  const { currentStream, currentClass, setCurrentClass, setCurrentSection } = useApp();
 
   const completedMap = user?.completedTopics || {};
   const savedIds = user?.savedVideos || [];
   const streak = user?.streak?.count || 1;
   const subjects = STREAM_SUBJECTS[currentStream] || STREAM_SUBJECTS["Science"];
 
-  // Activity heatmap weeks (last 24 weeks)
+  // Activity heatmap 24 weeks (7 days per week)
   const weeks = Array.from({ length: 24 }).map((_, w) => {
     return Array.from({ length: 7 }).map((_, d) => {
-      const rand = Math.sin(w * 7 + d);
-      return rand > 0.6 ? 3 : rand > 0.2 ? 2 : rand > -0.2 ? 1 : 0;
+      const rand = Math.sin((w + 1) * 7 + (d + 2));
+      return rand > 0.5 ? 3 : rand > 0.15 ? 2 : rand > -0.2 ? 1 : 0;
     });
   });
+
+  const months = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"];
 
   const getSubjDone = (subj) => {
     const units = SYLLABUS_DATA[subj]?.[currentClass] || [];
@@ -35,15 +37,15 @@ export const ProgressTracker = () => {
   const minutes = totalMinutes % 60;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-7 font-sans">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#1f2127]">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-zinc-800">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#111215] border border-[#23252a] text-zinc-300 text-xs font-mono mb-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-zinc-200"></span>
-            <span>ACADEMIC ANALYTICS & RETENTION</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-mono mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span>ACADEMIC ANALYTICS & RETENTION MATRIX</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-zinc-100 tracking-tight">
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
             Study Progress & Mastery
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-2 max-w-xl leading-relaxed">
@@ -52,15 +54,15 @@ export const ProgressTracker = () => {
         </div>
 
         {/* Class Switcher */}
-        <div className="flex bg-[#111215] p-1 rounded-lg border border-[#23252a] shrink-0 self-start sm:self-auto">
+        <div className="flex bg-zinc-900 p-1 rounded-lg border border-zinc-800 shrink-0 self-start sm:self-auto">
           {["11", "12"].map((cls) => (
             <button
               key={cls}
               onClick={() => setCurrentClass(cls)}
               className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 currentClass === cls
-                  ? "bg-zinc-100 text-zinc-950 shadow-sm"
-                  : "text-zinc-400 hover:text-zinc-200"
+                  ? "bg-white text-black shadow-sm"
+                  : "text-zinc-400 hover:text-white"
               }`}
             >
               Class {cls} (+2)
@@ -71,13 +73,13 @@ export const ProgressTracker = () => {
 
       {/* Guest Student Sign In Prompt Banner */}
       {!user && (
-        <div className="p-4 sm:p-5 rounded-xl bg-[#111215] border border-[#23252a] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-zinc-950 border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 flex items-center justify-center shrink-0">
               <IconCheck size={18} />
             </div>
             <div>
-              <div className="text-sm font-semibold text-zinc-100">Create a free student account to save your progress</div>
+              <div className="text-sm font-semibold text-white">Create a free student account to save your progress</div>
               <div className="text-xs text-zinc-400">Chapters and topics marked as complete will be permanently synchronized across all your devices.</div>
             </div>
           </div>
@@ -86,7 +88,7 @@ export const ProgressTracker = () => {
               setAuthMode("register");
               setAuthModalOpen(true);
             }}
-            className="px-4 py-2 rounded-lg text-xs font-semibold text-zinc-950 bg-zinc-100 hover:bg-white shrink-0 transition-all shadow-sm"
+            className="px-4 py-2 rounded-lg text-xs font-semibold text-black bg-white hover:bg-zinc-200 shrink-0 transition-all shadow-sm"
           >
             Create Account
           </button>
@@ -94,97 +96,122 @@ export const ProgressTracker = () => {
       )}
 
       {/* Key Metrics Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
-          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-emerald-400 flex items-center justify-center mb-3">
             <IconCheck size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-zinc-100">{Object.keys(completedMap).length}</div>
-          <div className="text-xs text-zinc-400 font-medium mt-1">Chapters Completed</div>
+          <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{Object.keys(completedMap).length}</div>
+          <div className="text-xs text-zinc-400 font-medium mt-1">Chapters Mastered</div>
         </div>
 
-        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
-          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-amber-400 flex items-center justify-center mb-3">
             <IconFire size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-zinc-100">{streak} Days</div>
+          <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{streak} Days</div>
           <div className="text-xs text-zinc-400 font-medium mt-1">Active Study Streak</div>
         </div>
 
-        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
-          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-zinc-300 flex items-center justify-center mb-3">
             <IconVideo size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-zinc-100">{savedIds.length}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{savedIds.length}</div>
           <div className="text-xs text-zinc-400 font-medium mt-1">Saved for Revision</div>
         </div>
 
-        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
-          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-zinc-300 flex items-center justify-center mb-3">
             <IconClock size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-zinc-100 font-mono">
+          <div className="text-2xl sm:text-3xl font-bold text-white font-mono">
             {hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`}
           </div>
-          <div className="text-xs text-zinc-400 font-medium mt-1">Study Time Logged</div>
+          <div className="text-xs text-zinc-400 font-medium mt-1">Total Study Time</div>
         </div>
       </div>
 
-      {/* Activity Heatmap Card */}
-      <div className="bg-[#111215] rounded-xl p-6 sm:p-7 border border-[#23252a] shadow-sm space-y-4">
-        <div className="flex items-center justify-between">
+      {/* Redesigned Activity Heatmap Card (Clean, centered, no weird empty voids) */}
+      <div className="bg-zinc-950 rounded-xl p-5 sm:p-7 border border-zinc-850 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h3 className="text-base font-bold text-zinc-100">Daily Study Activity Heatmap</h3>
+            <h3 className="text-base font-bold text-white">Daily Study Activity Heatmap</h3>
             <p className="text-xs text-zinc-400 mt-0.5">24-week consistency matrix tracking lecture completions</p>
           </div>
-          <span className="text-xs text-zinc-300 font-mono flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#0c0d0f] border border-[#23252a]">
-            <IconFire size={14} /> {streak} day streak active
-          </span>
-        </div>
-
-        <div className="overflow-x-auto pb-2 custom-scrollbar">
-          <div className="flex gap-1.5 min-w-[540px]">
-            {weeks.map((days, wIdx) => (
-              <div key={wIdx} className="flex flex-col gap-1.5">
-                {days.map((lvl, dIdx) => {
-                  const bg =
-                    lvl === 3
-                      ? "bg-zinc-100"
-                      : lvl === 2
-                      ? "bg-zinc-400"
-                      : lvl === 1
-                      ? "bg-zinc-700"
-                      : "bg-[#0c0d0f]";
-                  return (
-                    <div
-                      key={dIdx}
-                      className={`w-3.5 h-3.5 rounded-sm ${bg} border border-[#1f2127] transition-colors`}
-                    />
-                  );
-                })}
-              </div>
-            ))}
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-black border border-zinc-800 text-xs text-zinc-300 font-mono self-start sm:self-auto">
+            <IconFire size={13} className="text-amber-400" />
+            <span>{streak} day streak active</span>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 text-xs text-zinc-400 pt-3 border-t border-[#1f2127] font-mono">
-          <span>Less</span>
-          <div className="w-3 h-3 rounded-sm bg-[#0c0d0f] border border-[#1f2127]"></div>
-          <div className="w-3 h-3 rounded-sm bg-zinc-700"></div>
-          <div className="w-3 h-3 rounded-sm bg-zinc-400"></div>
-          <div className="w-3 h-3 rounded-sm bg-zinc-100"></div>
-          <span>More</span>
+        {/* Month labels header */}
+        <div className="overflow-x-auto pb-2 custom-scrollbar">
+          <div className="min-w-[620px] space-y-1.5">
+            <div className="flex justify-between text-[10px] font-mono text-zinc-500 pl-8 pr-2">
+              {months.map((m, i) => (
+                <span key={i}>{m}</span>
+              ))}
+            </div>
+
+            <div className="flex gap-2">
+              {/* Day Labels */}
+              <div className="flex flex-col justify-between text-[9px] font-mono text-zinc-600 py-0.5 w-6 shrink-0">
+                <span>Mon</span>
+                <span>Wed</span>
+                <span>Fri</span>
+              </div>
+
+              {/* Heatmap Grid */}
+              <div className="flex gap-1.5 flex-1 justify-between">
+                {weeks.map((days, wIdx) => (
+                  <div key={wIdx} className="flex flex-col gap-1.5 flex-1">
+                    {days.map((lvl, dIdx) => {
+                      const bg =
+                        lvl === 3
+                          ? "bg-white"
+                          : lvl === 2
+                          ? "bg-zinc-400"
+                          : lvl === 1
+                          ? "bg-zinc-700"
+                          : "bg-black";
+                      return (
+                        <div
+                          key={dIdx}
+                          className={`w-full aspect-square max-w-[15px] rounded-sm ${bg} border border-zinc-800/80 transition-all hover:scale-110`}
+                          title={`Week ${wIdx + 1}, Day ${dIdx + 1}: ${lvl > 0 ? `${lvl * 2} topics studied` : "Rest day"}`}
+                        />
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Legend */}
+        <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-850 font-mono">
+          <span>Continuous Daily Board Preparation</span>
+          <div className="flex items-center gap-1.5">
+            <span>Less</span>
+            <div className="w-3 h-3 rounded-sm bg-black border border-zinc-800"></div>
+            <div className="w-3 h-3 rounded-sm bg-zinc-700"></div>
+            <div className="w-3 h-3 rounded-sm bg-zinc-400"></div>
+            <div className="w-3 h-3 rounded-sm bg-white"></div>
+            <span>More</span>
+          </div>
         </div>
       </div>
 
       {/* Subject-Wise Progress Bars */}
-      <div className="bg-[#111215] rounded-xl p-6 sm:p-7 border border-[#23252a] shadow-sm space-y-5">
+      <div className="bg-zinc-950 rounded-xl p-5 sm:p-7 border border-zinc-850 shadow-sm space-y-5">
         <div>
-          <h3 className="text-base font-bold text-zinc-100">
+          <h3 className="text-base font-bold text-white">
             Subject Breakdown — Class {currentClass} ({currentStream} Stream)
           </h3>
           <p className="text-xs text-zinc-400 mt-0.5">
-            Syllabus coverage percentage calculated per official CHSE guidelines
+            Syllabus coverage calculated per official CHSE Odisha guidelines
           </p>
         </div>
 
@@ -192,16 +219,16 @@ export const ProgressTracker = () => {
           {subjects.map((subj) => {
             const { total, done, pct } = getSubjDone(subj);
             return (
-              <div key={subj} className="space-y-2 p-3.5 rounded-lg bg-[#0c0d0f] border border-[#23252a]">
+              <div key={subj} className="space-y-2 p-3.5 rounded-lg bg-black border border-zinc-850">
                 <div className="flex items-center justify-between text-xs font-medium">
-                  <span className="text-zinc-200 text-sm font-semibold">{subj}</span>
+                  <span className="text-white text-sm font-semibold">{subj}</span>
                   <span className="text-zinc-400 font-mono">
-                    <b className="text-zinc-200 font-bold">{done}</b> of {total} chapters ({pct}%)
+                    <b className="text-white font-bold">{done}</b> of {total} chapters ({pct}%)
                   </span>
                 </div>
-                <div className="w-full h-1.5 bg-[#18191d] rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-zinc-200 transition-all duration-500 rounded-full"
+                    className="h-full bg-white transition-all duration-500 rounded-full"
                     style={{ width: `${pct}%` }}
                   ></div>
                 </div>
