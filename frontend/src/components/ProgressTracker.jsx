@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import { STREAM_SUBJECTS, SYLLABUS_DATA } from "../data/syllabusData.js";
 import { IconCheck, IconFire, IconVideo, IconClock, IconSparkles, IconBook } from "./Icons.jsx";
+import { calculateStreak } from "../utils/streak.js";
 
 export const ProgressTracker = () => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
@@ -10,7 +11,7 @@ export const ProgressTracker = () => {
 
   const completedMap = user?.completedTopics || {};
   const savedIds = user?.savedVideos || [];
-  const streak = user?.streak?.count || 1;
+  const streak = calculateStreak(completedMap);
   const subjects = STREAM_SUBJECTS[currentStream] || STREAM_SUBJECTS["Science"];
 
   const heatmapScrollRef = useRef(null);
@@ -70,28 +71,8 @@ export const ProgressTracker = () => {
           if (actualDatesMap[dateStr]) {
             count = actualDatesMap[dateStr];
             level = count >= 4 ? 3 : count >= 2 ? 2 : 1;
-          } else {
-            const diffDays = Math.floor((today.getTime() - curDate.getTime()) / (1000 * 60 * 60 * 24));
-            if (diffDays >= 0 && diffDays < streak) {
-              count = 3;
-              level = 3;
-            } else {
-              // Deterministic pseudo-random historical activity
-              const seed = curDate.getFullYear() * 10000 + (curDate.getMonth() + 1) * 100 + curDate.getDate();
-              const rand = Math.abs(Math.sin(seed * 12.9898) * 43758.5453);
-              const norm = rand - Math.floor(rand);
-
-              const dow = curDate.getDay();
-              if (norm > 0.65) {
-                count = Math.floor(norm * 4) + 1;
-                level = count >= 4 ? 3 : count >= 2 ? 2 : 1;
-              } else if (norm > 0.42 && (dow === 0 || dow === 6 || dow === 3)) {
-                count = 2;
-                level = 1;
-              }
-            }
+            totalCompleted += count;
           }
-          if (count > 0) totalCompleted += count;
         }
 
         days.push({
@@ -216,7 +197,7 @@ export const ProgressTracker = () => {
           <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3">
             <IconFire size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{streak} Days</div>
+          <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{streak} {streak === 1 ? "Day" : "Days"}</div>
           <div className="text-xs text-zinc-400 font-medium mt-1">Active Study Streak</div>
         </div>
 
@@ -249,8 +230,8 @@ export const ProgressTracker = () => {
             </p>
           </div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-black/60 border border-white/[0.06] text-xs text-zinc-300 font-mono self-start sm:self-auto">
-            <IconFire size={13} className="text-amber-400" />
-            <span>{streak} day streak active</span>
+            <IconFire size={13} className={streak > 0 ? "text-amber-400" : "text-zinc-500"} />
+            <span>{streak} {streak === 1 ? "day streak active" : streak > 0 ? "days streak active" : "day streak"}</span>
           </div>
         </div>
 

@@ -19,6 +19,7 @@ import {
   IconClock,
   IconChevronDown,
 } from "./Icons.jsx";
+import { calculateStreak } from "../utils/streak.js";
 
 export const AdminStudio = () => {
   const { isAdmin, user, setAuthModalOpen, setAuthMode } = useAuth();
@@ -583,7 +584,7 @@ export const AdminStudio = () => {
                               {s.completedCount} chapters done
                             </div>
                             <div className="text-[11px] text-zinc-500 font-mono">
-                              Streak: {s.streak?.count || 1}d · Bookmarks: {s.savedCount}
+                              Streak: {calculateStreak(s.completedTopics)}d · Bookmarks: {s.savedCount}
                             </div>
                           </div>
 

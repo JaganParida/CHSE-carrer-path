@@ -43,8 +43,8 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     streak: {
-      count: { type: Number, default: 1 },
-      lastDate: { type: String, default: () => new Date().toDateString() },
+      count: { type: Number, default: 0 },
+      lastDate: { type: String, default: "" },
     },
     savedVideos: [{ type: String }],
     completedTopics: {

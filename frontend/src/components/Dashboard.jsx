@@ -12,6 +12,7 @@ import {
   IconCrown,
   IconUser,
 } from "./Icons.jsx";
+import { calculateStreak } from "../utils/streak.js";
 
 export const Dashboard = () => {
   const { user, isAdmin } = useAuth();
@@ -28,8 +29,8 @@ export const Dashboard = () => {
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good Morning" : hour < 17 ? "Good Afternoon" : "Good Evening";
   const userName = user?.name ? user.name.split(" ")[0] : "Student";
-  const streakCount = user?.streak?.count || 1;
   const completedMap = user?.completedTopics || {};
+  const streakCount = calculateStreak(completedMap);
   const savedIds = user?.savedVideos || [];
 
   const subjects = STREAM_SUBJECTS[currentStream] || STREAM_SUBJECTS["Science"];
@@ -143,7 +144,7 @@ export const Dashboard = () => {
           <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center mb-2.5">
             <IconFire size={15} />
           </div>
-          <div className="text-xl font-bold text-white font-mono">{streakCount} Days</div>
+          <div className="text-xl font-bold text-white font-mono">{streakCount} {streakCount === 1 ? "Day" : "Days"}</div>
           <div className="text-xs text-zinc-400 mt-0.5">Study Streak</div>
         </div>
 

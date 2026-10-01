@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { SYLLABUS_DATA, STREAM_SUBJECTS } from "../data/syllabusData.js";
 import { useAuth } from "./AuthContext.jsx";
+import { calculateStreak } from "../utils/streak.js";
 
 const AppContext = createContext();
 
@@ -183,7 +184,11 @@ export const AppProvider = ({ children }) => {
       completed[chapterId] = new Date().toISOString();
       showToast("Chapter marked as complete!", "success");
     }
-    updateProfile({ completedTopics: completed });
+    const newStreak = calculateStreak(completed);
+    updateProfile({
+      completedTopics: completed,
+      streak: { count: newStreak, lastDate: newStreak > 0 ? new Date().toISOString() : "" },
+    });
 
     // Server sync with session cookie
     try {

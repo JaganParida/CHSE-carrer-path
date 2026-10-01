@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import User from "../models/User.js";
 import connectDB from "../lib/db.js";
 import { protect } from "../middleware/auth.js";
+import { computeStreak } from "../utils/streak.js";
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "chsetube_secret_key_super_secure_2026";
@@ -200,19 +201,13 @@ router.post("/login", async (req, res) => {
       });
     }
 
-    // Update daily streak
-    const today = new Date().toDateString();
-    if (user.streak && user.streak.lastDate !== today) {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      if (user.streak.lastDate === yesterday.toDateString()) {
-        user.streak.count += 1;
-      } else {
-        user.streak.count = 1;
-      }
-      user.streak.lastDate = today;
-      await user.save();
-    }
+    // Calculate genuine streak based on actual completed topics
+    const genuineStreak = computeStreak(user.completedTopics);
+    user.streak = {
+      count: genuineStreak,
+      lastDate: genuineStreak > 0 ? new Date().toDateString() : "",
+    };
+    await user.save();
 
     const userData = {
       id: user._id,

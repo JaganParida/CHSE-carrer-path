@@ -11,6 +11,7 @@ import {
   IconFire,
   IconClock,
 } from "./Icons.jsx";
+import { calculateStreak } from "../utils/streak.js";
 
 export const Hero = () => {
   const {
@@ -49,7 +50,7 @@ export const Hero = () => {
     playVideo(chapter, activePreviewSubject, currentClass);
   };
 
-  const streak = user?.streak?.count || 1;
+  const streak = calculateStreak(user?.completedTopics);
   const completedCount = Object.keys(user?.completedTopics || {}).length;
 
   return (
@@ -123,8 +124,8 @@ export const Hero = () => {
               /* Enrolled Student Quick Summary Bar */
               <div className="pt-1 flex items-center justify-center lg:justify-start gap-3 text-xs font-mono">
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0e0f12] border border-white/[0.06] text-zinc-300">
-                  <IconFire size={13} className="text-amber-400" />
-                  <span>{streak} Day Streak</span>
+                  <IconFire size={13} className={streak > 0 ? "text-amber-400" : "text-zinc-500"} />
+                  <span>{streak} {streak === 1 ? "Day Streak" : "Days Streak"}</span>
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0e0f12] border border-white/[0.06] text-zinc-300">
                   <IconCheck size={13} className="text-emerald-400" />

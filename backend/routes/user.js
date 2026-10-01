@@ -2,6 +2,7 @@ import express from "express";
 import User from "../models/User.js";
 import Note from "../models/Note.js";
 import { protect } from "../middleware/auth.js";
+import { computeStreak } from "../utils/streak.js";
 
 const router = express.Router();
 router.use(protect);
@@ -23,12 +24,18 @@ router.post("/complete/:chapterId", async (req, res) => {
     }
 
     user.completedTopics = completed;
+    const currentStreak = computeStreak(completed);
+    user.streak = {
+      count: currentStreak,
+      lastDate: currentStreak > 0 ? new Date().toDateString() : "",
+    };
     await user.save();
 
     return res.json({
       success: true,
       isDone: !isDone,
       completedTopics: user.completedTopics,
+      streak: user.streak,
     });
   } catch (err) {
     return res.status(500).json({
