@@ -19,7 +19,6 @@ export default function App() {
   const { currentSection, setCurrentSection, toast, setSearchModalOpen } = useApp();
   const { setAuthModalOpen, setAuthMode } = useAuth();
 
-  // Global keyboard shortcuts (Ctrl+K for search)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
@@ -32,10 +31,10 @@ export default function App() {
   }, [setSearchModalOpen]);
 
   return (
-    <div className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans selection:bg-white selection:text-black relative pb-16 md:pb-0">
-      {/* Vercel subtle monochrome gradient grid atmosphere */}
+    <div className="min-h-screen bg-[#090a0c] text-zinc-200 flex flex-col font-sans selection:bg-white selection:text-black relative pb-16 md:pb-0">
+      {/* Subtle gentle background lighting (soft on the eyes) */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[350px] bg-white/[0.03] blur-[150px] rounded-full" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-white/[0.015] blur-[160px] rounded-full" />
       </div>
 
       {/* Main Navbar */}
@@ -46,7 +45,7 @@ export default function App() {
         {currentSection === "dashboard" && (
           <div className="animate-fadeIn">
             <Hero />
-            <div id="syllabus-section" className="scroll-mt-16">
+            <div id="syllabus-section" className="scroll-mt-14">
               <Dashboard />
             </div>
           </div>
@@ -101,16 +100,16 @@ export default function App() {
       {/* Student / Admin Auth Modal */}
       <AuthModal />
 
-      {/* Global Interactive Toast Notification (Vercel Style) */}
+      {/* Global Interactive Toast Notification */}
       {toast && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#0a0a0a] border border-[#262626] shadow-2xl text-xs font-semibold text-white animate-bounce-subtle">
+        <div className="fixed top-5 right-5 z-50 flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#141518] border border-[#27292f] shadow-xl text-xs font-medium text-zinc-100 animate-bounce-subtle">
           <span
             className={`w-2 h-2 rounded-full ${
               toast.type === "success"
-                ? "bg-white"
+                ? "bg-emerald-400"
                 : toast.type === "error"
-                ? "bg-rose-500"
-                : "bg-neutral-400"
+                ? "bg-rose-400"
+                : "bg-zinc-300"
             }`}
           />
           <span>{toast.message}</span>

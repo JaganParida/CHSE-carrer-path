@@ -70,39 +70,39 @@ export const NotesView = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#1f1f1f]">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#1f2127]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0a0a0a] border border-[#262626] text-neutral-300 text-xs font-mono mb-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#111215] border border-[#23252a] text-zinc-300 text-xs font-mono mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-200"></span>
             <span>PERSONAL STUDY NOTEPAD</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-zinc-100 tracking-tight">
             My Chapter Notes
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-400 mt-2 max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-2 max-w-xl leading-relaxed">
             Personal revision notes captured while watching video lectures. Automatically cached and exportable anytime as plain text.
           </p>
         </div>
 
         <button
           onClick={handleExportAll}
-          className="self-start sm:self-auto px-4 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-xs font-bold text-black flex items-center gap-2 shadow-sm transition-colors"
+          className="self-start sm:self-auto px-4 py-2 rounded-lg bg-zinc-100 hover:bg-white text-xs font-semibold text-zinc-950 flex items-center gap-2 shadow-sm transition-colors"
         >
-          <IconDownload size={14} className="text-black" />
+          <IconDownload size={14} className="text-zinc-950" />
           <span>Export All Notes (.txt)</span>
         </button>
       </div>
 
       {/* Guest Sign In Prompt */}
       {!user && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#0a0a0a] border border-[#262626] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#111215] border border-[#23252a] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center shrink-0">
               <IconNote size={18} />
             </div>
             <div>
-              <div className="text-sm font-bold text-white">Save notes to your permanent student account</div>
-              <div className="text-xs text-neutral-400">Notes are currently cached locally in this browser. Sign in to sync across your devices.</div>
+              <div className="text-sm font-semibold text-zinc-100">Save notes to your permanent student account</div>
+              <div className="text-xs text-zinc-400">Notes are currently cached locally in this browser. Sign in to sync across your devices.</div>
             </div>
           </div>
           <button
@@ -110,7 +110,7 @@ export const NotesView = () => {
               setAuthMode("login");
               setAuthModalOpen(true);
             }}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-black bg-white hover:bg-neutral-200 shrink-0 transition-all shadow-sm"
+            className="px-4 py-2 rounded-lg text-xs font-semibold text-zinc-950 bg-zinc-100 hover:bg-white shrink-0 transition-all shadow-sm"
           >
             Sign In to Sync
           </button>
@@ -120,12 +120,12 @@ export const NotesView = () => {
       {/* Main Grid */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         {/* Left: Notes List */}
-        <div className="md:col-span-4 bg-[#0a0a0a] rounded-3xl border border-[#222222] p-5 space-y-3 max-h-[640px] flex flex-col shadow-xl">
-          <div className="flex items-center justify-between pb-2 border-b border-[#1f1f1f]">
-            <span className="text-xs font-mono uppercase tracking-wider text-neutral-400">
+        <div className="md:col-span-4 bg-[#111215] rounded-xl border border-[#23252a] p-5 space-y-3 max-h-[640px] flex flex-col shadow-sm">
+          <div className="flex items-center justify-between pb-2 border-b border-[#1f2127]">
+            <span className="text-xs font-mono uppercase tracking-wider text-zinc-400">
               Saved Chapters
             </span>
-            <span className="px-2 py-0.5 rounded-full bg-black border border-[#262626] text-[10px] text-white font-mono font-bold">
+            <span className="px-2 py-0.5 rounded-md bg-[#0c0d0f] border border-[#23252a] text-[10px] text-zinc-300 font-mono font-medium">
               {noteKeys.length}
             </span>
           </div>
@@ -133,33 +133,33 @@ export const NotesView = () => {
           {/* Quick Search inside notes */}
           {noteKeys.length > 0 && (
             <div className="relative">
-              <IconSearch size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500" />
+              <IconSearch size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
               <input
                 type="text"
                 value={filterQuery}
                 onChange={(e) => setFilterQuery(e.target.value)}
                 placeholder="Filter saved notes..."
-                className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-black border border-[#262626] text-xs text-white placeholder-neutral-600 focus:outline-none focus:border-white"
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
               />
             </div>
           )}
 
           {/* Notes scroll list */}
-          <div className="space-y-1.5 overflow-y-auto flex-1 pr-1">
+          <div className="space-y-1.5 overflow-y-auto flex-1 pr-1 custom-scrollbar">
             {noteKeys.length === 0 ? (
-              <div className="py-16 text-center text-xs text-neutral-500 space-y-3">
-                <IconNote size={32} className="mx-auto text-neutral-600" />
+              <div className="py-16 text-center text-xs text-zinc-500 space-y-3">
+                <IconNote size={32} className="mx-auto text-zinc-600" />
                 <p>No notes written yet. Start watching any syllabus video lecture to jot notes.</p>
                 <button
                   onClick={() => setCurrentSection("dashboard")}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white text-black text-xs font-bold hover:bg-neutral-200 transition-all shadow-sm"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 text-zinc-950 text-xs font-semibold hover:bg-white transition-all shadow-sm"
                 >
                   <span>Browse Syllabus</span>
                   <IconArrowRight size={12} />
                 </button>
               </div>
             ) : filteredKeys.length === 0 ? (
-              <div className="py-8 text-center text-xs text-neutral-500">
+              <div className="py-8 text-center text-xs text-zinc-500">
                 No notes match "{filterQuery}"
               </div>
             ) : (
@@ -170,19 +170,19 @@ export const NotesView = () => {
                   <div
                     key={k}
                     onClick={() => setActiveKey(k)}
-                    className={`p-3 rounded-2xl cursor-pointer transition-all border ${
+                    className={`p-3 rounded-lg cursor-pointer transition-all border ${
                       isSelected
-                        ? "bg-white text-black shadow-sm font-semibold border-white"
-                        : "bg-black border-[#1f1f1f] hover:border-[#333333] text-neutral-300"
+                        ? "bg-zinc-100 text-zinc-950 shadow-sm font-semibold border-white"
+                        : "bg-[#0c0d0f] border-[#23252a] hover:border-[#343842] text-zinc-300"
                     }`}
                   >
-                    <div className="text-xs font-bold truncate flex items-center justify-between">
+                    <div className="text-xs font-semibold truncate flex items-center justify-between">
                       <span className="truncate">{k}</span>
-                      <span className={`text-[10px] font-mono shrink-0 ml-2 ${isSelected ? "text-neutral-700" : "text-neutral-500"}`}>
+                      <span className={`text-[10px] font-mono shrink-0 ml-2 ${isSelected ? "text-zinc-600" : "text-zinc-500"}`}>
                         {n.subject || "CHSE"}
                       </span>
                     </div>
-                    <div className={`text-[11px] truncate mt-1 ${isSelected ? "text-neutral-800" : "text-neutral-400"}`}>
+                    <div className={`text-[11px] truncate mt-1 ${isSelected ? "text-zinc-800" : "text-zinc-400"}`}>
                       {n.text}
                     </div>
                   </div>
@@ -193,25 +193,25 @@ export const NotesView = () => {
         </div>
 
         {/* Right: Note Content / Editor */}
-        <div className="md:col-span-8 bg-[#0a0a0a] rounded-3xl border border-[#222222] p-6 sm:p-7 space-y-4 shadow-xl">
+        <div className="md:col-span-8 bg-[#111215] rounded-xl border border-[#23252a] p-6 sm:p-7 space-y-4 shadow-sm">
           {activeNote && currentKey ? (
             <>
-              <div className="flex items-center justify-between pb-3 border-b border-[#1f1f1f]">
+              <div className="flex items-center justify-between pb-3 border-b border-[#1f2127]">
                 <div>
-                  <h3 className="text-lg font-black text-white">{currentKey}</h3>
-                  <div className="text-xs text-neutral-400 font-mono mt-0.5">
+                  <h3 className="text-lg font-bold text-zinc-100">{currentKey}</h3>
+                  <div className="text-xs text-zinc-400 font-mono mt-0.5">
                     Subject: {activeNote.subject || "General"}
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleExportSingle}
-                    className="p-1.5 rounded-lg bg-black border border-[#262626] text-neutral-300 hover:text-white transition-colors"
+                    className="p-1.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 hover:text-zinc-100 hover:border-zinc-400 transition-colors"
                     title="Export single note"
                   >
                     <IconDownload size={14} />
                   </button>
-                  <span className="text-[11px] text-neutral-500 font-mono">
+                  <span className="text-[11px] text-zinc-500 font-mono">
                     {activeNote.updatedAt
                       ? `Saved ${new Date(activeNote.updatedAt).toLocaleTimeString()}`
                       : "Auto-saved"}
@@ -224,14 +224,14 @@ export const NotesView = () => {
                 value={activeNote.text}
                 onChange={(e) => saveNote(currentKey, e.target.value, activeNote.subject)}
                 placeholder="Write your key points, formulas, definitions, and exam reminders here..."
-                className="w-full p-4 rounded-2xl bg-black border border-[#262626] text-sm text-neutral-200 placeholder-neutral-600 focus:outline-none focus:border-white focus:ring-1 focus:ring-white resize-none font-sans leading-relaxed"
+                className="w-full p-4 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-400 resize-none font-sans leading-relaxed transition-colors"
               ></textarea>
             </>
           ) : (
-            <div className="py-28 text-center text-neutral-500 text-sm space-y-3">
-              <IconNote size={36} className="mx-auto text-neutral-600" />
-              <p className="font-bold text-neutral-300 text-base">Select a chapter note from the list to view or edit</p>
-              <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+            <div className="py-28 text-center text-zinc-500 text-sm space-y-3">
+              <IconNote size={36} className="mx-auto text-zinc-600" />
+              <p className="font-semibold text-zinc-200 text-base">Select a chapter note from the list to view or edit</p>
+              <p className="text-xs text-zinc-500 max-w-sm mx-auto">
                 Every video lecture has its own dedicated notebook that autosaves in real time.
               </p>
             </div>

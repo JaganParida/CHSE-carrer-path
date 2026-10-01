@@ -14,7 +14,7 @@ export default function Footer() {
   const { user, isAdmin, setAuthModalOpen, setAuthMode } = useAuth();
 
   return (
-    <footer className="mt-20 border-t border-[#1f1f1f] bg-black text-neutral-400 text-xs">
+    <footer className="mt-20 border-t border-[#1f2127] bg-[#090a0c] text-zinc-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
           {/* Brand info */}
@@ -26,25 +26,25 @@ export default function Footer() {
               }}
               className="flex items-center gap-2.5 cursor-pointer group"
             >
-              <div className="w-8 h-8 rounded-xl bg-white text-black flex items-center justify-center font-bold">
+              <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-950 flex items-center justify-center font-bold">
                 <IconLogo size={18} />
               </div>
-              <span className="font-extrabold text-base text-white tracking-tight">
-                CHSE<span className="text-neutral-400">Tube</span>
+              <span className="font-bold text-base text-zinc-100 tracking-tight">
+                CHSE<span className="text-zinc-400">Tube</span>
               </span>
             </div>
-            <p className="text-neutral-400 text-xs leading-relaxed">
+            <p className="text-zinc-400 text-xs leading-relaxed">
               Curated YouTube masterclasses and syllabus navigator for Council of Higher Secondary Education, Odisha (+2).
             </p>
-            <div className="flex items-center gap-2 pt-1 text-neutral-500 text-[11px] font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+            <div className="flex items-center gap-2 pt-1 text-zinc-500 text-[11px] font-mono">
+              <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
               <span>CHSE Odisha Official Syllabus (2026–2027)</span>
             </div>
           </div>
 
           {/* Academic Streams */}
           <div>
-            <h4 className="text-xs font-mono uppercase tracking-wider text-white mb-3">
+            <h4 className="text-xs font-mono uppercase tracking-wider text-zinc-200 mb-3">
               Academic Streams
             </h4>
             <ul className="space-y-2">
@@ -60,8 +60,8 @@ export default function Footer() {
                       setCurrentSection("dashboard");
                       window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
-                    className={`hover:text-white transition-colors text-left ${
-                      currentStream === s.id ? "text-white font-bold" : "text-neutral-400"
+                    className={`hover:text-zinc-200 transition-colors text-left ${
+                      currentStream === s.id ? "text-zinc-100 font-semibold" : "text-zinc-400"
                     }`}
                   >
                     {s.label}
@@ -73,7 +73,7 @@ export default function Footer() {
 
           {/* Classes & Standards */}
           <div>
-            <h4 className="text-xs font-mono uppercase tracking-wider text-white mb-3">
+            <h4 className="text-xs font-mono uppercase tracking-wider text-zinc-200 mb-3">
               Curriculum Standard
             </h4>
             <ul className="space-y-2">
@@ -84,8 +84,8 @@ export default function Footer() {
                     setCurrentSection("dashboard");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className={`hover:text-white transition-colors text-left ${
-                    currentClass === "12" ? "text-white font-bold" : "text-neutral-400"
+                  className={`hover:text-zinc-200 transition-colors text-left ${
+                    currentClass === "12" ? "text-zinc-100 font-semibold" : "text-zinc-400"
                   }`}
                 >
                   Class 12 (+2 2nd Year)
@@ -98,25 +98,25 @@ export default function Footer() {
                     setCurrentSection("dashboard");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className={`hover:text-white transition-colors text-left ${
-                    currentClass === "11" ? "text-white font-bold" : "text-neutral-400"
+                  className={`hover:text-zinc-200 transition-colors text-left ${
+                    currentClass === "11" ? "text-zinc-100 font-semibold" : "text-zinc-400"
                   }`}
                 >
                   Class 11 (+2 1st Year)
                 </button>
               </li>
-              <li className="text-neutral-500">CHSE Odisha Board Approved Structure</li>
-              <li className="text-neutral-500">5-Unit Biology Curriculum Compliance</li>
+              <li className="text-zinc-500">CHSE Odisha Board Approved Structure</li>
+              <li className="text-zinc-500">5-Unit Biology Curriculum Compliance</li>
             </ul>
           </div>
 
           {/* Platform Management */}
           <div>
-            <h4 className="text-xs font-mono uppercase tracking-wider text-white mb-3">
+            <h4 className="text-xs font-mono uppercase tracking-wider text-zinc-200 mb-3">
               Admin & Management
             </h4>
             <div className="space-y-2.5">
-              <p className="text-neutral-400 leading-relaxed">
+              <p className="text-zinc-400 leading-relaxed">
                 Educators and administrators can add, edit, or configure YouTube syllabus lectures across all streams.
               </p>
               {isAdmin ? (
@@ -125,7 +125,7 @@ export default function Footer() {
                     setCurrentSection("admin");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/10 text-white border border-white/20 hover:bg-white/20 transition-colors text-xs font-semibold"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111215] text-zinc-200 border border-[#23252a] hover:border-zinc-400 transition-colors text-xs font-medium"
                 >
                   <IconCrown size={14} />
                   <span>Open Admin Studio</span>
@@ -136,7 +136,7 @@ export default function Footer() {
                     setAuthMode("login");
                     setAuthModalOpen(true);
                   }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black text-neutral-300 hover:text-white hover:bg-[#141414] transition-colors text-xs font-medium border border-[#262626]"
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111215] text-zinc-300 hover:text-white transition-colors text-xs font-medium border border-[#23252a] hover:border-zinc-400"
                 >
                   <IconCrown size={14} />
                   <span>Admin / Student Sign In</span>
@@ -146,15 +146,15 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 border-t border-[#1f1f1f] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-neutral-500 font-mono">
+        <div className="pt-6 border-t border-[#1f2127] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500 font-mono">
           <p>© {new Date().getFullYear()} CHSETube (CHSE Odisha). Production educational platform.</p>
           <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5 text-neutral-400">
-              <IconCheck size={14} className="text-white" />
+            <span className="flex items-center gap-1.5 text-zinc-400">
+              <IconCheck size={14} className="text-zinc-200" />
               100% Free & Open Access
             </span>
-            <span className="flex items-center gap-1.5 text-neutral-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+            <span className="flex items-center gap-1.5 text-zinc-400">
+              <span className="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
               Secure Session Persistence
             </span>
           </div>

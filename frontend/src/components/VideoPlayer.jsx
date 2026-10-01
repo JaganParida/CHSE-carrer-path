@@ -32,15 +32,15 @@ export const VideoPlayer = () => {
   if (!currentVideo) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <div className="max-w-md mx-auto p-8 rounded-3xl bg-[#0a0a0a] border border-[#222222] space-y-4">
-          <IconBook size={32} className="mx-auto text-white" />
-          <h2 className="text-xl font-bold text-white">No Lecture Selected</h2>
-          <p className="text-xs text-neutral-400">
+        <div className="max-w-md mx-auto p-6 rounded-xl bg-[#111215] border border-[#23252a] space-y-3.5">
+          <IconBook size={28} className="mx-auto text-zinc-300" />
+          <h2 className="text-lg font-bold text-zinc-100">No Lecture Selected</h2>
+          <p className="text-xs text-zinc-400">
             Choose a chapter from the syllabus dashboard to begin watching.
           </p>
           <button
             onClick={() => setCurrentSection("dashboard")}
-            className="px-5 py-2.5 rounded-xl bg-white hover:bg-neutral-200 text-black text-xs font-bold transition-all shadow-sm"
+            className="px-4 py-2 rounded-lg bg-white hover:bg-zinc-200 text-zinc-950 text-xs font-semibold transition-all shadow-sm"
           >
             Go to Syllabus
           </button>
@@ -95,37 +95,37 @@ export const VideoPlayer = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-5">
       {/* Breadcrumb Navigation */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-xs font-semibold text-neutral-400">
+        <div className="flex items-center gap-2 text-xs font-medium text-zinc-400">
           <button
             onClick={() => setCurrentSection("subject")}
-            className="hover:text-white flex items-center gap-1.5 transition-colors"
+            className="hover:text-white flex items-center gap-1 transition-colors"
           >
-            <IconArrowLeft size={14} />
+            <IconArrowLeft size={13} />
             <span>{currentSubject}</span>
           </button>
           <span>/</span>
-          <span className="text-neutral-500 truncate max-w-[150px]">Class {currentClass}</span>
+          <span className="text-zinc-500 truncate max-w-[150px]">Class {currentClass}</span>
           <span>/</span>
-          <span className="text-white truncate max-w-[250px]">{currentVideo.title}</span>
+          <span className="text-zinc-200 truncate max-w-[250px]">{currentVideo.title}</span>
         </div>
 
         <button
           onClick={() => setCurrentSection("dashboard")}
-          className="text-xs font-semibold text-neutral-400 hover:text-white transition-colors"
+          className="text-xs font-medium text-zinc-400 hover:text-white transition-colors"
         >
           Close Player ✕
         </button>
       </div>
 
       {/* Main Layout: Video Player + Playlist Sidebar */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
         {/* Left Column: Player & Notes */}
-        <div className="lg:col-span-8 space-y-5">
+        <div className="lg:col-span-8 space-y-4">
           {/* 16:9 Video Container */}
-          <div className="aspect-video w-full rounded-2xl overflow-hidden bg-black border border-[#222222] shadow-2xl relative">
+          <div className="aspect-video w-full rounded-xl overflow-hidden bg-black border border-[#23252a] shadow-2xl relative">
             {currentVideo.youtubeId ? (
               <iframe
                 src={`https://www.youtube.com/embed/${currentVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
@@ -135,99 +135,99 @@ export const VideoPlayer = () => {
                 className="w-full h-full border-0"
               ></iframe>
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#0a0a0a] text-neutral-400">
-                <div className="w-12 h-12 rounded-2xl bg-black border border-[#222222] text-white flex items-center justify-center mb-3">
-                  <IconClock size={20} />
+              <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#0c0d0f] text-zinc-400">
+                <div className="w-10 h-10 rounded-lg bg-[#111215] border border-[#23252a] text-zinc-300 flex items-center justify-center mb-2.5">
+                  <IconClock size={18} />
                 </div>
-                <h3 className="text-base font-bold text-white mb-1">
+                <h3 className="text-sm font-semibold text-zinc-100 mb-1">
                   Video Lecture Coming Soon
                 </h3>
-                <p className="text-xs text-neutral-500 max-w-md leading-relaxed">
+                <p className="text-xs text-zinc-500 max-w-md leading-relaxed">
                   Our educators are uploading the curated lecture for <b>{currentVideo.title}</b>. In the meantime, you can review the syllabus topics and write notes below.
                 </p>
               </div>
             )}
           </div>
 
-          {/* Controls Bar (Vercel Style) */}
-          <div className="bg-[#0a0a0a] p-3.5 rounded-2xl border border-[#222222] flex items-center justify-between gap-3 flex-wrap">
+          {/* Controls Bar */}
+          <div className="bg-[#111215] p-3 rounded-xl border border-[#23252a] flex items-center justify-between gap-3 flex-wrap">
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleNavigate(-1)}
                 disabled={currentIndex <= 0}
-                className="p-2 rounded-xl bg-black hover:bg-[#141414] disabled:opacity-30 border border-[#262626] text-neutral-300 transition-colors"
+                className="p-1.5 rounded-lg bg-[#0c0d0f] hover:bg-[#16181d] disabled:opacity-30 border border-[#23252a] text-zinc-300 transition-colors"
                 title="Previous chapter"
               >
-                <IconSkipBack size={16} />
+                <IconSkipBack size={15} />
               </button>
 
               <button
                 onClick={() => handleNavigate(1)}
                 disabled={currentIndex >= playlist.length - 1}
-                className="p-2 rounded-xl bg-black hover:bg-[#141414] disabled:opacity-30 border border-[#262626] text-neutral-300 transition-colors"
+                className="p-1.5 rounded-lg bg-[#0c0d0f] hover:bg-[#16181d] disabled:opacity-30 border border-[#23252a] text-zinc-300 transition-colors"
                 title="Next chapter"
               >
-                <IconSkipForward size={16} />
+                <IconSkipForward size={15} />
               </button>
 
-              <span className="text-xs text-neutral-400 font-mono ml-2">
+              <span className="text-xs text-zinc-400 font-mono ml-1.5">
                 Chapter {currentIndex + 1} of {playlist.length}
               </span>
             </div>
 
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => toggleSave(currentVideo.id)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-semibold border flex items-center gap-1.5 transition-colors ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border flex items-center gap-1.5 transition-colors ${
                   isSaved
-                    ? "bg-white text-black border-white"
-                    : "bg-black text-neutral-300 border-[#262626] hover:text-white"
+                    ? "bg-white text-zinc-950 border-white"
+                    : "bg-[#0c0d0f] text-zinc-300 border-[#23252a] hover:text-white"
                 }`}
               >
-                {isSaved ? <IconBookmarkFilled size={14} /> : <IconBookmark size={14} />}
+                {isSaved ? <IconBookmarkFilled size={13} /> : <IconBookmark size={13} />}
                 <span>{isSaved ? "Saved" : "Bookmark"}</span>
               </button>
 
               <button
                 onClick={() => toggleComplete(currentVideo.id)}
-                className={`px-4 py-2 rounded-xl text-xs font-bold border flex items-center gap-1.5 transition-colors ${
+                className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1.5 transition-colors ${
                   isDone
-                    ? "bg-white/10 text-white border-white/20"
-                    : "bg-white hover:bg-neutral-200 text-black border-transparent shadow-sm"
+                    ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                    : "bg-white hover:bg-zinc-200 text-zinc-950 border-transparent shadow-sm"
                 }`}
               >
-                <IconCheck size={14} />
+                <IconCheck size={13} />
                 <span>{isDone ? "Completed" : "Mark Complete"}</span>
               </button>
             </div>
           </div>
 
           {/* Chapter Details and Auto-Saving Notepad */}
-          <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-[#222222] space-y-4">
+          <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3.5">
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-black text-neutral-300 border border-[#262626]">
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] text-zinc-400 border border-[#23252a]">
                   {currentSubject} · Class {currentClass}
                 </span>
                 {isDone && (
-                  <span className="text-[10px] font-mono text-white flex items-center gap-1">
-                    <IconCheck size={12} /> Mastered
+                  <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
+                    <IconCheck size={11} /> Mastered
                   </span>
                 )}
               </div>
-              <h2 className="text-xl font-black text-white">{currentVideo.title}</h2>
-              <p className="text-xs sm:text-sm text-neutral-400 mt-1 leading-relaxed">
+              <h2 className="text-lg font-bold text-zinc-100">{currentVideo.title}</h2>
+              <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
                 {currentVideo.desc}
               </p>
             </div>
 
             {/* Smart Auto-Saving Notes Box */}
-            <div className="pt-4 border-t border-[#1f1f1f]">
-              <div className="flex items-center justify-between mb-2">
-                <label className="text-xs font-mono uppercase tracking-wider text-neutral-300">
+            <div className="pt-3.5 border-t border-[#1e2025]">
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-mono uppercase tracking-wider text-zinc-400">
                   Chapter Study Notes
                 </label>
-                <span className="text-[11px] font-mono text-neutral-500">
+                <span className="text-[11px] font-mono text-zinc-500">
                   {saveStatus}
                 </span>
               </div>
@@ -236,25 +236,25 @@ export const VideoPlayer = () => {
                 value={noteText}
                 onChange={handleNoteChange}
                 placeholder="Write your key points, formulas, definitions, and exam reminders here... Notes autosave in real-time."
-                className="w-full p-3.5 rounded-xl bg-black border border-[#262626] text-sm text-neutral-200 focus:border-white focus:ring-1 focus:ring-white outline-none resize-none font-sans"
+                className="w-full p-3 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-sm text-zinc-200 placeholder-zinc-500 focus:border-zinc-400 focus:ring-1 focus:ring-zinc-400 outline-none resize-none font-sans"
               ></textarea>
             </div>
           </div>
         </div>
 
         {/* Right Column: Playlist Sidebar */}
-        <div className="lg:col-span-4 bg-[#0a0a0a] rounded-2xl border border-[#222222] p-4 space-y-3">
-          <div className="flex items-center justify-between pb-3 border-b border-[#1f1f1f]">
+        <div className="lg:col-span-4 bg-[#111215] rounded-xl border border-[#23252a] p-3.5 space-y-2.5">
+          <div className="flex items-center justify-between pb-2.5 border-b border-[#1e2025]">
             <div>
-              <h3 className="text-sm font-bold text-white">Subject Playlist</h3>
-              <div className="text-[11px] text-neutral-500 font-mono">{playlist.length} chapters total</div>
+              <h3 className="text-sm font-semibold text-zinc-100">Subject Playlist</h3>
+              <div className="text-[10px] text-zinc-500 font-mono">{playlist.length} chapters total</div>
             </div>
-            <span className="text-xs font-mono text-neutral-400">
+            <span className="text-xs font-mono text-zinc-400">
               {currentIndex + 1} / {playlist.length}
             </span>
           </div>
 
-          <div className="space-y-1.5 max-h-[550px] overflow-y-auto pr-1">
+          <div className="space-y-1 max-h-[500px] overflow-y-auto pr-1">
             {playlist.map((p, idx) => {
               const isActive = p.id === currentVideo.id;
               const isPdone = Boolean(completedMap[p.id]);
@@ -262,30 +262,30 @@ export const VideoPlayer = () => {
                 <div
                   key={p.id}
                   onClick={() => playVideo(p, currentSubject, currentClass)}
-                  className={`p-2.5 rounded-xl text-xs flex items-center gap-3 cursor-pointer transition-colors ${
+                  className={`p-2 rounded-lg text-xs flex items-center gap-2.5 cursor-pointer transition-colors ${
                     isActive
-                      ? "bg-white text-black shadow-sm font-bold"
-                      : "text-neutral-300 hover:bg-[#141414] border border-transparent"
+                      ? "bg-white text-zinc-950 shadow-sm font-semibold"
+                      : "text-zinc-300 hover:bg-[#16181d] border border-transparent"
                   }`}
                 >
                   <span
-                    className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 font-bold text-[10px] ${
-                      isActive ? "bg-black text-white" : "bg-black text-neutral-400 border border-[#222222]"
+                    className={`w-5 h-5 rounded flex items-center justify-center shrink-0 font-mono font-bold text-[10px] ${
+                      isActive ? "bg-zinc-950 text-white" : "bg-[#0c0d0f] text-zinc-400 border border-[#23252a]"
                     }`}
                   >
                     {idx + 1}
                   </span>
 
                   <div className="flex-1 min-w-0">
-                    <div className="font-semibold truncate">{p.title}</div>
-                    <div className={`text-[10px] truncate ${isActive ? "text-neutral-700" : "text-neutral-500"}`}>
+                    <div className="truncate">{p.title}</div>
+                    <div className={`text-[10px] truncate ${isActive ? "text-zinc-700" : "text-zinc-500"}`}>
                       {p.unitName.split(":")[0]}
                     </div>
                   </div>
 
                   {isPdone && (
-                    <span className={`shrink-0 ${isActive ? "text-black" : "text-white"}`}>
-                      <IconCheck size={14} />
+                    <span className={`shrink-0 ${isActive ? "text-zinc-950" : "text-emerald-400"}`}>
+                      <IconCheck size={12} />
                     </span>
                   )}
                 </div>

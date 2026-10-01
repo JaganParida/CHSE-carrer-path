@@ -37,30 +37,30 @@ export const ProgressTracker = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#1f1f1f]">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-[#1f2127]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0a0a0a] border border-[#262626] text-neutral-300 text-xs font-mono mb-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-white"></span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#111215] border border-[#23252a] text-zinc-300 text-xs font-mono mb-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-200"></span>
             <span>ACADEMIC ANALYTICS & RETENTION</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-zinc-100 tracking-tight">
             Study Progress & Mastery
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-400 mt-2 max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-2 max-w-xl leading-relaxed">
             Monitor completed syllabus units, revision bookmarks, daily learning consistency, and exam readiness.
           </p>
         </div>
 
-        {/* Class Switcher (Vercel Style) */}
-        <div className="flex bg-[#0a0a0a] p-1 rounded-2xl border border-[#222222] shrink-0 self-start sm:self-auto">
+        {/* Class Switcher */}
+        <div className="flex bg-[#111215] p-1 rounded-lg border border-[#23252a] shrink-0 self-start sm:self-auto">
           {["11", "12"].map((cls) => (
             <button
               key={cls}
               onClick={() => setCurrentClass(cls)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-md text-xs font-semibold transition-all ${
                 currentClass === cls
-                  ? "bg-white text-black shadow-sm"
-                  : "text-neutral-400 hover:text-white"
+                  ? "bg-zinc-100 text-zinc-950 shadow-sm"
+                  : "text-zinc-400 hover:text-zinc-200"
               }`}
             >
               Class {cls} (+2)
@@ -71,14 +71,14 @@ export const ProgressTracker = () => {
 
       {/* Guest Student Sign In Prompt Banner */}
       {!user && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#0a0a0a] border border-[#262626] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#111215] border border-[#23252a] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center shrink-0">
               <IconCheck size={18} />
             </div>
             <div>
-              <div className="text-sm font-bold text-white">Create a free student account to save your progress</div>
-              <div className="text-xs text-neutral-400">Chapters and topics marked as complete will be permanently synchronized across all your devices.</div>
+              <div className="text-sm font-semibold text-zinc-100">Create a free student account to save your progress</div>
+              <div className="text-xs text-zinc-400">Chapters and topics marked as complete will be permanently synchronized across all your devices.</div>
             </div>
           </div>
           <button
@@ -86,7 +86,7 @@ export const ProgressTracker = () => {
               setAuthMode("register");
               setAuthModalOpen(true);
             }}
-            className="px-4 py-2 rounded-xl text-xs font-bold text-black bg-white hover:bg-neutral-200 shrink-0 transition-all shadow-sm"
+            className="px-4 py-2 rounded-lg text-xs font-semibold text-zinc-950 bg-zinc-100 hover:bg-white shrink-0 transition-all shadow-sm"
           >
             Create Account
           </button>
@@ -95,70 +95,70 @@ export const ProgressTracker = () => {
 
       {/* Key Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#0a0a0a] p-5 rounded-3xl border border-[#222222] shadow-xl">
-          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconCheck size={18} />
+        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+            <IconCheck size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-white">{Object.keys(completedMap).length}</div>
-          <div className="text-xs text-neutral-400 font-medium mt-1">Chapters Completed</div>
+          <div className="text-2xl sm:text-3xl font-bold text-zinc-100">{Object.keys(completedMap).length}</div>
+          <div className="text-xs text-zinc-400 font-medium mt-1">Chapters Completed</div>
         </div>
 
-        <div className="bg-[#0a0a0a] p-5 rounded-3xl border border-[#222222] shadow-xl">
-          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconFire size={18} />
+        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+            <IconFire size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-white">{streak} Days</div>
-          <div className="text-xs text-neutral-400 font-medium mt-1">Active Study Streak</div>
+          <div className="text-2xl sm:text-3xl font-bold text-zinc-100">{streak} Days</div>
+          <div className="text-xs text-zinc-400 font-medium mt-1">Active Study Streak</div>
         </div>
 
-        <div className="bg-[#0a0a0a] p-5 rounded-3xl border border-[#222222] shadow-xl">
-          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconVideo size={18} />
+        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+            <IconVideo size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-white">{savedIds.length}</div>
-          <div className="text-xs text-neutral-400 font-medium mt-1">Saved for Revision</div>
+          <div className="text-2xl sm:text-3xl font-bold text-zinc-100">{savedIds.length}</div>
+          <div className="text-xs text-zinc-400 font-medium mt-1">Saved for Revision</div>
         </div>
 
-        <div className="bg-[#0a0a0a] p-5 rounded-3xl border border-[#222222] shadow-xl">
-          <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconClock size={18} />
+        <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center mb-3">
+            <IconClock size={16} />
           </div>
-          <div className="text-2xl sm:text-3xl font-black text-white font-mono">
+          <div className="text-2xl sm:text-3xl font-bold text-zinc-100 font-mono">
             {hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`}
           </div>
-          <div className="text-xs text-neutral-400 font-medium mt-1">Study Time Logged</div>
+          <div className="text-xs text-zinc-400 font-medium mt-1">Study Time Logged</div>
         </div>
       </div>
 
-      {/* Activity Heatmap Card (Vercel Monochrome Style) */}
-      <div className="bg-[#0a0a0a] rounded-3xl p-6 sm:p-7 border border-[#222222] shadow-xl space-y-4">
+      {/* Activity Heatmap Card */}
+      <div className="bg-[#111215] rounded-xl p-6 sm:p-7 border border-[#23252a] shadow-sm space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-base font-bold text-white">Daily Study Activity Heatmap</h3>
-            <p className="text-xs text-neutral-400 mt-0.5">24-week consistency matrix tracking lecture completions</p>
+            <h3 className="text-base font-bold text-zinc-100">Daily Study Activity Heatmap</h3>
+            <p className="text-xs text-zinc-400 mt-0.5">24-week consistency matrix tracking lecture completions</p>
           </div>
-          <span className="text-xs text-neutral-300 font-mono flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10">
+          <span className="text-xs text-zinc-300 font-mono flex items-center gap-1.5 px-3 py-1 rounded-md bg-[#0c0d0f] border border-[#23252a]">
             <IconFire size={14} /> {streak} day streak active
           </span>
         </div>
 
-        <div className="overflow-x-auto pb-2">
+        <div className="overflow-x-auto pb-2 custom-scrollbar">
           <div className="flex gap-1.5 min-w-[540px]">
             {weeks.map((days, wIdx) => (
               <div key={wIdx} className="flex flex-col gap-1.5">
                 {days.map((lvl, dIdx) => {
                   const bg =
                     lvl === 3
-                      ? "bg-white"
+                      ? "bg-zinc-100"
                       : lvl === 2
-                      ? "bg-neutral-400"
+                      ? "bg-zinc-400"
                       : lvl === 1
-                      ? "bg-neutral-700"
-                      : "bg-black";
+                      ? "bg-zinc-700"
+                      : "bg-[#0c0d0f]";
                   return (
                     <div
                       key={dIdx}
-                      className={`w-3.5 h-3.5 rounded-sm ${bg} border border-[#222222] transition-colors`}
+                      className={`w-3.5 h-3.5 rounded-sm ${bg} border border-[#1f2127] transition-colors`}
                     />
                   );
                 })}
@@ -167,41 +167,41 @@ export const ProgressTracker = () => {
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 text-xs text-neutral-400 pt-3 border-t border-[#1f1f1f] font-mono">
+        <div className="flex items-center justify-end gap-2 text-xs text-zinc-400 pt-3 border-t border-[#1f2127] font-mono">
           <span>Less</span>
-          <div className="w-3 h-3 rounded-sm bg-black border border-[#222222]"></div>
-          <div className="w-3 h-3 rounded-sm bg-neutral-700"></div>
-          <div className="w-3 h-3 rounded-sm bg-neutral-400"></div>
-          <div className="w-3 h-3 rounded-sm bg-white"></div>
+          <div className="w-3 h-3 rounded-sm bg-[#0c0d0f] border border-[#1f2127]"></div>
+          <div className="w-3 h-3 rounded-sm bg-zinc-700"></div>
+          <div className="w-3 h-3 rounded-sm bg-zinc-400"></div>
+          <div className="w-3 h-3 rounded-sm bg-zinc-100"></div>
           <span>More</span>
         </div>
       </div>
 
       {/* Subject-Wise Progress Bars */}
-      <div className="bg-[#0a0a0a] rounded-3xl p-6 sm:p-7 border border-[#222222] shadow-xl space-y-5">
+      <div className="bg-[#111215] rounded-xl p-6 sm:p-7 border border-[#23252a] shadow-sm space-y-5">
         <div>
-          <h3 className="text-base font-bold text-white">
+          <h3 className="text-base font-bold text-zinc-100">
             Subject Breakdown — Class {currentClass} ({currentStream} Stream)
           </h3>
-          <p className="text-xs text-neutral-400 mt-0.5">
+          <p className="text-xs text-zinc-400 mt-0.5">
             Syllabus coverage percentage calculated per official CHSE guidelines
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
           {subjects.map((subj) => {
             const { total, done, pct } = getSubjDone(subj);
             return (
-              <div key={subj} className="space-y-2 p-3.5 rounded-2xl bg-black border border-[#222222]">
-                <div className="flex items-center justify-between text-xs font-semibold">
-                  <span className="text-white text-sm">{subj}</span>
-                  <span className="text-white font-mono">
-                    {done} of {total} chapters ({pct}%)
+              <div key={subj} className="space-y-2 p-3.5 rounded-lg bg-[#0c0d0f] border border-[#23252a]">
+                <div className="flex items-center justify-between text-xs font-medium">
+                  <span className="text-zinc-200 text-sm font-semibold">{subj}</span>
+                  <span className="text-zinc-400 font-mono">
+                    <b className="text-zinc-200 font-bold">{done}</b> of {total} chapters ({pct}%)
                   </span>
                 </div>
-                <div className="w-full h-2 bg-[#141414] rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-[#18191d] rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-white transition-all duration-500"
+                    className="h-full bg-zinc-200 transition-all duration-500 rounded-full"
                     style={{ width: `${pct}%` }}
                   ></div>
                 </div>

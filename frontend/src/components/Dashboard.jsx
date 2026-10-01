@@ -47,19 +47,19 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Header & Academic Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 pb-6 border-b border-[#1f1f1f]">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-5 border-b border-[#1e2025]">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-mono uppercase tracking-wider text-neutral-400">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">
               {currentStream} Stream · Class {currentClass} (+2)
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 tracking-tight">
             {greeting}, {userName}
           </h1>
-          <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+          <p className="text-xs text-zinc-400 mt-0.5">
             {new Date().toLocaleDateString("en-IN", {
               weekday: "long",
               day: "numeric",
@@ -70,18 +70,18 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        {/* Stream & Class Segmented Controls (Vercel Style) */}
-        <div className="flex flex-wrap items-center gap-3">
+        {/* Stream & Class Segmented Controls */}
+        <div className="flex flex-wrap items-center gap-2.5">
           {/* Stream Selector */}
-          <div className="flex items-center bg-[#0a0a0a] border border-[#222222] rounded-xl p-1">
+          <div className="flex items-center bg-[#111215] border border-[#23252a] rounded-lg p-1">
             {["Science", "Commerce", "Arts"].map((st) => (
               <button
                 key={st}
                 onClick={() => setCurrentStream(st)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
                   currentStream === st
-                    ? "bg-white text-black shadow-sm"
-                    : "text-neutral-400 hover:text-white"
+                    ? "bg-white text-zinc-950 font-semibold shadow-sm"
+                    : "text-zinc-400 hover:text-white"
                 }`}
               >
                 {st}
@@ -90,15 +90,15 @@ export const Dashboard = () => {
           </div>
 
           {/* Class Selector */}
-          <div className="flex items-center bg-[#0a0a0a] border border-[#222222] rounded-xl p-1">
+          <div className="flex items-center bg-[#111215] border border-[#23252a] rounded-lg p-1">
             {["11", "12"].map((cls) => (
               <button
                 key={cls}
                 onClick={() => setCurrentClass(cls)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
                   currentClass === cls
-                    ? "bg-white text-black shadow-sm"
-                    : "text-neutral-400 hover:text-white"
+                    ? "bg-white text-zinc-950 font-semibold shadow-sm"
+                    : "text-zinc-400 hover:text-white"
                 }`}
               >
                 Class {cls}
@@ -110,23 +110,23 @@ export const Dashboard = () => {
 
       {/* Guest Sign-In Banner */}
       {!user && (
-        <div className="p-4 sm:p-5 rounded-2xl bg-[#0a0a0a] border border-[#262626] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center shrink-0">
-              <IconUser size={18} />
+        <div className="p-4 rounded-xl bg-[#111215] border border-[#23252a] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 flex items-center justify-center shrink-0">
+              <IconUser size={16} />
             </div>
             <div>
-              <div className="text-sm font-bold text-white">Save your completed chapters and study notes</div>
-              <div className="text-xs text-neutral-400">Create a free student profile to sync your retention streaks across your devices.</div>
+              <div className="text-sm font-semibold text-zinc-100">Save your completed chapters and study notes</div>
+              <div className="text-xs text-zinc-400">Create a free student profile to sync your retention streaks across your devices.</div>
             </div>
           </div>
-          <div className="flex items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={() => {
                 setAuthMode("login");
                 setAuthModalOpen(true);
               }}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-neutral-300 hover:text-white bg-black border border-[#262626] transition-colors"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:text-white bg-[#0c0d0f] border border-[#23252a] transition-colors"
             >
               Sign In
             </button>
@@ -135,7 +135,7 @@ export const Dashboard = () => {
                 setAuthMode("register");
                 setAuthModalOpen(true);
               }}
-              className="px-4 py-2 rounded-xl text-xs font-bold text-black bg-white hover:bg-neutral-200 shadow-sm transition-all"
+              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-zinc-950 bg-white hover:bg-zinc-200 shadow-sm transition-all"
             >
               Create Account
             </button>
@@ -144,54 +144,54 @@ export const Dashboard = () => {
       )}
 
       {/* Overview Metrics Row */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-[#0a0a0a] p-4 sm:p-5 rounded-2xl border border-[#222222] shadow-sm">
-          <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconVideo size={16} />
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <div className="bg-[#111215] p-4 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 flex items-center justify-center mb-2.5">
+            <IconVideo size={15} />
           </div>
-          <div className="text-2xl font-black text-white">{savedIds.length}</div>
-          <div className="text-xs text-neutral-400 font-medium mt-0.5">Bookmarked Chapters</div>
+          <div className="text-xl font-bold text-zinc-100 font-mono">{savedIds.length}</div>
+          <div className="text-xs text-zinc-400 mt-0.5">Bookmarked Chapters</div>
         </div>
 
-        <div className="bg-[#0a0a0a] p-4 sm:p-5 rounded-2xl border border-[#222222] shadow-sm">
-          <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconCheck size={16} />
+        <div className="bg-[#111215] p-4 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-emerald-400 flex items-center justify-center mb-2.5">
+            <IconCheck size={15} />
           </div>
-          <div className="text-2xl font-black text-white">{Object.keys(completedMap).length}</div>
-          <div className="text-xs text-neutral-400 font-medium mt-0.5">Completed Topics</div>
+          <div className="text-xl font-bold text-zinc-100 font-mono">{Object.keys(completedMap).length}</div>
+          <div className="text-xs text-zinc-400 mt-0.5">Completed Topics</div>
         </div>
 
-        <div className="bg-[#0a0a0a] p-4 sm:p-5 rounded-2xl border border-[#222222] shadow-sm">
-          <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconFire size={16} />
+        <div className="bg-[#111215] p-4 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-amber-400 flex items-center justify-center mb-2.5">
+            <IconFire size={15} />
           </div>
-          <div className="text-2xl font-black text-white">{streakCount} Days</div>
-          <div className="text-xs text-neutral-400 font-medium mt-0.5">Study Streak</div>
+          <div className="text-xl font-bold text-zinc-100 font-mono">{streakCount} Days</div>
+          <div className="text-xs text-zinc-400 mt-0.5">Study Streak</div>
         </div>
 
-        <div className="bg-[#0a0a0a] p-4 sm:p-5 rounded-2xl border border-[#222222] shadow-sm">
-          <div className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 text-white flex items-center justify-center mb-3">
-            <IconClock size={16} />
+        <div className="bg-[#111215] p-4 rounded-xl border border-[#23252a] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 flex items-center justify-center mb-2.5">
+            <IconClock size={15} />
           </div>
-          <div className="text-2xl font-black text-white">
+          <div className="text-xl font-bold text-zinc-100 font-mono">
             {Object.keys(completedMap).length > 0
               ? `${Math.floor((Object.keys(completedMap).length * 45) / 60)}h ${
                   (Object.keys(completedMap).length * 45) % 60
                 }m`
               : "0h"}
           </div>
-          <div className="text-xs text-neutral-400 font-medium mt-0.5">Study Time Logged</div>
+          <div className="text-xs text-zinc-400 mt-0.5">Study Time Logged</div>
         </div>
       </div>
 
       {/* Subjects Grid */}
       <div>
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-3.5">
           <div>
-            <h2 className="text-lg sm:text-xl font-black text-white tracking-tight">
+            <h2 className="text-base sm:text-lg font-bold text-zinc-100 tracking-tight">
               Class {currentClass} — {currentStream} Subjects
             </h2>
-            <p className="text-xs text-neutral-400 mt-0.5">
+            <p className="text-xs text-zinc-400 mt-0.5">
               Select any subject to view units, chapter breakdowns, and YouTube video lectures
             </p>
           </div>
@@ -201,15 +201,15 @@ export const Dashboard = () => {
                 setCurrentSection("admin");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="text-xs font-semibold text-white hover:text-neutral-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0a0a0a] border border-[#262626]"
+              className="text-xs font-medium text-zinc-300 hover:text-white flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#111215] border border-[#23252a]"
             >
-              <IconCrown size={14} />
+              <IconCrown size={13} />
               <span>Admin Studio</span>
             </button>
           )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
           {subjects.map((subj) => {
             const { total, done, pct } = getSubjectProgress(subj);
             return (
@@ -220,33 +220,33 @@ export const Dashboard = () => {
                   setCurrentSection("subject");
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="group cursor-pointer rounded-2xl bg-[#0a0a0a] p-5 border border-[#222222] hover:border-neutral-500 transition-all hover:-translate-y-0.5 shadow-sm"
+                className="group cursor-pointer rounded-xl bg-[#111215] p-4 sm:p-5 border border-[#23252a] hover:border-[#383b44] transition-all hover:-translate-y-0.5 shadow-sm"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="p-2.5 rounded-xl bg-black border border-[#222222] text-white group-hover:bg-white group-hover:text-black transition-colors">
-                    <IconBook size={18} />
+                  <div className="p-2 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 group-hover:bg-white group-hover:text-zinc-950 transition-colors">
+                    <IconBook size={16} />
                   </div>
-                  <span className="text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full bg-black border border-[#222222] text-neutral-400 font-mono">
+                  <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#1e2024] text-zinc-400">
                     {total} Chapters
                   </span>
                 </div>
 
-                <h3 className="text-base font-bold text-white group-hover:text-neutral-300 transition-colors">
+                <h3 className="text-sm font-semibold text-zinc-100 group-hover:text-white transition-colors">
                   {subj}
                 </h3>
-                <p className="text-xs text-neutral-500 mt-0.5">CHSE Odisha Board Syllabus</p>
+                <p className="text-xs text-zinc-500 mt-0.5">CHSE Odisha Board Syllabus</p>
 
                 {/* Progress bar */}
-                <div className="mt-4 pt-3 border-t border-[#1f1f1f]">
-                  <div className="flex items-center justify-between text-xs font-semibold mb-1.5">
-                    <span className="text-neutral-400">
+                <div className="mt-3.5 pt-3 border-t border-[#1e2025]">
+                  <div className="flex items-center justify-between text-xs mb-1.5">
+                    <span className="text-zinc-400 text-[11px]">
                       {done} of {total} completed
                     </span>
-                    <span className="text-white font-mono">{pct}%</span>
+                    <span className="text-zinc-200 font-mono text-[11px] font-semibold">{pct}%</span>
                   </div>
-                  <div className="w-full h-1.5 bg-black rounded-full overflow-hidden">
+                  <div className="w-full h-1.5 bg-[#0c0d0f] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-white transition-all duration-500"
+                      className="h-full bg-zinc-300 transition-all duration-500"
                       style={{ width: `${pct}%` }}
                     ></div>
                   </div>
@@ -258,11 +258,11 @@ export const Dashboard = () => {
       </div>
 
       {/* Weekly Goals Section */}
-      <div className="bg-[#0a0a0a] rounded-2xl p-6 border border-[#222222]">
-        <h3 className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-4">
+      <div className="bg-[#111215] rounded-xl p-5 border border-[#23252a]">
+        <h3 className="text-xs font-mono uppercase tracking-wider text-zinc-400 mb-3.5">
           Weekly CHSE Readiness Targets
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
           {[
             { label: "Target Lectures", current: Object.keys(completedMap).length, target: 12 },
             { label: "Practice Units", current: Math.min(8, Math.floor(Object.keys(completedMap).length / 3)), target: 8 },
@@ -272,18 +272,18 @@ export const Dashboard = () => {
             return (
               <div
                 key={i}
-                className="p-4 rounded-xl bg-black border border-[#222222] flex items-center justify-between gap-4"
+                className="p-3.5 rounded-lg bg-[#0c0d0f] border border-[#1e2024] flex items-center justify-between gap-3.5"
               >
                 <div>
-                  <div className="text-xs font-medium text-neutral-400">{g.label}</div>
-                  <div className="text-lg font-black text-white mt-0.5">
+                  <div className="text-xs font-medium text-zinc-400">{g.label}</div>
+                  <div className="text-base font-bold text-zinc-100 mt-0.5 font-mono">
                     {g.current} / {g.target}
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-mono text-white">{pct}%</span>
-                  <div className="w-20 h-1.5 bg-neutral-900 rounded-full overflow-hidden mt-1">
-                    <div className="h-full bg-white" style={{ width: `${pct}%` }}></div>
+                  <span className="text-xs font-mono text-zinc-300 font-semibold">{pct}%</span>
+                  <div className="w-16 h-1.5 bg-[#141518] rounded-full overflow-hidden mt-1">
+                    <div className="h-full bg-zinc-300" style={{ width: `${pct}%` }}></div>
                   </div>
                 </div>
               </div>
