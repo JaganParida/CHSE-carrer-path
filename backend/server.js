@@ -40,8 +40,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// Immediate Health check endpoint (Instantly responds without waiting for DB)
-app.get(["/api/health", "/health"], (req, res) => {
+// Health check endpoint (connects on-demand and returns live status)
+app.get(["/api/health", "/health"], async (req, res) => {
+  if (process.env.MONGODB_URI && mongoose.connection.readyState === 0) {
+    try {
+      await connectDB();
+    } catch (e) {
+      // non-crashing safe catch
+    }
+  }
+
   const dbStates = {
     0: "disconnected",
     1: "connected",
