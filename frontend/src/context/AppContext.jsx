@@ -142,17 +142,20 @@ export const AppProvider = ({ children }) => {
 
   // Helper to get effective videoUrl for any chapter (checking admin overrides)
   const getChapterVideo = (ch) => {
+    if (!ch) return null;
     const override = videoLinks[ch.id];
-    const url = override && override.videoUrl !== undefined ? override.videoUrl : ch.videoUrl;
+    const url = override && override.videoUrl !== undefined ? override.videoUrl : (ch.videoUrl || "");
     const title = override && override.title ? override.title : ch.title;
     const desc = override && override.desc ? override.desc : ch.desc;
     const ytId = getYouTubeId(url);
+    const thumbnailUrl = ytId ? `https://img.youtube.com/vi/${ytId}/mqdefault.jpg` : null;
     return {
       ...ch,
       title,
       desc,
       videoUrl: url,
       youtubeId: ytId,
+      thumbnailUrl,
       isAvailable: Boolean(ytId),
     };
   };

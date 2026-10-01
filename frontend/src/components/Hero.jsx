@@ -9,6 +9,7 @@ import {
   IconBook,
   IconVideo,
   IconFire,
+  IconClock,
 } from "./Icons.jsx";
 
 export const Hero = () => {
@@ -195,15 +196,42 @@ export const Hero = () => {
                     <div
                       key={ch.id}
                       onClick={() => handlePlayChapter(ch)}
-                      className="p-3 rounded-lg bg-black/60 border border-white/[0.04] hover:border-white/[0.14] cursor-pointer transition-all flex items-center justify-between gap-3 group"
+                      className="p-2.5 sm:p-3 rounded-lg bg-black/60 border border-white/[0.04] hover:border-white/[0.14] cursor-pointer transition-all flex items-center justify-between gap-3 group"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-8 h-8 rounded-md bg-white/[0.04] flex items-center justify-center text-zinc-400 group-hover:bg-white group-hover:text-black shrink-0 transition-colors">
-                          <IconPlay size={13} />
+                        {/* Video Thumbnail or Coming Soon indicator */}
+                        <div className="relative w-14 h-9 sm:w-16 sm:h-10 rounded-md overflow-hidden bg-black/80 border border-white/[0.06] shrink-0 flex items-center justify-center">
+                          {video?.thumbnailUrl ? (
+                            <>
+                              <img
+                                src={video.thumbnailUrl}
+                                alt={ch.title}
+                                className="w-full h-full object-cover"
+                                loading="lazy"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
+                                }}
+                              />
+                              <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                                <IconPlay size={10} className="text-white drop-shadow" />
+                              </div>
+                            </>
+                          ) : (
+                            <div className="w-full h-full flex flex-col items-center justify-center bg-[#0e0f12] text-zinc-500 p-0.5">
+                              <IconClock size={12} className="text-zinc-500 mb-0.5" />
+                              <span className="text-[8px] font-mono text-zinc-400 uppercase">Soon</span>
+                            </div>
+                          )}
                         </div>
+
                         <div className="min-w-0">
-                          <div className="text-xs font-semibold text-zinc-200 group-hover:text-white truncate transition-colors">
-                            {ch.title}
+                          <div className="text-xs font-semibold text-zinc-200 group-hover:text-white truncate transition-colors flex items-center gap-1.5">
+                            <span className="truncate">{ch.title}</span>
+                            {!video?.isAvailable && (
+                              <span className="px-1.5 py-0.2 rounded bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[9px] font-mono shrink-0">
+                                Soon
+                              </span>
+                            )}
                           </div>
                           <div className="text-[11px] text-zinc-500 truncate mt-0.5 font-mono">
                             {activePreviewSubject} · {ch.unitName?.split(":")[0] || "Unit"}
@@ -212,9 +240,6 @@ export const Hero = () => {
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[11px] font-mono text-zinc-500 hidden sm:inline">
-                          {video?.duration || "Lecture"}
-                        </span>
                         <span className="text-xs font-medium text-zinc-400 group-hover:text-white group-hover:translate-x-0.5 transition-all">
                           →
                         </span>

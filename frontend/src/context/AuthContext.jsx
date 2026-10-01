@@ -122,17 +122,28 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
+    // 1. Immediately reset client state so UI reacts instantly without network lag
+    setUser(null);
+    setToken(null);
+    try {
+      localStorage.removeItem("chsetube_token");
+      localStorage.removeItem("chsetube_user");
+    } catch (e) {}
+
+    // 2. Ensure scroll position is reset to top so landing page displays properly
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    // 3. Clear server session cookie asynchronously
     try {
       await fetch("/api/auth/logout", {
         method: "POST",
-        credentials: "include", // Clears HttpOnly cookie on backend
+        credentials: "include",
       });
-    } catch (e) {}
-
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("chsetube_token");
-    localStorage.removeItem("chsetube_user");
+    } catch (e) {
+      console.warn("Server logout notification skipped:", e);
+    }
   };
 
   const updateProfile = (fields) => {

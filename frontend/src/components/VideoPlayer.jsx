@@ -23,6 +23,7 @@ export const VideoPlayer = () => {
     currentClass,
     setCurrentSection,
     playVideo,
+    getChapterVideo,
     toggleComplete,
     toggleSave,
     notes,
@@ -139,6 +140,10 @@ export const VideoPlayer = () => {
               <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#0c0d10] text-zinc-400">
                 <div className="w-10 h-10 rounded-lg bg-black/60 border border-white/[0.06] text-zinc-300 flex items-center justify-center mb-2.5">
                   <IconClock size={18} />
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[10px] font-mono text-amber-300 mb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                  COMING SOON
                 </div>
                 <h3 className="text-sm font-semibold text-white mb-1">
                   Video Lecture Coming Soon
@@ -257,6 +262,7 @@ export const VideoPlayer = () => {
 
           <div className="space-y-1 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
             {playlist.map((p, idx) => {
+              const pVideo = getChapterVideo(p);
               const isActive = p.id === currentVideo.id;
               const isPdone = Boolean(completedMap[p.id]);
               return (
@@ -269,18 +275,42 @@ export const VideoPlayer = () => {
                       : "text-zinc-300 hover:bg-white/[0.04] border border-transparent"
                   }`}
                 >
-                  <span
-                    className={`w-5 h-5 rounded flex items-center justify-center shrink-0 font-mono font-bold text-[10px] ${
-                      isActive ? "bg-black text-white" : "bg-black/60 text-zinc-400 border border-white/[0.06]"
-                    }`}
-                  >
-                    {idx + 1}
-                  </span>
+                  {/* Playlist mini thumbnail */}
+                  <div className="relative w-12 h-7 rounded overflow-hidden bg-black/80 border border-white/[0.06] shrink-0 flex items-center justify-center">
+                    {pVideo?.thumbnailUrl ? (
+                      <img
+                        src={pVideo.thumbnailUrl}
+                        alt={p.title}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-black/60 text-zinc-500">
+                        <IconClock size={11} className="text-zinc-500" />
+                      </div>
+                    )}
+                  </div>
 
                   <div className="flex-1 min-w-0">
-                    <div className="truncate">{p.title}</div>
+                    <div className="truncate flex items-center gap-1.5">
+                      <span className="truncate">{p.title}</span>
+                      {!pVideo?.isAvailable && (
+                        <span
+                          className={`text-[8px] font-mono px-1 py-0.2 rounded shrink-0 ${
+                            isActive
+                              ? "bg-black/10 text-black border border-black/20"
+                              : "bg-amber-500/10 text-amber-300 border border-amber-500/20"
+                          }`}
+                        >
+                          Soon
+                        </span>
+                      )}
+                    </div>
                     <div className={`text-[10px] truncate ${isActive ? "text-zinc-700" : "text-zinc-500"}`}>
-                      {p.unitName.split(":")[0]}
+                      {p.unitName?.split(":")[0] || "Unit"}
                     </div>
                   </div>
 

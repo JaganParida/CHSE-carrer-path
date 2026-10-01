@@ -10,6 +10,7 @@ import {
   IconBookmarkFilled,
   IconChevronDown,
   IconVideo,
+  IconClock,
 } from "./Icons.jsx";
 
 export const SubjectView = () => {
@@ -204,25 +205,69 @@ export const SubjectView = () => {
                           key={ch.id}
                           className="p-3 sm:p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-white/[0.02] transition-colors"
                         >
-                          <div className="min-w-0 space-y-1">
-                            <div className="flex items-center gap-2 flex-wrap">
-                              <span className="text-xs font-mono text-zinc-500">{ch.id}</span>
-                              <h4 className="text-xs sm:text-sm font-medium text-zinc-200">
-                                {ch.title}
-                              </h4>
-                              {isDone && (
-                                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-mono">
-                                  <IconCheck size={10} /> Done
-                                </span>
+                          {/* Chapter Thumbnail + Details Container */}
+                          <div className="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                            {/* Small 16:9 Video Thumbnail Preview */}
+                            <div
+                              onClick={() => playVideo(ch, currentSubject, currentClass)}
+                              className="relative w-20 sm:w-24 h-12 sm:h-14 rounded-lg overflow-hidden bg-black/80 border border-white/[0.06] shrink-0 cursor-pointer group/thumb select-none flex items-center justify-center transition-all hover:border-white/[0.18]"
+                              title={video?.isAvailable ? `Watch: ${ch.title}` : `Coming Soon: ${ch.title}`}
+                            >
+                              {video?.thumbnailUrl ? (
+                                <>
+                                  <img
+                                    src={video.thumbnailUrl}
+                                    alt={ch.title}
+                                    className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"
+                                    loading="lazy"
+                                    onError={(e) => {
+                                      e.currentTarget.style.display = "none";
+                                    }}
+                                  />
+                                  <div className="absolute inset-0 bg-black/30 group-hover/thumb:bg-black/10 transition-colors flex items-center justify-center">
+                                    <div className="w-5 h-5 rounded-full bg-white/95 text-black flex items-center justify-center shadow-md transition-transform group-hover/thumb:scale-110">
+                                      <IconPlay size={10} className="ml-0.5" />
+                                    </div>
+                                  </div>
+                                </>
+                              ) : (
+                                <div className="w-full h-full flex flex-col items-center justify-center bg-[#0e0f12] text-zinc-500 p-1 text-center">
+                                  <IconClock size={14} className="text-zinc-500 mb-0.5" />
+                                  <span className="text-[9px] font-mono text-zinc-400 tracking-tight uppercase">Soon</span>
+                                </div>
                               )}
                             </div>
-                            <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
-                              {ch.desc}
-                            </p>
+
+                            {/* Chapter Title, Description & Badges */}
+                            <div className="min-w-0 space-y-1 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <span className="text-xs font-mono text-zinc-500">{ch.id}</span>
+                                <h4 className="text-xs sm:text-sm font-medium text-zinc-200">
+                                  {ch.title}
+                                </h4>
+                                {video?.isAvailable ? (
+                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-white/[0.04] text-zinc-400 text-[10px] font-mono border border-white/[0.06]">
+                                    Lecture
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[10px] font-mono font-medium">
+                                    Coming Soon
+                                  </span>
+                                )}
+                                {isDone && (
+                                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-mono">
+                                    <IconCheck size={10} /> Done
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
+                                {ch.desc}
+                              </p>
+                            </div>
                           </div>
 
                           {/* Chapter Actions */}
-                          <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+                          <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto pl-1 sm:pl-0">
                             <button
                               type="button"
                               onClick={() => toggleComplete(ch.id)}
@@ -249,14 +294,26 @@ export const SubjectView = () => {
                               {isSaved ? <IconBookmarkFilled size={13} /> : <IconBookmark size={13} />}
                             </button>
 
-                            <button
-                              type="button"
-                              onClick={() => playVideo(ch, currentSubject, currentClass)}
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black text-xs font-semibold transition-all shadow-sm"
-                            >
-                              <IconPlay size={12} />
-                              <span>Watch</span>
-                            </button>
+                            {video?.isAvailable ? (
+                              <button
+                                type="button"
+                                onClick={() => playVideo(ch, currentSubject, currentClass)}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black text-xs font-semibold transition-all shadow-sm shrink-0"
+                              >
+                                <IconPlay size={12} />
+                                <span>Watch</span>
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => playVideo(ch, currentSubject, currentClass)}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-zinc-300 text-xs font-medium transition-colors shrink-0"
+                                title="Lecture video uploading soon · View notes and syllabus details"
+                              >
+                                <IconClock size={12} className="text-zinc-400" />
+                                <span>Details</span>
+                              </button>
+                            )}
                           </div>
                         </div>
                       );

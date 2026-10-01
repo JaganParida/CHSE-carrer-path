@@ -280,8 +280,8 @@ export const Navbar = () => {
 
                   <button
                     onClick={() => {
-                      logout();
                       setUserMenuOpen(false);
+                      logout();
                     }}
                     className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-medium text-rose-400 hover:bg-rose-500/10 flex items-center gap-2"
                   >
