@@ -27,7 +27,7 @@ export default function MobileBottomNav() {
   }
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 px-2 py-1 safe-area-bottom">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-black/95 backdrop-blur-xl border-t border-[#1f1f1f] px-2 py-1 safe-area-bottom">
       <div className="flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -46,10 +46,10 @@ export default function MobileBottomNav() {
               }}
               className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all relative ${
                 isActive
-                  ? "text-blue-400 font-bold"
+                  ? "text-white font-bold"
                   : isDisabled
-                  ? "text-slate-600 opacity-40 cursor-not-allowed"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "text-neutral-600 opacity-40 cursor-not-allowed"
+                  : "text-neutral-400 hover:text-white"
               }`}
             >
               <div className={`p-1 rounded-lg transition-transform ${isActive ? "scale-110" : ""}`}>
@@ -57,7 +57,7 @@ export default function MobileBottomNav() {
               </div>
               <span className="text-[10px] tracking-tight mt-0.5">{item.label}</span>
               {isActive && (
-                <span className="absolute bottom-0.5 w-1 h-1 bg-blue-500 rounded-full" />
+                <span className="absolute bottom-0.5 w-1 h-1 bg-white rounded-full" />
               )}
             </button>
           );

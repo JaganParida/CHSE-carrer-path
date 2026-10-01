@@ -32,10 +32,10 @@ export default function App() {
   }, [setSearchModalOpen]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-600/30 selection:text-blue-200 relative pb-16 md:pb-0">
-      {/* Subtle clean background atmosphere (restrained 2-color slate base) */}
+    <div className="min-h-screen bg-black text-neutral-100 flex flex-col font-sans selection:bg-white selection:text-black relative pb-16 md:pb-0">
+      {/* Vercel subtle monochrome gradient grid atmosphere */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-blue-600/5 blur-[140px] rounded-full" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[350px] bg-white/[0.03] blur-[150px] rounded-full" />
       </div>
 
       {/* Main Navbar */}
@@ -101,16 +101,16 @@ export default function App() {
       {/* Student / Admin Auth Modal */}
       <AuthModal />
 
-      {/* Global Interactive Toast Notification */}
+      {/* Global Interactive Toast Notification (Vercel Style) */}
       {toast && (
-        <div className="fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl text-xs font-semibold text-white animate-bounce-subtle">
+        <div className="fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#0a0a0a] border border-[#262626] shadow-2xl text-xs font-semibold text-white animate-bounce-subtle">
           <span
-            className={`w-2.5 h-2.5 rounded-full ${
+            className={`w-2 h-2 rounded-full ${
               toast.type === "success"
-                ? "bg-emerald-400"
+                ? "bg-white"
                 : toast.type === "error"
-                ? "bg-rose-400"
-                : "bg-blue-400"
+                ? "bg-rose-500"
+                : "bg-neutral-400"
             }`}
           />
           <span>{toast.message}</span>

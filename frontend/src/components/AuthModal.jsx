@@ -45,28 +45,28 @@ export const AuthModal = () => {
   return (
     <div
       onClick={() => setAuthModalOpen(false)}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl animate-fadeIn"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md bg-slate-900 rounded-3xl border border-slate-700/80 p-6 sm:p-8 shadow-2xl relative"
+        className="w-full max-w-md bg-[#0a0a0a] rounded-3xl border border-[#262626] p-6 sm:p-8 shadow-2xl relative text-white"
       >
         <button
           onClick={() => setAuthModalOpen(false)}
-          className="absolute top-5 right-5 p-1.5 rounded-full bg-slate-800 text-slate-400 hover:text-white transition-colors"
+          className="absolute top-5 right-5 p-1.5 rounded-full bg-[#141414] border border-[#262626] text-neutral-400 hover:text-white transition-colors"
         >
           <IconClose size={16} />
         </button>
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="w-12 h-12 rounded-2xl bg-blue-600/10 border border-blue-500/20 mx-auto flex items-center justify-center text-blue-400 mb-3 shadow-md shadow-blue-500/10">
-            {authMode === "login" ? <IconUser size={22} /> : <IconCrown size={22} />}
+          <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 mx-auto flex items-center justify-center text-white mb-3">
+            {authMode === "login" ? <IconUser size={20} /> : <IconCrown size={20} />}
           </div>
           <h2 className="text-xl font-black text-white tracking-tight">
             {authMode === "login" ? "Sign In to CHSETube" : "Create Student Account"}
           </h2>
-          <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+          <p className="text-xs text-neutral-400 mt-1 max-w-xs mx-auto">
             {authMode === "login"
               ? "Access your saved chapters, personalized study streak, and notes"
               : "Register to save your CHSE syllabus progress across all your devices"}
@@ -77,39 +77,39 @@ export const AuthModal = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           {authMode === "register" && (
             <div>
-              <label className="text-xs font-bold text-slate-300 block mb-1">Full Name</label>
+              <label className="text-xs font-semibold text-neutral-300 block mb-1">Full Name</label>
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-black border border-[#262626] text-sm text-white placeholder-neutral-600 focus:border-white focus:ring-1 focus:ring-white outline-none"
               />
             </div>
           )}
 
           <div>
-            <label className="text-xs font-bold text-slate-300 block mb-1">Email Address</label>
+            <label className="text-xs font-semibold text-neutral-300 block mb-1">Email Address</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="youremail@example.com"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-black border border-[#262626] text-sm text-white placeholder-neutral-600 focus:border-white focus:ring-1 focus:ring-white outline-none"
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold text-slate-300 block mb-1">Password</label>
+            <label className="text-xs font-semibold text-neutral-300 block mb-1">Password</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
-              className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-black border border-[#262626] text-sm text-white placeholder-neutral-600 focus:border-white focus:ring-1 focus:ring-white outline-none"
             />
           </div>
 
@@ -117,17 +117,17 @@ export const AuthModal = () => {
             <>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1">Class</label>
-                  <div className="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800">
+                  <label className="text-xs font-semibold text-neutral-300 block mb-1">Class</label>
+                  <div className="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-black border border-[#262626]">
                     {["11", "12"].map((cls) => (
                       <button
                         key={cls}
                         type="button"
                         onClick={() => setUserClass(cls)}
-                        className={`py-1 rounded-lg text-xs font-bold transition-all ${
+                        className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
                           userClass === cls
-                            ? "bg-blue-600 text-white shadow-sm"
-                            : "text-slate-400 hover:text-white"
+                            ? "bg-white text-black shadow-sm"
+                            : "text-neutral-400 hover:text-white"
                         }`}
                       >
                         Class {cls}
@@ -137,11 +137,11 @@ export const AuthModal = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1">Stream</label>
+                  <label className="text-xs font-semibold text-neutral-300 block mb-1">Stream</label>
                   <select
                     value={stream}
                     onChange={(e) => setStream(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs font-bold text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
+                    className="w-full px-3 py-2 rounded-xl bg-black border border-[#262626] text-xs font-bold text-white focus:border-white focus:ring-1 focus:ring-white outline-none"
                   >
                     <option value="Science">Science</option>
                     <option value="Commerce">Commerce</option>
@@ -151,15 +151,15 @@ export const AuthModal = () => {
               </div>
 
               <div>
-                <label className="text-xs font-bold text-slate-300 block mb-1">Account Role</label>
+                <label className="text-xs font-semibold text-neutral-300 block mb-1">Account Role</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => setRole("student")}
                     className={`py-2 rounded-xl text-xs font-bold border transition-all ${
                       role === "student"
-                        ? "bg-blue-600 text-white border-blue-500 shadow-sm"
-                        : "bg-slate-950 text-slate-400 border-slate-800 hover:text-white"
+                        ? "bg-white text-black border-white shadow-sm"
+                        : "bg-black text-neutral-400 border-[#262626] hover:text-white"
                     }`}
                   >
                     Student
@@ -169,8 +169,8 @@ export const AuthModal = () => {
                     onClick={() => setRole("admin")}
                     className={`py-2 rounded-xl text-xs font-bold border transition-all ${
                       role === "admin"
-                        ? "bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm"
-                        : "bg-slate-950 text-slate-400 border-slate-800 hover:text-white"
+                        ? "bg-white text-black border-white shadow-sm"
+                        : "bg-black text-neutral-400 border-[#262626] hover:text-white"
                     }`}
                   >
                     Admin
@@ -183,21 +183,21 @@ export const AuthModal = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-500/25 transition-all mt-2 disabled:opacity-50"
+            className="w-full py-3 rounded-xl text-sm font-bold text-black bg-white hover:bg-neutral-200 transition-all mt-2 disabled:opacity-50 shadow-sm"
           >
             {loading ? "Please wait..." : authMode === "login" ? "Sign In to Dashboard" : "Create Student Account"}
           </button>
         </form>
 
         {/* Switch mode */}
-        <div className="mt-5 text-center text-xs text-slate-400">
+        <div className="mt-5 text-center text-xs text-neutral-400">
           {authMode === "login" ? (
             <>
               Don't have an account?{" "}
               <button
                 type="button"
                 onClick={() => setAuthMode("register")}
-                className="text-blue-400 font-bold hover:underline"
+                className="text-white font-bold hover:underline"
               >
                 Create one now
               </button>
@@ -208,7 +208,7 @@ export const AuthModal = () => {
               <button
                 type="button"
                 onClick={() => setAuthMode("login")}
-                className="text-blue-400 font-bold hover:underline"
+                className="text-white font-bold hover:underline"
               >
                 Sign in
               </button>

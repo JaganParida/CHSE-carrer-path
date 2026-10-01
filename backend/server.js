@@ -65,6 +65,7 @@ app.get(["/api/health", "/health"], async (req, res) => {
     serverless: Boolean(process.env.VERCEL),
     database: currentState,
     hasMongoUri: Boolean(process.env.MONGODB_URI),
+    mongoError: global.mongoose?.lastError || null,
     timestamp: new Date().toISOString(),
   });
 });

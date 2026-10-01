@@ -26,7 +26,6 @@ export const Navbar = () => {
     setCurrentStream,
     currentClass,
     setCurrentClass,
-    setCurrentSubject,
     setSearchModalOpen,
   } = useApp();
 
@@ -37,7 +36,6 @@ export const Navbar = () => {
   const academicRef = useRef(null);
   const userMenuRef = useRef(null);
 
-  // Close dropdowns on outside click or ESC key
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (academicRef.current && !academicRef.current.contains(e.target)) {
@@ -76,7 +74,7 @@ export const Navbar = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-slate-950/85 backdrop-blur-xl border-b border-slate-800/80">
+    <header className="sticky top-0 z-40 w-full bg-black/85 backdrop-blur-xl border-b border-[#1f1f1f]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         {/* Left: Brand Identity */}
         <div className="flex items-center gap-6">
@@ -84,32 +82,32 @@ export const Navbar = () => {
             onClick={() => handleNav("dashboard")}
             className="flex items-center gap-3 cursor-pointer group select-none shrink-0"
           >
-            <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-lg shadow-blue-500/25 group-hover:bg-blue-500 transition-all group-hover:scale-105">
-              <IconLogo size={20} />
+            <div className="w-8 h-8 rounded-xl bg-white text-black flex items-center justify-center font-black transition-transform group-hover:scale-105">
+              <IconLogo size={18} />
             </div>
             <div className="flex flex-col">
               <div className="text-base font-black tracking-tight text-white flex items-center gap-1 leading-none">
-                CHSE<span className="text-blue-500">Tube</span>
+                CHSE<span className="text-neutral-400">Tube</span>
               </div>
-              <div className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase mt-1">
-                Odisha (+2) Portal
+              <div className="text-[10px] text-neutral-400 font-mono tracking-wider uppercase mt-1">
+                Odisha (+2)
               </div>
             </div>
           </div>
         </div>
 
-        {/* Center: Desktop Navigation Bar */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-900/60 p-1 rounded-full border border-slate-800/70">
+        {/* Center: Desktop Navigation Bar (Vercel Style) */}
+        <nav className="hidden md:flex items-center gap-1 bg-[#0a0a0a] p-1 rounded-full border border-[#222222]">
           {navLinks.map((link) => {
             const isActive = currentSection === link.id;
             return (
               <button
                 key={link.id}
                 onClick={() => handleNav(link.id)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${
+                className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
                   isActive
-                    ? "bg-blue-600 text-white shadow-sm shadow-blue-500/20"
-                    : "text-slate-400 hover:text-white hover:bg-slate-800/60"
+                    ? "bg-white text-black shadow-sm"
+                    : "text-neutral-400 hover:text-white hover:bg-neutral-900"
                 }`}
               >
                 {link.label}
@@ -124,24 +122,24 @@ export const Navbar = () => {
           <div className="relative" ref={academicRef}>
             <button
               onClick={() => setAcademicMenuOpen(!academicMenuOpen)}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800/90 border border-slate-800 hover:border-slate-700 text-xs font-semibold text-slate-200 transition-all shadow-sm"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#0a0a0a] hover:bg-[#141414] border border-[#222222] hover:border-neutral-600 text-xs font-medium text-neutral-200 transition-all shadow-sm"
               title="Change Stream or Class"
             >
-              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
-              <span className="font-bold text-white hidden sm:inline">{currentStream}</span>
-              <span className="text-slate-500 hidden sm:inline">·</span>
-              <span className="text-blue-400 font-bold">Class {currentClass}</span>
-              <IconChevronDown size={13} className="text-slate-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+              <span className="font-semibold text-white hidden sm:inline">{currentStream}</span>
+              <span className="text-neutral-500 hidden sm:inline">·</span>
+              <span className="text-neutral-300 font-semibold">Class {currentClass}</span>
+              <IconChevronDown size={13} className="text-neutral-400" />
             </button>
 
             {academicMenuOpen && (
-              <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-slate-900 border border-slate-700/80 p-3 shadow-2xl z-50 animate-fadeIn space-y-3">
+              <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl bg-[#0a0a0a] border border-[#262626] p-3 shadow-2xl z-50 animate-fadeIn space-y-3">
                 {/* Standard selector */}
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5 px-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1.5 px-1">
                     Select Standard
                   </div>
-                  <div className="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-slate-950 border border-slate-800">
+                  <div className="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-black border border-[#222222]">
                     {["11", "12"].map((cls) => (
                       <button
                         key={cls}
@@ -151,8 +149,8 @@ export const Navbar = () => {
                         }}
                         className={`py-1.5 rounded-lg text-xs font-bold transition-all ${
                           currentClass === cls
-                            ? "bg-blue-600 text-white shadow-sm"
-                            : "text-slate-400 hover:text-white"
+                            ? "bg-white text-black shadow-sm"
+                            : "text-neutral-400 hover:text-white"
                         }`}
                       >
                         Class {cls} (+2)
@@ -163,7 +161,7 @@ export const Navbar = () => {
 
                 {/* Stream selector */}
                 <div>
-                  <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1.5 px-1">
+                  <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 mb-1.5 px-1">
                     Academic Stream
                   </div>
                   <div className="space-y-1">
@@ -177,8 +175,8 @@ export const Navbar = () => {
                         }}
                         className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center justify-between transition-colors ${
                           currentStream === st
-                            ? "bg-blue-600 text-white"
-                            : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                            ? "bg-white text-black font-bold"
+                            : "text-neutral-300 hover:bg-[#141414] hover:text-white"
                         }`}
                       >
                         <span>{st} Stream</span>
@@ -194,12 +192,12 @@ export const Navbar = () => {
           {/* Quick Search Button */}
           <button
             onClick={() => setSearchModalOpen(true)}
-            className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-medium text-slate-400 transition-colors"
+            className="flex items-center gap-2 p-2 sm:px-3 sm:py-1.5 rounded-xl bg-[#0a0a0a] hover:bg-[#141414] border border-[#222222] hover:border-neutral-600 text-xs font-medium text-neutral-400 transition-colors"
             title="Search topics and syllabus (Ctrl+K)"
           >
-            <IconSearch size={14} className="text-blue-400" />
-            <span className="hidden lg:inline text-slate-400">Search</span>
-            <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-slate-950 border border-slate-800 rounded text-slate-400">
+            <IconSearch size={14} className="text-white" />
+            <span className="hidden lg:inline text-neutral-400">Search</span>
+            <kbd className="hidden lg:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-black border border-[#262626] rounded text-neutral-400">
               ⌘K
             </kbd>
           </button>
@@ -209,30 +207,24 @@ export const Navbar = () => {
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => setUserMenuOpen(!userMenuOpen)}
-                className="flex items-center gap-2 p-1.5 pl-2.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 transition-colors"
+                className="flex items-center gap-2 p-1.5 pl-2.5 rounded-xl bg-[#0a0a0a] border border-[#222222] hover:border-neutral-600 transition-colors"
               >
-                <div className="w-6 h-6 rounded-lg bg-blue-600 flex items-center justify-center text-[11px] font-bold text-white">
+                <div className="w-6 h-6 rounded-lg bg-white text-black flex items-center justify-center text-[11px] font-bold">
                   {user.name ? user.name.charAt(0).toUpperCase() : "U"}
                 </div>
-                <span className="text-xs font-bold text-slate-200 max-w-[80px] truncate hidden sm:inline">
+                <span className="text-xs font-semibold text-neutral-200 max-w-[80px] truncate hidden sm:inline">
                   {user.name?.split(" ")[0] || "Student"}
                 </span>
-                <IconChevronDown size={13} className="text-slate-400" />
+                <IconChevronDown size={13} className="text-neutral-400" />
               </button>
 
               {userMenuOpen && (
-                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-slate-900 border border-slate-700/80 p-2 shadow-2xl z-50 animate-fadeIn">
-                  <div className="px-3 py-2 border-b border-slate-800 mb-1">
+                <div className="absolute right-0 top-full mt-2 w-56 rounded-2xl bg-[#0a0a0a] border border-[#262626] p-2 shadow-2xl z-50 animate-fadeIn">
+                  <div className="px-3 py-2 border-b border-[#222222] mb-1">
                     <div className="text-xs font-bold text-white truncate">{user.name}</div>
-                    <div className="text-[11px] text-slate-400 truncate">{user.email}</div>
+                    <div className="text-[11px] text-neutral-400 truncate">{user.email}</div>
                     <div className="mt-1 flex items-center gap-1.5">
-                      <span
-                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                          isAdmin
-                            ? "bg-amber-500/20 text-amber-300 border border-amber-500/30"
-                            : "bg-blue-500/20 text-blue-300"
-                        }`}
-                      >
+                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/10 text-white border border-white/15">
                         {isAdmin ? "Admin User" : `Class ${user.class || currentClass} · ${user.stream || currentStream}`}
                       </span>
                     </div>
@@ -244,9 +236,9 @@ export const Navbar = () => {
                         handleNav("admin");
                         setUserMenuOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-amber-300 hover:bg-amber-500/10 flex items-center gap-2"
+                      className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-white hover:bg-neutral-900 flex items-center gap-2"
                     >
-                      <IconCrown size={14} className="text-amber-400" />
+                      <IconCrown size={14} />
                       <span>Admin Studio</span>
                     </button>
                   )}
@@ -256,9 +248,9 @@ export const Navbar = () => {
                       handleNav("progress");
                       setUserMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:bg-slate-800 flex items-center gap-2"
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-neutral-300 hover:bg-neutral-900 flex items-center gap-2"
                   >
-                    <IconChart size={14} className="text-blue-400" />
+                    <IconChart size={14} />
                     <span>My Progress</span>
                   </button>
 
@@ -267,13 +259,13 @@ export const Navbar = () => {
                       handleNav("notes");
                       setUserMenuOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-slate-200 hover:bg-slate-800 flex items-center gap-2"
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold text-neutral-300 hover:bg-neutral-900 flex items-center gap-2"
                   >
-                    <IconNote size={14} className="text-blue-400" />
+                    <IconNote size={14} />
                     <span>My Notes</span>
                   </button>
 
-                  <div className="my-1 border-t border-slate-800"></div>
+                  <div className="my-1 border-t border-[#222222]"></div>
 
                   <button
                     onClick={() => {
@@ -294,7 +286,7 @@ export const Navbar = () => {
                   setAuthMode("login");
                   setAuthModalOpen(true);
                 }}
-                className="px-3 py-1.5 text-xs font-bold text-slate-300 hover:text-white transition-colors"
+                className="px-3 py-1.5 text-xs font-semibold text-neutral-300 hover:text-white transition-colors"
               >
                 Sign In
               </button>
@@ -303,7 +295,7 @@ export const Navbar = () => {
                   setAuthMode("register");
                   setAuthModalOpen(true);
                 }}
-                className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-500/25 transition-all hover:scale-105"
+                className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-black bg-white hover:bg-neutral-200 shadow-sm transition-all"
               >
                 Get Started
               </button>
@@ -313,7 +305,7 @@ export const Navbar = () => {
           {/* Mobile Hamburger Menu Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
+            className="md:hidden p-2 rounded-xl bg-[#0a0a0a] border border-[#222222] text-neutral-300 hover:text-white"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <IconClose size={18} /> : <IconMenu size={18} />}
@@ -323,7 +315,7 @@ export const Navbar = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-slate-800 bg-slate-950 px-4 py-4 space-y-3 animate-fadeIn">
+        <div className="md:hidden border-t border-[#1f1f1f] bg-black px-4 py-4 space-y-3 animate-fadeIn">
           {/* Navigation Links */}
           <div className="grid grid-cols-2 gap-2">
             {navLinks.map((link) => (
@@ -332,8 +324,8 @@ export const Navbar = () => {
                 onClick={() => handleNav(link.id)}
                 className={`py-2 px-3 rounded-xl text-xs font-bold text-left transition-colors ${
                   currentSection === link.id
-                    ? "bg-blue-600 text-white"
-                    : "bg-slate-900 text-slate-300 hover:text-white"
+                    ? "bg-white text-black"
+                    : "bg-[#0a0a0a] text-neutral-300 hover:text-white border border-[#222222]"
                 }`}
               >
                 {link.label}
@@ -342,15 +334,15 @@ export const Navbar = () => {
           </div>
 
           {/* Academic Scope selector on mobile */}
-          <div className="pt-2 border-t border-slate-800 flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-semibold">Standard:</span>
+          <div className="pt-2 border-t border-[#1f1f1f] flex items-center justify-between">
+            <span className="text-xs text-neutral-400 font-semibold">Standard:</span>
             <div className="flex gap-1.5">
               {["11", "12"].map((cls) => (
                 <button
                   key={cls}
                   onClick={() => setCurrentClass(cls)}
                   className={`px-3 py-1 rounded-lg text-xs font-bold ${
-                    currentClass === cls ? "bg-blue-600 text-white" : "bg-slate-900 text-slate-400"
+                    currentClass === cls ? "bg-white text-black" : "bg-[#0a0a0a] text-neutral-400 border border-[#222222]"
                   }`}
                 >
                   Class {cls}
@@ -360,7 +352,7 @@ export const Navbar = () => {
           </div>
 
           <div className="flex items-center justify-between">
-            <span className="text-xs text-slate-400 font-semibold">Stream:</span>
+            <span className="text-xs text-neutral-400 font-semibold">Stream:</span>
             <div className="flex gap-1.5">
               {["Science", "Commerce", "Arts"].map((st) => (
                 <button
@@ -370,7 +362,7 @@ export const Navbar = () => {
                     handleNav("dashboard");
                   }}
                   className={`px-3 py-1 rounded-lg text-xs font-bold ${
-                    currentStream === st ? "bg-blue-600 text-white" : "bg-slate-900 text-slate-400"
+                    currentStream === st ? "bg-white text-black" : "bg-[#0a0a0a] text-neutral-400 border border-[#222222]"
                   }`}
                 >
                   {st}

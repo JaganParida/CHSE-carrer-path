@@ -4,7 +4,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-// Attempt to load from backend/.env or root .env
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 dotenv.config();
@@ -17,19 +16,19 @@ dotenv.config();
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = global.mongoose = { conn: null, promise: null, lastError: null };
 }
 
 export async function connectDB() {
-  if (cached.conn) {
+  if (cached.conn && mongoose.connection.readyState === 1) {
     return cached.conn;
   }
 
   const uri = process.env.MONGODB_URI;
 
-  // On Vercel / Production, never hang on localhost if MONGODB_URI is not configured
   if (!uri && (process.env.VERCEL || process.env.NODE_ENV === "production")) {
     console.warn("MONGODB_URI is not configured in environment variables.");
+    cached.lastError = "MONGODB_URI environment variable not set";
     return null;
   }
 
@@ -37,20 +36,21 @@ export async function connectDB() {
 
   if (!cached.promise) {
     const opts = {
-      bufferCommands: false,
-      maxPoolSize: 10, // Optimal for serverless to prevent connection leakage
-      serverSelectionTimeoutMS: 4000,
-      socketTimeoutMS: 30000,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 10000, // 10s for serverless cold start DNS & SSL
+      socketTimeoutMS: 45000,
     };
 
     cached.promise = mongoose
       .connect(effectiveUri, opts)
       .then((m) => {
+        cached.lastError = null;
         console.log("Connected to MongoDB via Serverless Singleton");
         return m;
       })
       .catch((err) => {
         cached.promise = null;
+        cached.lastError = err.message;
         console.warn("MongoDB connection failed:", err.message);
         return null;
       });
@@ -60,6 +60,7 @@ export async function connectDB() {
     cached.conn = await cached.promise;
   } catch (e) {
     cached.promise = null;
+    cached.lastError = e.message;
     return null;
   }
 
