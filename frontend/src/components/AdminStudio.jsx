@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { useAuth } from "../context/AuthContext.jsx";
-import { SYLLABUS_DATA, STREAM_SUBJECTS } from "../data/syllabusData.js";
+import { SYLLABUS_DATA, STREAM_SUBJECTS, resolveChapterInfo } from "../data/syllabusData.js";
 import {
   IconCrown,
   IconPlay,
@@ -77,6 +77,32 @@ export const AdminStudio = () => {
       console.warn("Failed to fetch students from backend, showing empty/local list.", err);
     } finally {
       setLoadingStudents(false);
+    }
+  };
+
+  const handleDeleteStudent = async (studentId, studentName) => {
+    if (!window.confirm(`Are you sure you want to permanently delete student "${studentName}"?`)) {
+      return;
+    }
+    try {
+      const headers = {};
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      const res = await fetch(`/api/admin/students/${studentId}`, {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast(data.message || `Deleted ${studentName}`, "success");
+        setStudents((prev) => prev.filter((s) => s.id !== studentId));
+      } else {
+        showToast(data.message || "Failed to delete student.", "error");
+      }
+    } catch (err) {
+      showToast("Network error deleting student.", "error");
     }
   };
 
@@ -551,7 +577,7 @@ export const AdminStudio = () => {
                         </div>
 
                         {/* Metrics: Completed, Streak, Registered */}
-                        <div className="flex items-center gap-3 self-end sm:self-center shrink-0">
+                        <div className="flex items-center gap-2 sm:gap-3 self-end sm:self-center shrink-0">
                           <div className="text-right">
                             <div className="text-xs font-bold text-zinc-100 font-mono">
                               {s.completedCount} chapters done
@@ -564,51 +590,88 @@ export const AdminStudio = () => {
                           <button
                             onClick={() => setExpandedStudentId(isExpanded ? null : s.id)}
                             className="p-1.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-400 hover:text-white transition-colors"
-                            title="View completed chapters"
+                            title={isExpanded ? "Collapse" : "View completed chapters & timeline"}
                           >
                             <IconChevronDown
                               size={14}
                               className={`transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
                             />
                           </button>
+
+                          <button
+                            onClick={() => handleDeleteStudent(s.id, s.name)}
+                            className="p-1.5 rounded-lg bg-[#0c0d0f] hover:bg-rose-500/20 border border-[#23252a] hover:border-rose-500/40 text-zinc-500 hover:text-rose-400 transition-colors"
+                            title={`Delete student ${s.name}`}
+                          >
+                            <IconTrash size={14} />
+                          </button>
                         </div>
                       </div>
 
                       {/* Expanded Drawer: Exact Chapters & Completion Timestamps */}
                       {isExpanded && (
-                        <div className="mt-3.5 pt-3.5 border-t border-[#1e2025] space-y-3 bg-[#0c0d0f] p-3.5 rounded-lg animate-fadeIn">
-                          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
-                            <span>Detailed Completion Timeline ({completedEntries.length} topics)</span>
-                            <span>Student ID: {s.id}</span>
+                        <div className="mt-3.5 pt-3.5 border-t border-[#1e2025] space-y-3 bg-[#0c0d0f] p-3.5 sm:p-4 rounded-lg animate-fadeIn">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs font-mono text-zinc-400 gap-1 pb-1 border-b border-[#1a1c22]">
+                            <span className="font-semibold text-zinc-200">
+                              Detailed Completion Timeline ({completedEntries.length} topics mastered)
+                            </span>
+                            <span className="text-[11px] text-zinc-500">Student ID: {s.id}</span>
                           </div>
 
                           {completedEntries.length === 0 ? (
-                            <div className="text-xs text-zinc-500 py-3 text-center">
+                            <div className="text-xs text-zinc-500 py-4 text-center">
                               This student has not marked any chapters complete yet.
                             </div>
                           ) : (
-                            <div className="space-y-1.5 max-h-56 overflow-y-auto custom-scrollbar pr-1">
+                            <div className="space-y-2 max-h-80 overflow-y-auto custom-scrollbar pr-1">
                               {completedEntries.map(([chapterKey, timeVal], idx) => {
                                 let formattedTime = "Completed";
                                 if (timeVal && timeVal !== "true") {
                                   try {
-                                    formattedTime = new Date(timeVal).toLocaleString();
+                                    formattedTime = new Date(timeVal).toLocaleString("en-IN", {
+                                      day: "numeric",
+                                      month: "short",
+                                      year: "numeric",
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                      second: "2-digit",
+                                    });
                                   } catch (e) {
                                     formattedTime = String(timeVal);
                                   }
                                 }
 
+                                const info = resolveChapterInfo(chapterKey);
+
                                 return (
                                   <div
                                     key={idx}
-                                    className="flex items-center justify-between p-2 rounded-md bg-[#111215] border border-[#1f2127] text-xs font-mono"
+                                    className="p-3 rounded-lg bg-[#111215] border border-[#23252a] flex flex-col md:flex-row md:items-center justify-between gap-2.5 transition-colors hover:border-[#353842]"
                                   >
-                                    <div className="flex items-center gap-2 truncate">
-                                      <IconCheck size={12} className="text-emerald-400 shrink-0" />
-                                      <span className="text-zinc-200 font-medium truncate">{chapterKey}</span>
+                                    <div className="flex items-start gap-2.5 min-w-0">
+                                      <div className="w-5 h-5 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                                        <IconCheck size={12} />
+                                      </div>
+                                      <div className="min-w-0">
+                                        <div className="flex items-center gap-1.5 mb-1 flex-wrap font-mono">
+                                          <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#27292f] text-zinc-200">
+                                            {info.subject} · Class {info.class}
+                                          </span>
+                                          <span className="text-[10px] text-zinc-400 truncate max-w-sm">
+                                            {info.unitName}
+                                          </span>
+                                        </div>
+                                        <div className="text-xs sm:text-sm font-semibold text-zinc-100 truncate">
+                                          {info.title}
+                                        </div>
+                                        <div className="text-[10px] font-mono text-zinc-500 mt-0.5">
+                                          Code: {chapterKey}
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div className="flex items-center gap-1.5 text-zinc-500 text-[11px] shrink-0 ml-2">
-                                      <IconClock size={11} />
+
+                                    <div className="flex items-center gap-1.5 text-zinc-400 text-xs font-mono self-end md:self-center shrink-0 bg-[#0c0d0f] px-2.5 py-1 rounded border border-[#1e2025]">
+                                      <IconClock size={12} className="text-zinc-500" />
                                       <span>{formattedTime}</span>
                                     </div>
                                   </div>
@@ -618,16 +681,28 @@ export const AdminStudio = () => {
                           )}
 
                           {s.savedVideos && s.savedVideos.length > 0 && (
-                            <div className="pt-2 border-t border-[#1f2127]">
-                              <span className="text-[11px] font-mono text-zinc-400 block mb-1">
-                                Bookmarked Videos ({s.savedVideos.length}):
+                            <div className="pt-3 border-t border-[#1e2025] space-y-2">
+                              <span className="text-[11px] font-mono text-zinc-400 block font-semibold">
+                                Bookmarked Videos for Revision ({s.savedVideos.length}):
                               </span>
-                              <div className="flex flex-wrap gap-1 font-mono text-[10px]">
-                                {s.savedVideos.map((vid, vIdx) => (
-                                  <span key={vIdx} className="px-2 py-0.5 rounded bg-[#111215] border border-[#23252a] text-zinc-300">
-                                    {vid}
-                                  </span>
-                                ))}
+                              <div className="space-y-1.5">
+                                {s.savedVideos.map((vid, vIdx) => {
+                                  const bInfo = resolveChapterInfo(vid);
+                                  return (
+                                    <div
+                                      key={vIdx}
+                                      className="flex items-center justify-between p-2 rounded-md bg-[#111215] border border-[#1e2025] text-xs font-mono"
+                                    >
+                                      <div className="flex items-center gap-2 truncate">
+                                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#0c0d0f] border border-[#23252a] text-zinc-300 shrink-0">
+                                          {bInfo.subject} · Cl {bInfo.class}
+                                        </span>
+                                        <span className="text-zinc-200 truncate">{bInfo.title}</span>
+                                      </div>
+                                      <span className="text-[10px] text-zinc-500 shrink-0 ml-2">ID: {vid}</span>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             </div>
                           )}

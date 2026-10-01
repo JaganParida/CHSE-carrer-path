@@ -230,4 +230,38 @@ router.get("/students", async (req, res) => {
   }
 });
 
+// @route   DELETE /api/admin/students/:id
+// @desc    Delete a student account from database (admin only)
+router.delete("/students/:id", async (req, res) => {
+  try {
+    const student = await User.findById(req.params.id);
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        message: "Student account not found.",
+      });
+    }
+
+    if (student.role === "admin") {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot delete an administrator account.",
+      });
+    }
+
+    await User.deleteOne({ _id: req.params.id });
+
+    return res.json({
+      success: true,
+      message: `Student ${student.name} (${student.email}) deleted successfully.`,
+    });
+  } catch (err) {
+    console.error("Admin delete student error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete student account.",
+    });
+  }
+});
+
 export default router;

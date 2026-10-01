@@ -493,3 +493,65 @@ export const SYLLABUS_DATA = {
     ],
   },
 };
+
+export const resolveChapterInfo = (chapterId) => {
+  if (!chapterId) {
+    return { id: "", title: "Unknown Topic", subject: "General", class: "12", unitName: "General" };
+  }
+
+  for (const [subjectName, classesMap] of Object.entries(SYLLABUS_DATA)) {
+    for (const [className, unitsList] of Object.entries(classesMap)) {
+      if (Array.isArray(unitsList)) {
+        for (const unit of unitsList) {
+          if (Array.isArray(unit.chapters)) {
+            const found = unit.chapters.find((c) => c.id === chapterId);
+            if (found) {
+              return {
+                id: chapterId,
+                title: found.title || chapterId,
+                desc: found.desc || "",
+                subject: subjectName,
+                class: className,
+                unitId: unit.unitId,
+                unitName: unit.unit,
+              };
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Fallback parsing from ID prefix
+  const prefix = chapterId.slice(0, 2).toLowerCase();
+  const classMatch = chapterId.match(/\d{2}/);
+  const classVal = classMatch ? classMatch[0] : (chapterId.includes("12") ? "12" : "11");
+  const subMap = {
+    ph: "Physics",
+    ch: "Chemistry",
+    mt: "Mathematics",
+    ma: "Mathematics",
+    bi: "Biology",
+    it: "IT",
+    en: "English",
+    od: "Odia",
+    ac: "Accountancy",
+    bs: "BSM",
+    bm: "BMS",
+    ec: "Economics",
+    hi: "History",
+    po: "Political Science",
+    so: "Sociology",
+    lo: "Logic",
+  };
+
+  return {
+    id: chapterId,
+    title: chapterId,
+    desc: "",
+    subject: subMap[prefix] || "General",
+    class: classVal,
+    unitId: "unit_general",
+    unitName: "Curriculum Topic",
+  };
+};
