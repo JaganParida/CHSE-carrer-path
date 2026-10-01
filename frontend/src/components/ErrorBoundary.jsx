@@ -31,9 +31,13 @@ export class ErrorBoundary extends React.Component {
       return (
         <div className="min-h-screen bg-[#090a0c] text-zinc-100 flex items-center justify-center p-4 font-sans selection:bg-white selection:text-black">
           <div className="max-w-md w-full bg-[#0e0f12] border border-white/[0.08] rounded-xl p-6 sm:p-8 text-center space-y-4 shadow-2xl">
-            <div className="w-12 h-12 rounded-xl bg-white/[0.05] border border-white/[0.08] text-amber-400 flex items-center justify-center mx-auto text-xl font-bold font-mono">
-              !
-            </div>
+            <img
+              src="/logo.png"
+              alt="CHSETube Logo"
+              className="w-14 h-14 object-contain mx-auto drop-shadow-md select-none"
+              width={56}
+              height={56}
+            />
 
             <div>
               <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">

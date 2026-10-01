@@ -80,11 +80,16 @@ export const Navbar = () => {
         <div className="flex items-center gap-3 shrink-0">
           <div
             onClick={() => handleNav("dashboard")}
-            className="flex items-center gap-2 cursor-pointer group select-none"
+            className="flex items-center gap-2.5 cursor-pointer group select-none"
           >
-            <div className="w-7 h-7 rounded-md bg-white text-black flex items-center justify-center font-black shadow-sm transition-transform group-hover:scale-105">
-              <IconLogo size={14} />
-            </div>
+            <img
+              src="/logo.png"
+              alt="CHSETube"
+              className="w-8 h-8 object-contain shrink-0 transition-transform group-hover:scale-105 select-none"
+              width={32}
+              height={32}
+              loading="eager"
+            />
             <div className="flex items-center gap-1.5">
               <span className="text-sm font-bold tracking-tight text-white">
                 CHSE<span className="text-zinc-500 font-light">Tube</span>

@@ -24,13 +24,18 @@ export default function Footer() {
                 setCurrentSection("dashboard");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="flex items-center gap-2.5 cursor-pointer group"
+              className="flex items-center gap-2.5 cursor-pointer group select-none"
             >
-              <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-950 flex items-center justify-center font-bold">
-                <IconLogo size={15} />
-              </div>
-              <span className="font-bold text-sm text-zinc-100 tracking-tight">
-                CHSE<span className="text-zinc-400">Tube</span>
+              <img
+                src="/logo.png"
+                alt="CHSETube Logo"
+                className="w-8 h-8 object-contain shrink-0 group-hover:scale-105 transition-transform"
+                width={32}
+                height={32}
+                loading="lazy"
+              />
+              <span className="font-bold text-base text-zinc-100 tracking-tight">
+                CHSE<span className="text-zinc-400 font-light">Tube</span>
               </span>
             </div>
             <p className="text-zinc-400 text-xs leading-relaxed">

@@ -68,9 +68,13 @@ export const AuthModal = () => {
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.06] mx-auto flex items-center justify-center text-zinc-200 mb-3 shadow-sm">
-            <IconUser size={18} />
-          </div>
+          <img
+            src="/logo.png"
+            alt="CHSETube Logo"
+            className="w-12 h-12 object-contain mx-auto mb-3 drop-shadow-md select-none"
+            width={48}
+            height={48}
+          />
           <h2 className="text-xl font-bold text-zinc-100 tracking-tight">
             {authMode === "login" ? "Sign In to CHSETube" : "Create Student Account"}
           </h2>

@@ -182,12 +182,17 @@ export const LandingPage = () => {
       {/* Precision Top Navigation Bar */}
       <header className="sticky top-0 z-40 w-full bg-black/95 backdrop-blur-xl border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-md bg-white text-black flex items-center justify-center font-black shadow-sm">
-              <IconLogo size={14} />
-            </div>
+          <div className="flex items-center gap-2.5">
+            <img
+              src="/logo.png"
+              alt="CHSETube"
+              className="w-8 h-8 object-contain shrink-0 drop-shadow-sm select-none"
+              width={32}
+              height={32}
+              loading="eager"
+            />
             <div className="flex items-center gap-2">
-              <span className="font-bold text-sm tracking-tight text-white">
+              <span className="font-bold text-base tracking-tight text-white">
                 CHSE<span className="text-zinc-500 font-light">Tube</span>
               </span>
               <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border border-white/[0.06] text-zinc-400 hidden sm:inline">
@@ -778,8 +783,14 @@ export const LandingPage = () => {
       {/* SECTION 7: FINAL CALL TO ACTION (Stark Black & White) */}
       <section className="py-20 sm:py-28 bg-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="w-12 h-12 rounded-xl bg-white text-black flex items-center justify-center mx-auto font-black shadow-lg">
-            <IconLogo size={20} />
+          <div className="flex items-center justify-center">
+            <img
+              src="/logo.png"
+              alt="CHSETube Logo"
+              className="w-20 h-20 sm:w-24 sm:h-24 object-contain drop-shadow-2xl transition-transform hover:scale-105 select-none"
+              width={96}
+              height={96}
+            />
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
             Ready to Ace Your CHSE Board Exams?
@@ -806,9 +817,17 @@ export const LandingPage = () => {
 
       {/* Minimalist Public Student Footer (Strictly Student Links, Zero Admin Mentions) */}
       <footer className="border-t border-white/[0.06] bg-black py-10 text-center text-xs text-zinc-500 font-mono">
-        <div className="max-w-7xl mx-auto px-4 space-y-2">
+        <div className="max-w-7xl mx-auto px-4 space-y-3">
           <div className="flex items-center justify-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+            <img
+              src="/logo.png"
+              alt="CHSETube Logo"
+              className="w-5 h-5 object-contain"
+              width={20}
+              height={20}
+            />
+            <span className="text-zinc-300 font-sans font-semibold">CHSETube</span>
+            <span className="text-zinc-600">·</span>
             <span className="text-zinc-400">Council of Higher Secondary Education, Odisha (+2) Digital Learning Initiative</span>
           </div>
           <p>© {new Date().getFullYear()} CHSETube. Free Open Education Resource for Students across Odisha.</p>
