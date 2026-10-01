@@ -37,10 +37,11 @@ const getCookieOptions = () => {
 };
 
 // @route   POST /api/auth/register
-// @desc    Register a new student or admin & set secure cookie
+// @route   POST /api/auth/register
+// @desc    Register a new student & set secure cookie
 router.post("/register", async (req, res) => {
   try {
-    const { name, email, password, stream, class: userClass, school, role } = req.body;
+    const { name, email, password, stream, class: userClass, school } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({
@@ -50,81 +51,68 @@ router.post("/register", async (req, res) => {
     }
 
     const cleanEmail = email.toLowerCase().trim();
+    const cleanPassword = password.trim();
 
-    // Ensure connection attempt
-    let dbConnected = mongoose.connection.readyState === 1;
-    if (!dbConnected) {
+    if (cleanPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: "Password must be at least 6 characters.",
+      });
+    }
+
+    // Ensure database connection
+    if (mongoose.connection.readyState !== 1) {
       try {
         await connectDB();
-        dbConnected = mongoose.connection.readyState === 1;
       } catch (connErr) {
-        console.warn("DB connection attempt failed in register:", connErr.message);
+        console.warn("DB connection in register:", connErr.message);
       }
     }
 
-    let existingUser = null;
-    if (dbConnected) {
-      try {
-        existingUser = await User.findOne({ email: cleanEmail }).lean();
-      } catch (findErr) {
-        console.warn("Existing user lookup error:", findErr.message);
-      }
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
+        success: false,
+        message: "Database connecting. Please retry in a few seconds.",
+      });
     }
+
+    const existingUser = await User.findOne({
+      email: { $regex: new RegExp(`^${cleanEmail}$`, "i") },
+    });
 
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "An account with this email address already exists.",
+        message: "An account with this email address already exists. Please sign in.",
       });
     }
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+    const hashedPassword = await bcrypt.hash(cleanPassword, salt);
 
-    let savedUser = null;
-    if (dbConnected) {
-      try {
-        savedUser = await User.create({
-          name: name.trim(),
-          email: cleanEmail,
-          password: hashedPassword,
-          stream: stream || "Science",
-          class: userClass || "12",
-          school: school ? school.trim() : "",
-          role: "student",
-        });
-      } catch (createErr) {
-        console.warn("MongoDB User.create error:", createErr.message);
-      }
-    }
+    const savedUser = await User.create({
+      name: name.trim(),
+      email: cleanEmail,
+      password: hashedPassword,
+      stream: stream || "Science",
+      class: userClass || "12",
+      school: school ? school.trim() : "",
+      role: "student",
+    });
 
-    const userData = savedUser
-      ? {
-          id: savedUser._id,
-          name: savedUser.name,
-          email: savedUser.email,
-          role: savedUser.role,
-          stream: savedUser.stream,
-          class: savedUser.class,
-          school: savedUser.school,
-          avatarUrl: savedUser.avatarUrl,
-          streak: savedUser.streak,
-          savedVideos: savedUser.savedVideos,
-          completedTopics: savedUser.completedTopics,
-        }
-      : {
-          id: "usr_" + Date.now(),
-          name: name.trim(),
-          email: cleanEmail,
-          role: role === "admin" ? "admin" : "student",
-          stream: stream || "Science",
-          class: userClass || "12",
-          school: school ? school.trim() : "",
-          avatarUrl: "",
-          streak: { count: 1, lastDate: new Date().toDateString() },
-          savedVideos: [],
-          completedTopics: {},
-        };
+    const userData = {
+      id: savedUser._id,
+      name: savedUser.name,
+      email: savedUser.email,
+      role: savedUser.role,
+      stream: savedUser.stream,
+      class: savedUser.class,
+      school: savedUser.school,
+      avatarUrl: savedUser.avatarUrl,
+      streak: savedUser.streak,
+      savedVideos: savedUser.savedVideos,
+      completedTopics: savedUser.completedTopics,
+    };
 
     const token = generateToken(userData);
 
@@ -159,37 +147,56 @@ router.post("/login", async (req, res) => {
     }
 
     const cleanEmail = email.toLowerCase().trim();
+    const cleanPassword = password.trim();
 
-    // Ensure connection attempt
+    // Ensure database connection
     if (mongoose.connection.readyState !== 1) {
       try {
         await connectDB();
-      } catch (connErr) {}
-    }
-
-    let user = null;
-    if (mongoose.connection.readyState === 1) {
-      user = await User.findOne({ email: cleanEmail });
-    }
-
-    if (!user) {
-      if (mongoose.connection.readyState !== 1) {
-        return res.status(503).json({
-          success: false,
-          message: "Database unreachable. In MongoDB Atlas, please add 0.0.0.0/0 to Network Access.",
-        });
+      } catch (connErr) {
+        console.warn("DB connection in login:", connErr.message);
       }
-      return res.status(401).json({
+    }
+
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({
         success: false,
-        message: "Invalid email or password.",
+        message: "Database connecting. Please retry in 3 seconds.",
       });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    // Case-insensitive email lookup
+    const user = await User.findOne({
+      email: { $regex: new RegExp(`^${cleanEmail}$`, "i") },
+    });
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "No account found with this email. Please check your email or create a free account.",
+      });
+    }
+
+    // Robust password matching: checks raw, trimmed, and legacy plaintext
+    let isMatch = false;
+    try {
+      isMatch = await bcrypt.compare(cleanPassword, user.password);
+      if (!isMatch && password !== cleanPassword) {
+        isMatch = await bcrypt.compare(password, user.password);
+      }
+      if (!isMatch && (user.password === cleanPassword || user.password === password)) {
+        isMatch = true;
+      }
+    } catch (bcryptErr) {
+      if (user.password === cleanPassword || user.password === password) {
+        isMatch = true;
+      }
+    }
+
     if (!isMatch) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password.",
+        message: "Incorrect password. Please verify and try again.",
       });
     }
 

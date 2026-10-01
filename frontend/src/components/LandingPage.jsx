@@ -10,16 +10,16 @@ import {
   IconNote,
   IconChart,
   IconMap,
-  IconSparkles,
   IconChevronDown,
   IconFire,
   IconClock,
-  IconUser,
+  IconShield,
 } from "./Icons.jsx";
 
 export const LandingPage = () => {
   const { setAuthModalOpen, setAuthMode } = useAuth();
   const [selectedStreamTab, setSelectedStreamTab] = useState("Science");
+  const [expandedSubjectIndex, setExpandedSubjectIndex] = useState(0);
   const [activeFaq, setActiveFaq] = useState(null);
 
   const openAuth = (mode = "register", defaultStream = "Science") => {
@@ -31,110 +31,191 @@ export const LandingPage = () => {
     setActiveFaq(activeFaq === idx ? null : idx);
   };
 
-  const streamDetails = {
+  const streamData = {
     Science: {
-      tag: "PCM / Biology / IT",
-      badge: "Class 11 & 12 · Engineering & Medical Track",
-      subjects: [
-        { name: "Physics", units: "Electrostatics, Optics, Magnetism, Modern Physics", chapters: "24 Chapters" },
-        { name: "Chemistry", units: "Solid State, Solutions, Electrochemistry, Organic", chapters: "26 Chapters" },
-        { name: "Mathematics", units: "Relations, Calculus, Vectors, 3D Geometry, Linear Prog", chapters: "22 Chapters" },
-        { name: "Biology (Botany & Zoology)", units: "Official 5-Unit Format: Reproduction, Genetics, Biotech", chapters: "28 Chapters" },
-        { name: "Information Technology", units: "Networking, Database Systems, Web Tech, Java", chapters: "16 Chapters" },
-      ],
-      description: "Directly mapped to Council of Higher Secondary Education guidelines for Odisha science colleges, with seamless integration for JEE Main, NEET UG, and OUAT entrance preparation.",
+      tag: "PCM / BIOLOGY / IT TRACK",
+      badge: "+2 1st & 2nd Year (Class 11 & 12)",
+      description:
+        "Directly aligned with official Council of Higher Secondary Education syllabus guidelines for Odisha junior colleges, with strong conceptual continuity for JEE Main, NEET UG, and OUAT entrance preparation.",
       chaptersTotal: "84+ Chapters",
+      entranceFocus: "JEE Main · NEET UG · OUAT · IISER",
+      subjects: [
+        {
+          name: "Physics",
+          units: "Electrostatics, Current Electricity, Optics, Magnetism, Modern Physics, Dual Nature",
+          chapters: "24 Chapters",
+          syllabusCode: "CHSE-PHY-12",
+        },
+        {
+          name: "Chemistry",
+          units: "Solid State, Solutions, Electrochemistry, Chemical Kinetics, Coordination Compounds, Organic",
+          chapters: "26 Chapters",
+          syllabusCode: "CHSE-CHM-12",
+        },
+        {
+          name: "Mathematics",
+          units: "Relations & Functions, Calculus, Vectors, 3D Geometry, Linear Programming, Probability",
+          chapters: "22 Chapters",
+          syllabusCode: "CHSE-MTH-12",
+        },
+        {
+          name: "Biology (Botany & Zoology)",
+          units: "Official 5-Unit Structure: Reproduction, Genetics & Evolution, Biology in Human Welfare, Biotech, Ecology",
+          chapters: "28 Chapters",
+          syllabusCode: "CHSE-BIO-12",
+        },
+        {
+          name: "Information Technology",
+          units: "Computer Networking, Relational Databases, Web Technologies, Object-Oriented Java Programming",
+          chapters: "16 Chapters",
+          syllabusCode: "CHSE-IT-12",
+        },
+      ],
     },
     Commerce: {
-      tag: "Accounting, Finance & Trade",
-      badge: "Class 11 & 12 · Corporate & Finance Track",
-      subjects: [
-        { name: "Accountancy", units: "Partnership, Share Capital, Debentures, Cash Flow", chapters: "18 Chapters" },
-        { name: "Business Studies", units: "Principles of Management, Marketing, Financial Markets", chapters: "16 Chapters" },
-        { name: "Business Math & Stats", units: "Determinants, Matrices, Measures of Dispersion, Probability", chapters: "14 Chapters" },
-        { name: "Banking & Insurance", units: "Commercial Banking, Central Banking, Life Insurance, Fire", chapters: "12 Chapters" },
-      ],
-      description: "Robust conceptual mastery for commerce higher secondary students preparing for CA Foundation, CMA, CS, and top B.Com / BBA entrance examinations across India.",
+      tag: "ACCOUNTING & FINANCE TRACK",
+      badge: "+2 1st & 2nd Year (Class 11 & 12)",
+      description:
+        "Comprehensive conceptual coverage for commerce higher secondary students, bridging board syllabus with foundational readiness for CA Foundation, CMA, CS, and university B.Com/BBA admissions.",
       chaptersTotal: "52+ Chapters",
+      entranceFocus: "CA Foundation · CMA · CS · CUET B.Com",
+      subjects: [
+        {
+          name: "Accountancy",
+          units: "Partnership Accounts, Accounting for Share Capital, Debentures, Financial Statement Analysis, Cash Flow",
+          chapters: "18 Chapters",
+          syllabusCode: "CHSE-ACT-12",
+        },
+        {
+          name: "Business Studies & Management",
+          units: "Principles of Management, Business Environment, Planning, Marketing, Financial Markets, Consumer Protection",
+          chapters: "16 Chapters",
+          syllabusCode: "CHSE-BSM-12",
+        },
+        {
+          name: "Business Mathematics & Statistics",
+          units: "Determinants, Matrices, Measures of Central Tendency & Dispersion, Correlation, Probability Distributions",
+          chapters: "14 Chapters",
+          syllabusCode: "CHSE-BMS-12",
+        },
+        {
+          name: "Banking & Insurance",
+          units: "Commercial Banking Operations, Reserve Bank of India Functions, Life Insurance Principles, Marine & Fire",
+          chapters: "12 Chapters",
+          syllabusCode: "CHSE-BNK-12",
+        },
+      ],
     },
     Arts: {
-      tag: "Humanities & Social Sciences",
-      badge: "Class 11 & 12 · Civil Services & Law Track",
-      subjects: [
-        { name: "Political Science", units: "Constitution at Work, Political Theory, Contemporary World", chapters: "18 Chapters" },
-        { name: "History", units: "Ancient India, Medieval Trends, Modern National Movement", chapters: "16 Chapters" },
-        { name: "Economics", units: "Microeconomics, Macroeconomics, Indian Economic Development", chapters: "16 Chapters" },
-        { name: "Sociology", units: "Indian Society, Social Institutions, Social Change", chapters: "14 Chapters" },
-        { name: "Education", units: "Principles of Education, Educational Psychology, Statistics", chapters: "12 Chapters" },
-      ],
-      description: "In-depth conceptual lectures covering the complete CHSE Odisha arts syllabus, designed to build strong foundations for CUET UG, OPSC, and UPSC civil service aspirants.",
+      tag: "HUMANITIES & SOCIAL SCIENCES TRACK",
+      badge: "+2 1st & 2nd Year (Class 11 & 12)",
+      description:
+        "Structured chapter video masterclasses covering official CHSE arts disciplines, building intellectual depth for Central University admissions (CUET UG), state civil services, and law entrance exams.",
       chaptersTotal: "68+ Chapters",
+      entranceFocus: "CUET UG · CLAT · OPSC Foundation · Civil Services",
+      subjects: [
+        {
+          name: "Political Science",
+          units: "Indian Constitution at Work, Political Theory, Contemporary World Politics, Politics in India Since Independence",
+          chapters: "18 Chapters",
+          syllabusCode: "CHSE-POL-12",
+        },
+        {
+          name: "History",
+          units: "Themes in Ancient Indian History, Medieval Cultural Trends, Colonialism and the National Movement",
+          chapters: "16 Chapters",
+          syllabusCode: "CHSE-HIS-12",
+        },
+        {
+          name: "Economics",
+          units: "Introductory Microeconomics, Macroeconomic Equilibria, Indian Economic Development & Policies",
+          chapters: "16 Chapters",
+          syllabusCode: "CHSE-ECO-12",
+        },
+        {
+          name: "Sociology",
+          units: "Structure of Indian Society, Social Institutions, Social Inequality & Exclusion, Processes of Social Change",
+          chapters: "14 Chapters",
+          syllabusCode: "CHSE-SOC-12",
+        },
+        {
+          name: "Education",
+          units: "Principles of Modern Education, Educational Psychology, Learning Theories, Educational Statistics",
+          chapters: "12 Chapters",
+          syllabusCode: "CHSE-EDU-12",
+        },
+      ],
     },
   };
+
+  const activeStream = streamData[selectedStreamTab];
 
   const faqs = [
     {
       q: "Is CHSETube completely free for Odisha students?",
-      a: "Yes, CHSETube is 100% free and open access. There are no paywalls, paid subscriptions, or locked units. Every chapter lecture, syllabus unit breakdown, notepad, and career guide is accessible at zero cost.",
+      a: "Yes. CHSETube is 100% free and open access. There are no paywalls, hidden fees, or subscription tiers. Every syllabus unit breakdown, curated chapter lecture, study notepad, and career roadmap is accessible freely.",
     },
     {
-      q: "Does the curriculum strictly follow official CHSE Odisha guidelines?",
-      a: "Yes. Every single unit, chapter name, and breakdown is modeled directly on the approved syllabus prescribed by the Council of Higher Secondary Education (CHSE), Odisha for Class 11 (+2 1st Year) and Class 12 (+2 2nd Year), including the official 5-unit Biology format.",
-    },
-    {
-      q: "Can I use CHSETube comfortably on my smartphone?",
-      a: "Absolutely. CHSETube is optimized mobile-first. Videos play in clean 16:9 theater format, unit accordions are easy to tap, and you can switch between your chapter notes and playlist with a single tap on small screens.",
+      q: "Does the curriculum strictly follow Council of Higher Secondary Education guidelines?",
+      a: "Yes. Every single unit, chapter title, and topic progression is modeled directly on the approved syllabus prescribed by CHSE Odisha for Class 11 (+2 1st Year) and Class 12 (+2 2nd Year), including the official 5-unit Biology format.",
     },
     {
       q: "Why is my Stream and Class locked after registration?",
-      a: "CHSE board exams demand deep focus. Once you enroll in your Class and Stream (e.g., Class 12 Science), your dashboard locks to your syllabus so you are never distracted by unrelated content or accidentally studying the wrong course.",
+      a: "Higher secondary board preparation requires sustained focus. Locking your profile to your enrolled Class and Stream (e.g., Class 12 Science) ensures your dashboard is completely tailored to your board exam without unrelated content distractions.",
     },
     {
-      q: "How does the built-in study notepad work?",
-      a: "Every video lecture has a dedicated notepad. As you type formulas, definitions, or questions, your notes autosave in real time. You can export all your chapter notes as a clean .txt document anytime for offline exam revision.",
+      q: "How does the built-in lecture notepad work?",
+      a: "Every video lecture has a synchronized, real-time notepad. As you type formulas, definitions, and questions while streaming, your notes autosave locally and to your student account. You can download and export all chapter notes as a plain .txt document anytime for offline exam revision.",
     },
     {
-      q: "What are the Post +2 Career Roadmaps?",
-      a: "After +2, students face crucial entrance exams (JEE, NEET, OUAT, CA Foundation, CUET, CLAT, NDA, OPSC). Our Career Guide gives you step-by-step milestones, exam dates, eligibility criteria, salary ranges, and prep strategies.",
+      q: "Is CHSETube optimized for mobile phones?",
+      a: "Yes, CHSETube is designed mobile-first. Videos stream in clean 16:9 theater format, unit accordions are touch-friendly, and you can switch between your chapter notes and lecture playlist seamlessly on any smartphone screen.",
+    },
+    {
+      q: "What do the Post +2 Career Roadmaps cover?",
+      a: "After +2, students face vital competitive entrance exams. Our roadmaps provide structured milestone timelines, exam patterns, eligibility rules, and preparation strategies for JEE Main, NEET UG, OUAT, CA Foundation, CUET UG, CLAT, and state civil services.",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-[#090a0c] text-zinc-100 flex flex-col font-sans selection:bg-white selection:text-black">
-      {/* Sticky Header */}
-      <header className="sticky top-0 z-40 w-full bg-[#090a0c]/90 backdrop-blur-md border-b border-[#1f2127]">
+    <div className="min-h-screen bg-black text-zinc-100 flex flex-col font-sans selection:bg-white selection:text-black antialiased">
+      {/* Precision Top Navigation Bar */}
+      <header className="sticky top-0 z-40 w-full bg-black/80 backdrop-blur-xl border-b border-zinc-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-950 flex items-center justify-center font-bold shadow-sm">
-              <IconLogo size={15} />
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-md bg-white text-black flex items-center justify-center font-black shadow-sm">
+              <IconLogo size={14} />
             </div>
-            <span className="font-bold text-sm tracking-tight text-zinc-100">
-              CHSE<span className="text-zinc-400">Tube</span>
-            </span>
-            <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border border-[#23252a] text-zinc-400 hidden sm:inline">
-              Odisha (+2)
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-sm tracking-tight text-white">
+                CHSE<span className="text-zinc-500 font-light">Tube</span>
+              </span>
+              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border border-zinc-800 text-zinc-400 hidden sm:inline">
+                Odisha (+2)
+              </span>
+            </div>
           </div>
 
           {/* Quick anchor links (desktop) */}
           <nav className="hidden md:flex items-center gap-6 text-xs text-zinc-400">
-            <a href="#curriculum" className="hover:text-zinc-100 transition-colors">Curriculum</a>
-            <a href="#how-it-works" className="hover:text-zinc-100 transition-colors">How It Works</a>
-            <a href="#features" className="hover:text-zinc-100 transition-colors">Features</a>
-            <a href="#roadmaps" className="hover:text-zinc-100 transition-colors">Career Roadmaps</a>
-            <a href="#faq" className="hover:text-zinc-100 transition-colors">FAQ</a>
+            <a href="#curriculum" className="hover:text-white transition-colors">Curriculum</a>
+            <a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a>
+            <a href="#features" className="hover:text-white transition-colors">Features</a>
+            <a href="#roadmaps" className="hover:text-white transition-colors">Career Roadmaps</a>
+            <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
           </nav>
 
-          <div className="flex items-center gap-2.5">
+          {/* Direct Auth Actions */}
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => openAuth("login")}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:text-white transition-colors"
+              className="px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white transition-colors"
             >
               Sign In
             </button>
             <button
               onClick={() => openAuth("register")}
-              className="px-3.5 py-1.5 rounded-lg bg-zinc-100 text-zinc-950 hover:bg-white text-xs font-semibold shadow-sm transition-all"
+              className="px-3.5 py-1.5 rounded-lg bg-white text-black hover:bg-zinc-200 text-xs font-semibold shadow-sm transition-all"
             >
               Create Account
             </button>
@@ -142,91 +223,188 @@ export const LandingPage = () => {
         </div>
       </header>
 
-      {/* SECTION 1: HERO */}
-      <section className="relative overflow-hidden py-14 sm:py-20 md:py-28 border-b border-[#1f2127]">
-        {/* Soft background ambient glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[340px] bg-white/[0.018] blur-[150px] pointer-events-none rounded-full" />
+      {/* SECTION 1: HERO (Clean, No Badges, Single CTA, Interactive Software Preview) */}
+      <section className="relative overflow-hidden pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-zinc-800/80 bg-black">
+        {/* Soft background radial mask */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-white/[0.02] blur-[140px] pointer-events-none rounded-full" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
-          {/* Eyebrow badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#111215] border border-[#23252a] text-zinc-300 text-xs font-mono mb-6 shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>COUNCIL OF HIGHER SECONDARY EDUCATION, ODISHA (+2)</span>
-          </div>
-
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
           {/* Main Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-zinc-100 tracking-tight leading-[1.12] max-w-4xl mx-auto">
-            The Digital Study Platform Built for <span className="text-zinc-400">CHSE Odisha (+2)</span>.
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1] max-w-4xl mx-auto">
+            The Digital Study Platform Built for <span className="text-zinc-500 font-medium">CHSE Odisha (+2)</span>.
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-5 text-sm sm:text-base md:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Eliminate YouTube clutter, distractions, and confusion. Access official syllabus chapters, curated teacher masterclasses, autosaved chapter notebooks, and entrance roadmaps in one focused portal.
+          <p className="mt-5 text-sm sm:text-base md:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed font-normal">
+            Eliminate YouTube distraction loops. Access official syllabus chapter lectures, synchronized revision notebooks, and post-12th career roadmaps in one focused workspace.
           </p>
 
-          {/* CTAs */}
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          {/* Single High-Contrast CTA Button */}
+          <div className="mt-8 flex justify-center">
             <button
               onClick={() => openAuth("register")}
-              className="w-full sm:w-auto px-6 py-3 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all"
+              className="px-7 py-3.5 rounded-lg bg-white hover:bg-zinc-200 text-black font-bold text-xs sm:text-sm flex items-center justify-center gap-2.5 shadow-lg transition-all hover:scale-[1.01] active:scale-[0.99]"
             >
-              <span>Enroll Free as Student</span>
+              <span>Create Free Student Account</span>
               <IconArrowRight size={14} />
-            </button>
-            <button
-              onClick={() => openAuth("login")}
-              className="w-full sm:w-auto px-5 py-3 rounded-lg bg-[#111215] hover:bg-[#18191d] border border-[#23252a] text-zinc-300 hover:text-white font-medium text-xs sm:text-sm transition-all"
-            >
-              Sign In to Dashboard
             </button>
           </div>
 
-          {/* Key Value Highlights Grid */}
-          <div className="mt-12 pt-8 border-t border-[#1f2127] grid grid-cols-2 md:grid-cols-4 gap-3.5 max-w-4xl mx-auto text-left font-mono">
-            <div className="bg-[#111215] p-3.5 rounded-xl border border-[#23252a] shadow-sm">
-              <div className="text-zinc-500 text-[10px] uppercase tracking-wider">Access Model</div>
-              <div className="text-xs sm:text-sm font-bold text-zinc-100 mt-1">100% Free Forever</div>
+          {/* Metric Bar */}
+          <div className="mt-12 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-y md:divide-y-0 divide-zinc-800/80 border border-zinc-800/80 rounded-xl bg-zinc-950/60 font-mono text-center overflow-hidden">
+            <div className="p-3.5 sm:p-4">
+              <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Access</div>
+              <div className="text-xs sm:text-sm font-semibold text-zinc-200 mt-1">100% Free Forever</div>
             </div>
-            <div className="bg-[#111215] p-3.5 rounded-xl border border-[#23252a] shadow-sm">
-              <div className="text-zinc-500 text-[10px] uppercase tracking-wider">Board Curriculum</div>
-              <div className="text-xs sm:text-sm font-bold text-zinc-100 mt-1">CHSE 2026–2027</div>
+            <div className="p-3.5 sm:p-4">
+              <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Syllabus</div>
+              <div className="text-xs sm:text-sm font-semibold text-zinc-200 mt-1">Official CHSE 2026–27</div>
             </div>
-            <div className="bg-[#111215] p-3.5 rounded-xl border border-[#23252a] shadow-sm">
-              <div className="text-zinc-500 text-[10px] uppercase tracking-wider">Streams Covered</div>
-              <div className="text-xs sm:text-sm font-bold text-zinc-100 mt-1">Science · Com · Arts</div>
+            <div className="p-3.5 sm:p-4">
+              <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Streams</div>
+              <div className="text-xs sm:text-sm font-semibold text-zinc-200 mt-1">Science · Commerce · Arts</div>
             </div>
-            <div className="bg-[#111215] p-3.5 rounded-xl border border-[#23252a] shadow-sm">
-              <div className="text-zinc-500 text-[10px] uppercase tracking-wider">Study Focus</div>
-              <div className="text-xs sm:text-sm font-bold text-zinc-100 mt-1">Zero Distraction</div>
+            <div className="p-3.5 sm:p-4">
+              <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Environment</div>
+              <div className="text-xs sm:text-sm font-semibold text-zinc-200 mt-1">Ad-Free & Distraction-Free</div>
+            </div>
+          </div>
+
+          {/* Interactive Live Product Preview Mockup */}
+          <div className="mt-14 max-w-5xl mx-auto text-left">
+            <div className="rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl overflow-hidden">
+              {/* Window Chrome Header */}
+              <div className="px-4 py-3 bg-[#0d0e12] border-b border-zinc-800 flex items-center justify-between text-xs font-mono">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                  <span className="text-zinc-500 ml-2 hidden sm:inline">portal.chsetube.edu · Class 12 Science</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-zinc-400 text-[11px]">Live Syllabus Mode</span>
+                </div>
+              </div>
+
+              {/* Mock Workspace Interior */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-800">
+                {/* Left: Syllabus Tree Preview */}
+                <div className="lg:col-span-4 p-4 space-y-3 bg-[#090a0d]">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-white font-mono">Physics · 24 Chapters</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">
+                      Unit 1 of 5
+                    </span>
+                  </div>
+
+                  <div className="space-y-1.5">
+                    <div className="p-2.5 rounded-lg bg-zinc-900/90 border border-zinc-700/80 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-4 h-4 rounded bg-emerald-400/20 text-emerald-400 flex items-center justify-center shrink-0">
+                          <IconCheck size={10} />
+                        </span>
+                        <span className="text-xs font-medium text-zinc-100 truncate">Electric Charges & Fields</span>
+                      </div>
+                      <span className="text-[10px] font-mono text-zinc-500 shrink-0">38 min</span>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-zinc-800/40 border border-zinc-700/40 flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-4 h-4 rounded bg-white text-black flex items-center justify-center shrink-0">
+                          <IconPlay size={8} />
+                        </span>
+                        <span className="text-xs font-semibold text-white truncate">Electrostatic Potential</span>
+                      </div>
+                      <span className="text-[10px] font-mono text-emerald-400 shrink-0">Playing</span>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-transparent border border-zinc-850 flex items-center justify-between gap-2 text-zinc-500">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-4 h-4 rounded border border-zinc-800 flex items-center justify-center shrink-0 text-[10px] font-mono">
+                          3
+                        </span>
+                        <span className="text-xs truncate">Capacitance & Dielectrics</span>
+                      </div>
+                      <span className="text-[10px] font-mono shrink-0">44 min</span>
+                    </div>
+
+                    <div className="p-2.5 rounded-lg bg-transparent border border-zinc-850 flex items-center justify-between gap-2 text-zinc-500">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="w-4 h-4 rounded border border-zinc-800 flex items-center justify-center shrink-0 text-[10px] font-mono">
+                          4
+                        </span>
+                        <span className="text-xs truncate">Current Electricity & Ohm's Law</span>
+                      </div>
+                      <span className="text-[10px] font-mono shrink-0">52 min</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right: Theater Screen + Synced Notes */}
+                <div className="lg:col-span-8 p-4 sm:p-5 flex flex-col justify-between bg-black">
+                  {/* Mock Video Canvas */}
+                  <div className="aspect-video w-full rounded-lg bg-zinc-950 border border-zinc-800 relative flex items-center justify-center overflow-hidden group">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
+                    <div className="text-center z-20 space-y-2 p-4">
+                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center mx-auto shadow-md">
+                        <IconPlay size={18} />
+                      </div>
+                      <div className="text-xs font-semibold text-white">Electrostatic Potential & Capacitance</div>
+                      <div className="text-[10px] text-zinc-400 font-mono">CHSE Class 12 Physics · Full Concept Lecture</div>
+                    </div>
+                  </div>
+
+                  {/* Synchronized Chapter Notepad Mock */}
+                  <div className="mt-3 p-3 rounded-lg bg-zinc-950 border border-zinc-850 font-mono text-[11px] space-y-1">
+                    <div className="flex items-center justify-between text-zinc-500 pb-1 border-b border-zinc-900">
+                      <span className="flex items-center gap-1.5 text-zinc-400 font-medium">
+                        <IconNote size={11} /> Auto-Saving Study Notepad
+                      </span>
+                      <span className="text-[10px] text-emerald-400 font-mono">Saved to Cloud</span>
+                    </div>
+                    <p className="text-zinc-300 pt-1">
+                      <span className="text-zinc-500 font-mono">Formula:</span> V = (1 / 4πε₀) · (q / r)
+                    </p>
+                    <p className="text-zinc-400">
+                      <span className="text-zinc-500 font-mono">Key Point:</span> Work done in moving charge around closed equipotential surface = 0.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 2: CURRICULUM BREAKDOWN */}
-      <section id="curriculum" className="py-14 sm:py-20 border-b border-[#1f2127] bg-[#0c0d0f] scroll-mt-14">
+      {/* SECTION 2: CURRICULUM ARCHITECTURE (Interactive Split View, Not Box-Inside-Box) */}
+      <section id="curriculum" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-zinc-950/40 scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <div className="inline-block text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-[#111215] border border-[#23252a] text-zinc-400 mb-2">
-              SYLLABUS ARCHITECTURE
+          {/* Eyebrow & Header */}
+          <div className="max-w-3xl mb-12">
+            <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
+              01 / CURRICULUM ARCHITECTURE
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-100 tracking-tight">
-              Curriculum Tailored for Every Stream
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Strictly Mapped to the Council of Higher Secondary Education Syllabus
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 mt-2">
-              Official unit-by-unit syllabus breakdown with curated masterclass video lectures, chapter notes, and exam roadmap.
+            <p className="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+              Every unit and topic breakdown mirrors official textbook blueprints prescribed for Odisha junior colleges.
             </p>
 
             {/* Stream Switcher Tabs */}
-            <div className="mt-6 inline-flex bg-[#111215] p-1 rounded-lg border border-[#23252a]">
+            <div className="mt-6 inline-flex bg-zinc-900 p-1 rounded-lg border border-zinc-800">
               {["Science", "Commerce", "Arts"].map((st) => (
                 <button
                   key={st}
-                  onClick={() => setSelectedStreamTab(st)}
+                  onClick={() => {
+                    setSelectedStreamTab(st);
+                    setExpandedSubjectIndex(0);
+                  }}
                   className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-all ${
                     selectedStreamTab === st
-                      ? "bg-zinc-100 text-zinc-950 shadow-sm"
-                      : "text-zinc-400 hover:text-zinc-200"
+                      ? "bg-white text-black shadow-sm"
+                      : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   {st} Stream
@@ -235,322 +413,358 @@ export const LandingPage = () => {
             </div>
           </div>
 
-          {/* Active Stream Detailed Box */}
-          <div className="max-w-4xl mx-auto bg-[#111215] rounded-xl border border-[#23252a] p-6 sm:p-8 space-y-6 shadow-sm">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-[#1f2127]">
+          {/* Split Screen Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left Column: Stream Profile & Direct Enrollment CTA */}
+            <div className="lg:col-span-5 p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-5">
               <div>
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#23252a] text-zinc-300">
-                  {streamDetails[selectedStreamTab].tag}
-                </span>
-                <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 mt-2">
-                  {selectedStreamTab} Stream (+2 1st & 2nd Year)
+                <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 mb-1">
+                  {activeStream.tag}
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white">
+                  {selectedStreamTab} Stream Curriculum
                 </h3>
-                <p className="text-xs text-zinc-400 font-mono mt-1">
-                  {streamDetails[selectedStreamTab].badge}
+                <p className="text-xs font-mono text-zinc-400 mt-1">
+                  {activeStream.badge}
                 </p>
               </div>
-              <span className="text-xs font-mono px-3 py-1 rounded-md bg-[#0c0d0f] border border-[#23252a] text-zinc-300 self-start sm:self-auto">
-                {streamDetails[selectedStreamTab].chaptersTotal}
-              </span>
+
+              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                {activeStream.description}
+              </p>
+
+              <div className="pt-2 border-t border-zinc-850 space-y-2 text-xs font-mono">
+                <div className="flex items-center justify-between text-zinc-400">
+                  <span>Total Video Coverage:</span>
+                  <span className="text-white font-bold">{activeStream.chaptersTotal}</span>
+                </div>
+                <div className="flex items-center justify-between text-zinc-400">
+                  <span>Competitive Scope:</span>
+                  <span className="text-zinc-200">{activeStream.entranceFocus}</span>
+                </div>
+              </div>
+
+              <div className="pt-3">
+                <button
+                  onClick={() => openAuth("register", selectedStreamTab)}
+                  className="w-full py-3 rounded-lg bg-white hover:bg-zinc-200 text-black text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all"
+                >
+                  <span>Enroll in {selectedStreamTab} Free</span>
+                  <IconArrowRight size={13} />
+                </button>
+              </div>
             </div>
 
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-              {streamDetails[selectedStreamTab].description}
-            </p>
-
-            {/* Subjects List */}
-            <div>
-              <div className="text-xs font-mono uppercase text-zinc-400 tracking-wider mb-3">
-                Core Subjects & Major Unit Breakdown:
+            {/* Right Column: Interactive Subjects & Unit Breakdown */}
+            <div className="lg:col-span-7 space-y-3">
+              <div className="text-xs font-mono uppercase text-zinc-500 tracking-wider mb-2">
+                Core Subjects & Major Units ({activeStream.subjects.length} Subjects)
               </div>
-              <div className="space-y-2">
-                {streamDetails[selectedStreamTab].subjects.map((sub, i) => (
+
+              {activeStream.subjects.map((sub, idx) => {
+                const isExpanded = expandedSubjectIndex === idx;
+                return (
                   <div
-                    key={i}
-                    className="p-3 rounded-lg bg-[#0c0d0f] border border-[#23252a] flex flex-col sm:flex-row sm:items-center justify-between gap-2"
+                    key={idx}
+                    className={`rounded-xl border transition-all ${
+                      isExpanded
+                        ? "border-zinc-700 bg-zinc-900/60 shadow-md"
+                        : "border-zinc-850 bg-zinc-950 hover:border-zinc-700"
+                    }`}
                   >
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-6 h-6 rounded bg-[#16171b] border border-[#23252a] text-zinc-300 flex items-center justify-center shrink-0">
-                        <IconBook size={12} />
+                    <button
+                      onClick={() => setExpandedSubjectIndex(isExpanded ? null : idx)}
+                      className="w-full p-4 flex items-center justify-between gap-3 text-left"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-7 h-7 rounded bg-zinc-900 border border-zinc-800 text-zinc-300 flex items-center justify-center shrink-0">
+                          <IconBook size={13} />
+                        </div>
+                        <div>
+                          <div className="text-sm font-semibold text-white">{sub.name}</div>
+                          <div className="text-[11px] font-mono text-zinc-500 mt-0.5">{sub.syllabusCode}</div>
+                        </div>
                       </div>
-                      <span className="text-xs sm:text-sm font-semibold text-zinc-100">{sub.name}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-zinc-400 font-mono sm:text-right">
-                      <span className="text-[11px] text-zinc-500 truncate max-w-xs">{sub.units}</span>
-                      <span className="text-[10px] px-2 py-0.5 rounded bg-[#111215] border border-[#23252a] text-zinc-300 shrink-0">
-                        {sub.chapters}
-                      </span>
-                    </div>
+
+                      <div className="flex items-center gap-3 shrink-0">
+                        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+                          {sub.chapters}
+                        </span>
+                        <IconChevronDown
+                          size={14}
+                          className={`text-zinc-400 transition-transform duration-200 ${
+                            isExpanded ? "rotate-180" : ""
+                          }`}
+                        />
+                      </div>
+                    </button>
+
+                    {isExpanded && (
+                      <div className="px-4 pb-4 pt-1 text-xs text-zinc-400 border-t border-zinc-800/80 space-y-2">
+                        <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">
+                          Syllabus Units & Prescribed Chapters:
+                        </div>
+                        <p className="leading-relaxed text-zinc-300 font-sans">
+                          {sub.units}
+                        </p>
+                      </div>
+                    )}
                   </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-[#1f2127]">
-              <span className="text-xs text-zinc-500 font-mono">
-                Class 11 & Class 12 unit breakdowns fully indexed
-              </span>
-              <button
-                onClick={() => openAuth("register", selectedStreamTab)}
-                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 text-xs font-semibold flex items-center justify-center gap-1.5 transition-all shadow-sm"
-              >
-                <span>Enroll in {selectedStreamTab} Free</span>
-                <IconArrowRight size={13} />
-              </button>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 3: HOW IT WORKS (STEP-BY-STEP) */}
-      <section id="how-it-works" className="py-14 sm:py-20 border-b border-[#1f2127] bg-[#090a0c] scroll-mt-14">
+      {/* SECTION 3: HOW IT WORKS (Architectural Numbered Process) */}
+      <section id="how-it-works" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-black scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-block text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-[#111215] border border-[#23252a] text-zinc-400 mb-2">
-              LEARNING SYSTEM
+          <div className="max-w-3xl mb-14">
+            <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
+              02 / STUDY WORKFLOW
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-100 tracking-tight">
-              How CHSETube Elevates Your Board Scores
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Engineered to Eliminate Distractions & Drive Retention
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 mt-2">
-              A 5-step academic loop engineered specifically for Council of Higher Secondary Education syllabus mastery.
+            <p className="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+              A 4-step academic framework designed specifically for Council of Higher Secondary Education board examinees.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3 shadow-sm">
-              <span className="text-xs font-mono font-bold text-zinc-500">STEP 01</span>
-              <h3 className="text-sm font-bold text-zinc-100">Enroll Stream & Class</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Pick Class 11 or 12 and your stream. Your dashboard locks so you only focus on your specific syllabus.
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-700">01</span>
+              <h3 className="text-sm font-bold text-white">Enroll Stream & Class</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                Choose Class 11 or 12 and your stream. Your dashboard is automatically locked to prevent clutter from other courses.
               </p>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3 shadow-sm">
-              <span className="text-xs font-mono font-bold text-zinc-500">STEP 02</span>
-              <h3 className="text-sm font-bold text-zinc-100">Clean Collapsed Units</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                All units start closed to prevent clutter. Expand any unit to reveal structured chapter lectures.
+            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-700">02</span>
+              <h3 className="text-sm font-bold text-white">Clean Collapsed Units</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                All syllabus units start clean and collapsed. Expand one chapter at a time to stay calm and structured.
               </p>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3 shadow-sm">
-              <span className="text-xs font-mono font-bold text-zinc-500">STEP 03</span>
-              <h3 className="text-sm font-bold text-zinc-100">Distraction-Free Theater</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Stream verified high-definition YouTube lectures with zero ads, comments, or algorithmic traps.
+            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-700">03</span>
+              <h3 className="text-sm font-bold text-white">Distraction-Free Theater</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                Stream verified high-definition YouTube masterclasses with zero algorithm traps, recommendations, or comments.
               </p>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3 shadow-sm">
-              <span className="text-xs font-mono font-bold text-zinc-500">STEP 04</span>
-              <h3 className="text-sm font-bold text-zinc-100">Auto-Saving Notepad</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Jot key formulas and definitions while listening. Everything saves in real time and exports as text.
-              </p>
-            </div>
-
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3 shadow-sm">
-              <span className="text-xs font-mono font-bold text-zinc-500">STEP 05</span>
-              <h3 className="text-sm font-bold text-zinc-100">Daily Study Streak</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Track syllabus completion percentage and build your consistency streak matrix over 24 weeks.
+            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-700">04</span>
+              <h3 className="text-sm font-bold text-white">Auto-Saving Notepad</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                Record formulas and definitions while streaming. Everything synchronizes automatically and exports as text anytime.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 4: PLATFORM ADVANTAGES */}
-      <section id="features" className="py-14 sm:py-20 border-b border-[#1f2127] bg-[#0c0d0f] scroll-mt-14">
+      {/* SECTION 4: PLATFORM ADVANTAGES (Bento Grid) */}
+      <section id="features" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-zinc-950/40 scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-block text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-[#111215] border border-[#23252a] text-zinc-400 mb-2">
-              WHY CHSETUBE
+          <div className="max-w-3xl mb-14">
+            <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
+              03 / PLATFORM CAPABILITIES
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-100 tracking-tight">
-              Built for Higher Secondary Students
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Everything Higher Secondary Students Need
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 mt-2">
-              Every detail engineered to give Odisha students the sharpest advantage in their board examinations.
+            <p className="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+              Purpose-built tools designed to give Odisha students an unfair advantage in their board results.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Bento 1: Large Span 2 */}
+            <div className="md:col-span-2 p-6 sm:p-8 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
                 <IconBook size={16} />
               </div>
-              <h3 className="text-sm font-bold text-zinc-100">100% CHSE Syllabus Mapping</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Unit-by-unit curriculum matching official CHSE Odisha text structure. Never waste time on non-board content.
+              <h3 className="text-base sm:text-lg font-bold text-white">
+                100% CHSE Odisha Syllabus Blueprint
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-xl">
+                Unlike generic national portals that follow standard CBSE tracks, CHSETube is organized directly around CHSE Council guidelines—including Odisha-specific unit splits and Biology Botany/Zoology demarcation.
               </p>
+              <div className="pt-2 flex flex-wrap gap-2 font-mono text-[10px]">
+                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">Council Guidelines</span>
+                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">Unit-by-Unit</span>
+                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">Odisha Board Mapped</span>
+              </div>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center">
+            {/* Bento 2 */}
+            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
                 <IconVideo size={16} />
               </div>
-              <h3 className="text-sm font-bold text-zinc-100">Distraction-Free Theater</h3>
+              <h3 className="text-base font-bold text-white">Distraction-Free Theater</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Watch verified top educator lectures in high definition without algorithmic rabbit holes or comments.
+                Stream curated top educator lectures in 16:9 theater format without clickbait thumbnails, sidebar algorithmic rabbit holes, or comment arguments.
               </p>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center">
+            {/* Bento 3 */}
+            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
                 <IconNote size={16} />
               </div>
-              <h3 className="text-sm font-bold text-zinc-100">Auto-Saving Chapter Notes</h3>
+              <h3 className="text-base font-bold text-white">Real-Time Revision Notes</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Jot key formulas, definitions, and questions while streaming. Export all revision notes anytime as plain text.
+                Jot key formulas and definitions while listening. Everything saves in real time and can be exported as a single offline .txt document for final board exam revision.
               </p>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center">
+            {/* Bento 4 */}
+            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
                 <IconChart size={16} />
               </div>
-              <h3 className="text-sm font-bold text-zinc-100">24-Week Consistency Heatmap</h3>
+              <h3 className="text-base font-bold text-white">24-Week Consistency Matrix</h3>
               <p className="text-xs text-zinc-400 leading-relaxed">
-                Monitor your daily study consistency and lecture completions across a GitHub-style activity grid.
+                Track your active study streak and syllabus percentage across an activity grid, helping you maintain consistency across all semesters.
               </p>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center">
+            {/* Bento 5: Large Span 2 */}
+            <div className="md:col-span-2 p-6 sm:p-8 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
                 <IconMap size={16} />
               </div>
-              <h3 className="text-sm font-bold text-zinc-100">Post +2 Career Roadmaps</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Step-by-step guidance for national entrances: JEE, NEET, OUAT, CA Foundation, CUET, and Civil Services.
+              <h3 className="text-base sm:text-lg font-bold text-white">
+                Post-12th Competitive Exam Roadmaps
+              </h3>
+              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-xl">
+                Full milestone roadmaps for JEE Main, NEET UG, OUAT Veterinary, CA Foundation, CUET UG, CLAT, and civil services—including eligibility, exam timelines, and syllabus strategies.
               </p>
-            </div>
-
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <div className="w-9 h-9 rounded-lg bg-[#18191d] border border-[#27292f] text-zinc-200 flex items-center justify-center">
-                <IconCheck size={16} />
+              <div className="pt-2 flex flex-wrap gap-2 font-mono text-[10px]">
+                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">JEE Main / OJEE</span>
+                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">NEET / OUAT</span>
+                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">CA / CMA / CS</span>
+                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">CUET UG / CLAT</span>
               </div>
-              <h3 className="text-sm font-bold text-zinc-100">100% Free & Open Access</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                Committed to educational equity across Odisha. No subscription fees, paywalls, or premium locks.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 5: CAREER ROADMAPS PREVIEW */}
-      <section id="roadmaps" className="py-14 sm:py-20 border-b border-[#1f2127] bg-[#090a0c] scroll-mt-14">
+      {/* SECTION 5: CAREER ROADMAPS */}
+      <section id="roadmaps" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-black scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-block text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-[#111215] border border-[#23252a] text-zinc-400 mb-2">
-              HIGHER EDUCATION ADVISORY
+          <div className="max-w-3xl mb-14">
+            <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
+              04 / HIGHER EDUCATION
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-100 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
               Verified Post-12th Career Roadmaps
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 mt-2">
-              Clear timelines, exam schedules, eligibility, and salary insights for national higher education paths.
+            <p className="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+              Step-by-step milestone timelines, national exam patterns, and salary insights for Odisha students.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#23252a] text-zinc-300">
-                Engineering
+            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+                Engineering & Tech
               </span>
-              <h3 className="text-base font-bold text-zinc-100">B.Tech / JEE Roadmaps</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                JEE Main, JEE Advanced, and OJEE milestones. Top NITs, IITs, IIITs, and Odisha state engineering colleges.
+              <h3 className="text-sm font-bold text-white">B.Tech / JEE Roadmap</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                Milestones for JEE Main, JEE Advanced, and OJEE state admissions to top NITs, IITs, IIITs, and government engineering colleges.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-[#1f2127]">
-                Duration: 4 Years · Exam: JEE Main
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+                4 Years · Exam: JEE Main
               </div>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#23252a] text-zinc-300">
-                Medicine & Bio
+            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+                Medicine & Life Sciences
               </span>
-              <h3 className="text-base font-bold text-zinc-100">MBBS & Allied Sciences</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                NEET UG, OUAT Veterinary, BDS, B.Pharm, and Nursing requirements for SCB, MKCG, and VIMSAR.
+              <h3 className="text-sm font-bold text-white">MBBS & Allied Sciences</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                NEET UG, OUAT Veterinary, BDS, B.Pharm, and Nursing admission tracks for SCB Cuttack, MKCG Berhampur, and VIMSAR Burla.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-[#1f2127]">
-                Duration: 5.5 Years · Exam: NEET UG
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+                5.5 Years · Exam: NEET UG
               </div>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#23252a] text-zinc-300">
+            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
                 Commerce & Finance
               </span>
-              <h3 className="text-base font-bold text-zinc-100">Chartered Accountancy</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                CA Foundation, Intermediate, and Articleship training structure through ICAI alongside B.Com honors.
+              <h3 className="text-sm font-bold text-white">Chartered Accountancy</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                Complete ICAI CA Foundation, Intermediate, and Articleship roadmap alongside university B.Com Honours graduation.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-[#1f2127]">
-                Duration: 4.5 Years · Exam: CA Foundation
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+                4.5 Years · Exam: CA Foundation
               </div>
             </div>
 
-            <div className="bg-[#111215] p-5 rounded-xl border border-[#23252a] space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#23252a] text-zinc-300">
+            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
                 Humanities & Law
               </span>
-              <h3 className="text-base font-bold text-zinc-100">Civil Services & Law</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed">
-                CLAT Integrated BA-LLB, CUET UG Central Universities, and early foundation strategy for OPSC / UPSC.
+              <h3 className="text-sm font-bold text-white">Law & Civil Services</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed font-normal">
+                National Law Universities via CLAT Integrated BA-LLB, Central Universities via CUET UG, and early OPSC/UPSC strategy.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-[#1f2127]">
-                Duration: 3–5 Years · Exam: CUET / CLAT
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+                3–5 Years · Exam: CUET / CLAT
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SECTION 6: FAQ ACCORDION */}
-      <section id="faq" className="py-14 sm:py-20 border-b border-[#1f2127] bg-[#0c0d0f] scroll-mt-14">
+      {/* SECTION 6: FAQ ACCORDION (Line-divider style, NO chunky boxes) */}
+      <section id="faq" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-zinc-950/40 scroll-mt-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <div className="inline-block text-[10px] font-mono uppercase px-2.5 py-1 rounded bg-[#111215] border border-[#23252a] text-zinc-400 mb-2">
-              QUESTIONS & ANSWERS
+          <div className="max-w-2xl mb-12">
+            <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
+              05 / QUESTIONS & ANSWERS
             </div>
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-zinc-100 tracking-tight">
+            <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
               Frequently Asked Questions
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-400 mt-2">
-              Everything you need to know about using CHSETube for your Odisha higher secondary education.
+            <p className="text-xs sm:text-sm text-zinc-400 mt-2 leading-relaxed">
+              Clear answers regarding curriculum mapping, mobile accessibility, and academic policies.
             </p>
           </div>
 
-          <div className="space-y-3">
+          <div className="divide-y divide-zinc-800/80 border-y border-zinc-800/80">
             {faqs.map((faq, idx) => {
               const isOpen = activeFaq === idx;
               return (
-                <div
-                  key={idx}
-                  className="rounded-xl bg-[#111215] border border-[#23252a] overflow-hidden shadow-sm transition-all"
-                >
+                <div key={idx} className="py-4">
                   <button
                     onClick={() => toggleFaq(idx)}
-                    className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 hover:bg-[#15161a] transition-colors select-none"
+                    className="w-full text-left flex items-center justify-between gap-4 py-2 hover:text-white transition-colors group select-none"
                   >
-                    <span className="text-xs sm:text-sm font-semibold text-zinc-100">
+                    <span className="text-xs sm:text-sm font-semibold text-zinc-200 group-hover:text-white">
                       {faq.q}
                     </span>
                     <IconChevronDown
-                      size={16}
-                      className={`text-zinc-400 shrink-0 transition-transform duration-200 ${
+                      size={15}
+                      className={`text-zinc-500 group-hover:text-zinc-300 shrink-0 transition-transform duration-200 ${
                         isOpen ? "rotate-180" : ""
                       }`}
                     />
                   </button>
 
                   {isOpen && (
-                    <div className="px-4 pb-5 sm:px-5 sm:pb-5 text-xs text-zinc-400 leading-relaxed border-t border-[#1e2025] pt-3 bg-[#0c0d0f] animate-fadeIn">
+                    <div className="pt-2 pb-3 text-xs sm:text-sm text-zinc-400 leading-relaxed font-normal">
                       {faq.a}
                     </div>
                   )}
@@ -561,28 +775,28 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* SECTION 7: FINAL BOTTOM CALL TO ACTION */}
-      <section className="py-16 sm:py-24 bg-[#090a0c]">
+      {/* SECTION 7: FINAL CALL TO ACTION (Stark Black & White) */}
+      <section className="py-20 sm:py-28 bg-black">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <div className="w-12 h-12 rounded-xl bg-zinc-100 text-zinc-950 flex items-center justify-center mx-auto font-bold shadow-md">
-            <IconLogo size={22} />
+          <div className="w-12 h-12 rounded-xl bg-white text-black flex items-center justify-center mx-auto font-black shadow-lg">
+            <IconLogo size={20} />
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-zinc-100 tracking-tight leading-tight">
+          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
             Ready to Ace Your CHSE Board Exams?
           </h2>
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-xl mx-auto leading-relaxed">
-            Create your free student profile in 30 seconds. Select your stream and class to unlock your personalized curriculum dashboard.
+          <p className="text-xs sm:text-sm text-zinc-400 max-w-lg mx-auto leading-relaxed">
+            Create your free student account in 30 seconds. Choose your stream and class to unlock your personalized curriculum dashboard.
           </p>
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3 max-w-sm mx-auto">
             <button
               onClick={() => openAuth("register")}
-              className="w-full sm:w-auto px-6 py-3 rounded-lg bg-zinc-100 hover:bg-white text-zinc-950 font-bold text-xs sm:text-sm shadow-sm transition-all"
+              className="w-full sm:w-auto px-6 py-3 rounded-lg bg-white hover:bg-zinc-200 text-black font-bold text-xs sm:text-sm shadow-md transition-all"
             >
               Get Started Free Now
             </button>
             <button
               onClick={() => openAuth("login")}
-              className="w-full sm:w-auto px-5 py-3 rounded-lg bg-[#111215] hover:bg-[#18191d] border border-[#23252a] text-zinc-300 text-xs sm:text-sm font-medium transition-all"
+              className="w-full sm:w-auto px-5 py-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs sm:text-sm font-medium transition-all"
             >
               Sign In to Dashboard
             </button>
@@ -590,14 +804,14 @@ export const LandingPage = () => {
         </div>
       </section>
 
-      {/* Clean Public Footer (Strictly Student Links, Zero Admin Mentions) */}
-      <footer className="border-t border-[#1f2127] bg-[#090a0c] py-10 text-center text-xs text-zinc-500 font-mono">
-        <div className="max-w-7xl mx-auto px-4 space-y-3">
+      {/* Minimalist Public Student Footer (Strictly Student Links, Zero Admin Mentions) */}
+      <footer className="border-t border-zinc-850 bg-black py-10 text-center text-xs text-zinc-500 font-mono">
+        <div className="max-w-7xl mx-auto px-4 space-y-2">
           <div className="flex items-center justify-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-            <span className="text-zinc-400 font-medium">Council of Higher Secondary Education, Odisha (+2) Learning Initiative</span>
+            <span className="text-zinc-400">Council of Higher Secondary Education, Odisha (+2) Digital Learning Initiative</span>
           </div>
-          <p>© {new Date().getFullYear()} CHSETube. 100% Free Open Education Resource for Students across Odisha.</p>
+          <p>© {new Date().getFullYear()} CHSETube. Free Open Education Resource for Students across Odisha.</p>
         </div>
       </footer>
     </div>
