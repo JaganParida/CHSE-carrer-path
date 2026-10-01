@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useApp } from "./context/AppContext.jsx";
 import { useAuth } from "./context/AuthContext.jsx";
 import Navbar from "./components/Navbar.jsx";
+import LandingPage from "./components/LandingPage.jsx";
 import Hero from "./components/Hero.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import SubjectView from "./components/SubjectView.jsx";
@@ -17,7 +18,7 @@ import Footer from "./components/Footer.jsx";
 
 export default function App() {
   const { currentSection, setCurrentSection, toast, setSearchModalOpen } = useApp();
-  const { setAuthModalOpen, setAuthMode } = useAuth();
+  const { user, isAdmin, setAuthModalOpen, setAuthMode } = useAuth();
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -30,6 +31,31 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [setSearchModalOpen]);
 
+  // If user is not authenticated: display the public Landing Page (no access without sign in)
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-[#090a0c] text-zinc-100 flex flex-col font-sans selection:bg-white selection:text-black relative">
+        <LandingPage />
+        <AuthModal />
+        {toast && (
+          <div className="fixed top-5 right-5 z-50 flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-[#141518] border border-[#27292f] shadow-xl text-xs font-medium text-zinc-100 animate-bounce-subtle">
+            <span
+              className={`w-2 h-2 rounded-full ${
+                toast.type === "success"
+                  ? "bg-emerald-400"
+                  : toast.type === "error"
+                  ? "bg-rose-400"
+                  : "bg-zinc-300"
+              }`}
+            />
+            <span>{toast.message}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // If user is authenticated: display personalized student/admin portal
   return (
     <div className="min-h-screen bg-[#090a0c] text-zinc-200 flex flex-col font-sans selection:bg-white selection:text-black relative pb-16 md:pb-0">
       {/* Subtle gentle background lighting (soft on the eyes) */}
@@ -81,7 +107,7 @@ export default function App() {
           </div>
         )}
 
-        {currentSection === "admin" && (
+        {currentSection === "admin" && isAdmin && (
           <div className="py-2 animate-fadeIn">
             <AdminStudio />
           </div>

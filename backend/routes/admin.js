@@ -194,4 +194,40 @@ router.delete("/videos/:chapterId/link", async (req, res) => {
   }
 });
 
+// @route   GET /api/admin/students
+// @desc    Get all registered students with full progress details and completion timestamps
+router.get("/students", async (req, res) => {
+  try {
+    const students = await User.find({ role: "student" })
+      .select("-password")
+      .sort({ updatedAt: -1, createdAt: -1 })
+      .lean();
+
+    return res.json({
+      success: true,
+      students: students.map((s) => ({
+        id: s._id,
+        name: s.name,
+        email: s.email,
+        stream: s.stream || "Science",
+        class: s.class || "12",
+        school: s.school || "",
+        streak: s.streak || { count: 1, lastDate: "" },
+        savedCount: Array.isArray(s.savedVideos) ? s.savedVideos.length : 0,
+        savedVideos: s.savedVideos || [],
+        completedTopics: s.completedTopics || {},
+        completedCount: s.completedTopics ? Object.keys(s.completedTopics).length : 0,
+        createdAt: s.createdAt,
+        updatedAt: s.updatedAt,
+      })),
+    });
+  } catch (err) {
+    console.error("Admin get students error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch student progress data.",
+    });
+  }
+});
+
 export default router;

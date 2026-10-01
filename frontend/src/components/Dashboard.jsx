@@ -14,7 +14,7 @@ import {
 } from "./Icons.jsx";
 
 export const Dashboard = () => {
-  const { user, setAuthModalOpen, setAuthMode, isAdmin } = useAuth();
+  const { user, isAdmin } = useAuth();
   const {
     currentStream,
     setCurrentStream,
@@ -22,6 +22,7 @@ export const Dashboard = () => {
     setCurrentClass,
     setCurrentSubject,
     setCurrentSection,
+    isStudentLocked,
   } = useApp();
 
   const hour = new Date().getHours();
@@ -47,16 +48,16 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      {/* Header & Academic Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-5 pb-5 border-b border-[#1e2025]">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+      {/* Header & Academic Status */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-5 border-b border-[#1e2025]">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400">
               {currentStream} Stream · Class {currentClass} (+2)
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-zinc-100 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-100 tracking-tight">
             {greeting}, {userName}
           </h1>
           <p className="text-xs text-zinc-400 mt-0.5">
@@ -70,78 +71,55 @@ export const Dashboard = () => {
           </p>
         </div>
 
-        {/* Stream & Class Segmented Controls */}
+        {/* Academic Controls: Locked for student, Switcher for Admin */}
         <div className="flex flex-wrap items-center gap-2.5">
-          {/* Stream Selector */}
-          <div className="flex items-center bg-[#111215] border border-[#23252a] rounded-lg p-1">
-            {["Science", "Commerce", "Arts"].map((st) => (
-              <button
-                key={st}
-                onClick={() => setCurrentStream(st)}
-                className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
-                  currentStream === st
-                    ? "bg-white text-zinc-950 font-semibold shadow-sm"
-                    : "text-zinc-400 hover:text-white"
-                }`}
-              >
-                {st}
-              </button>
-            ))}
-          </div>
+          {isStudentLocked ? (
+            <div
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111215] border border-[#23252a] text-xs font-mono text-zinc-300 shadow-sm"
+              title="Your stream and class are locked to your student enrollment"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              <span>Enrolled: {currentStream} (Class {currentClass})</span>
+            </div>
+          ) : isAdmin ? (
+            <>
+              {/* Stream Selector */}
+              <div className="flex items-center bg-[#111215] border border-[#23252a] rounded-lg p-1">
+                {["Science", "Commerce", "Arts"].map((st) => (
+                  <button
+                    key={st}
+                    onClick={() => setCurrentStream(st)}
+                    className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                      currentStream === st
+                        ? "bg-zinc-100 text-zinc-950 font-bold shadow-sm"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    {st}
+                  </button>
+                ))}
+              </div>
 
-          {/* Class Selector */}
-          <div className="flex items-center bg-[#111215] border border-[#23252a] rounded-lg p-1">
-            {["11", "12"].map((cls) => (
-              <button
-                key={cls}
-                onClick={() => setCurrentClass(cls)}
-                className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
-                  currentClass === cls
-                    ? "bg-white text-zinc-950 font-semibold shadow-sm"
-                    : "text-zinc-400 hover:text-white"
-                }`}
-              >
-                Class {cls}
-              </button>
-            ))}
-          </div>
+              {/* Class Selector */}
+              <div className="flex items-center bg-[#111215] border border-[#23252a] rounded-lg p-1">
+                {["11", "12"].map((cls) => (
+                  <button
+                    key={cls}
+                    onClick={() => setCurrentClass(cls)}
+                    className={`px-3 py-1 rounded-md text-xs font-medium transition-all ${
+                      currentClass === cls
+                        ? "bg-zinc-100 text-zinc-950 font-bold shadow-sm"
+                        : "text-zinc-400 hover:text-white"
+                    }`}
+                  >
+                    Class {cls}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
-
-      {/* Guest Sign-In Banner */}
-      {!user && (
-        <div className="p-4 rounded-xl bg-[#111215] border border-[#23252a] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 flex items-center justify-center shrink-0">
-              <IconUser size={16} />
-            </div>
-            <div>
-              <div className="text-sm font-semibold text-zinc-100">Save your completed chapters and study notes</div>
-              <div className="text-xs text-zinc-400">Create a free student profile to sync your retention streaks across your devices.</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <button
-              onClick={() => {
-                setAuthMode("login");
-                setAuthModalOpen(true);
-              }}
-              className="px-3.5 py-1.5 rounded-lg text-xs font-medium text-zinc-300 hover:text-white bg-[#0c0d0f] border border-[#23252a] transition-colors"
-            >
-              Sign In
-            </button>
-            <button
-              onClick={() => {
-                setAuthMode("register");
-                setAuthModalOpen(true);
-              }}
-              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-zinc-950 bg-white hover:bg-zinc-200 shadow-sm transition-all"
-            >
-              Create Account
-            </button>
-          </div>
-        </div>
-      )}
 
       {/* Overview Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
@@ -201,7 +179,7 @@ export const Dashboard = () => {
                 setCurrentSection("admin");
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              className="text-xs font-medium text-zinc-300 hover:text-white flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#111215] border border-[#23252a]"
+              className="text-xs font-medium text-amber-300 hover:text-white flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#111215] border border-[#23252a]"
             >
               <IconCrown size={13} />
               <span>Admin Studio</span>
@@ -223,7 +201,7 @@ export const Dashboard = () => {
                 className="group cursor-pointer rounded-xl bg-[#111215] p-4 sm:p-5 border border-[#23252a] hover:border-[#383b44] transition-all hover:-translate-y-0.5 shadow-sm"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className="p-2 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 group-hover:bg-white group-hover:text-zinc-950 transition-colors">
+                  <div className="p-2 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 group-hover:bg-zinc-100 group-hover:text-zinc-950 transition-colors">
                     <IconBook size={16} />
                   </div>
                   <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#0c0d0f] border border-[#1e2024] text-zinc-400">

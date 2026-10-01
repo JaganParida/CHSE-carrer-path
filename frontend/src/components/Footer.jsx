@@ -11,14 +11,14 @@ export default function Footer() {
     setCurrentClass,
     setCurrentSection,
   } = useApp();
-  const { user, isAdmin, setAuthModalOpen, setAuthMode } = useAuth();
+  const { user, isAdmin } = useAuth();
 
   return (
-    <footer className="mt-20 border-t border-[#1f2127] bg-[#090a0c] text-zinc-400 text-xs">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-10">
+    <footer className="mt-16 border-t border-[#1f2127] bg-[#090a0c] text-zinc-400 text-xs">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Brand info */}
-          <div className="md:col-span-1 space-y-3">
+          <div className="space-y-3">
             <div
               onClick={() => {
                 setCurrentSection("dashboard");
@@ -26,10 +26,10 @@ export default function Footer() {
               }}
               className="flex items-center gap-2.5 cursor-pointer group"
             >
-              <div className="w-8 h-8 rounded-lg bg-zinc-100 text-zinc-950 flex items-center justify-center font-bold">
-                <IconLogo size={18} />
+              <div className="w-7 h-7 rounded-md bg-zinc-100 text-zinc-950 flex items-center justify-center font-bold">
+                <IconLogo size={15} />
               </div>
-              <span className="font-bold text-base text-zinc-100 tracking-tight">
+              <span className="font-bold text-sm text-zinc-100 tracking-tight">
                 CHSE<span className="text-zinc-400">Tube</span>
               </span>
             </div>
@@ -37,7 +37,7 @@ export default function Footer() {
               Curated YouTube masterclasses and syllabus navigator for Council of Higher Secondary Education, Odisha (+2).
             </p>
             <div className="flex items-center gap-2 pt-1 text-zinc-500 text-[11px] font-mono">
-              <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
               <span>CHSE Odisha Official Syllabus (2026–2027)</span>
             </div>
           </div>
@@ -110,52 +110,86 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Platform Management */}
+          {/* Higher Education Resources (NO admin button shown to students/guests!) */}
           <div>
             <h4 className="text-xs font-mono uppercase tracking-wider text-zinc-200 mb-3">
-              Admin & Management
+              Higher Education Advisory
             </h4>
-            <div className="space-y-2.5">
-              <p className="text-zinc-400 leading-relaxed">
-                Educators and administrators can add, edit, or configure YouTube syllabus lectures across all streams.
-              </p>
-              {isAdmin ? (
+            <ul className="space-y-2 text-zinc-400">
+              <li>
+                <button
+                  onClick={() => {
+                    setCurrentSection("career");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="hover:text-zinc-200 transition-colors text-left"
+                >
+                  Engineering (JEE / OJEE) Roadmaps
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setCurrentSection("career");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="hover:text-zinc-200 transition-colors text-left"
+                >
+                  Medical (NEET / OUAT) Roadmaps
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setCurrentSection("career");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="hover:text-zinc-200 transition-colors text-left"
+                >
+                  Chartered Accountancy (CA / CMA)
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setCurrentSection("career");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  className="hover:text-zinc-200 transition-colors text-left"
+                >
+                  Civil Services (UPSC / OPSC) Prep
+                </button>
+              </li>
+            </ul>
+
+            {/* ONLY visible to authenticated Administrators */}
+            {isAdmin && (
+              <div className="pt-3 mt-3 border-t border-[#1f2127]">
                 <button
                   onClick={() => {
                     setCurrentSection("admin");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111215] text-zinc-200 border border-[#23252a] hover:border-zinc-400 transition-colors text-xs font-medium"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#111215] text-amber-300 border border-[#23252a] hover:border-amber-400/40 text-[11px] font-mono transition-colors"
                 >
-                  <IconCrown size={14} />
-                  <span>Open Admin Studio</span>
+                  <IconCrown size={12} />
+                  <span>Admin Studio Console</span>
                 </button>
-              ) : (
-                <button
-                  onClick={() => {
-                    setAuthMode("login");
-                    setAuthModalOpen(true);
-                  }}
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111215] text-zinc-300 hover:text-white transition-colors text-xs font-medium border border-[#23252a] hover:border-zinc-400"
-                >
-                  <IconCrown size={14} />
-                  <span>Admin / Student Sign In</span>
-                </button>
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
 
         <div className="pt-6 border-t border-[#1f2127] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500 font-mono">
-          <p>© {new Date().getFullYear()} CHSETube (CHSE Odisha). Production educational platform.</p>
+          <p>© {new Date().getFullYear()} CHSETube (CHSE Odisha). Free educational platform.</p>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 text-zinc-400">
-              <IconCheck size={14} className="text-zinc-200" />
+              <IconCheck size={13} className="text-emerald-400" />
               100% Free & Open Access
             </span>
             <span className="flex items-center gap-1.5 text-zinc-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-zinc-400"></span>
-              Secure Session Persistence
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              Official Syllabus Mapped
             </span>
           </div>
         </div>

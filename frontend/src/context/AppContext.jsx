@@ -35,10 +35,28 @@ export const AppProvider = ({ children }) => {
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [toast, setToast] = useState(null);
 
+  const isStudentLocked = Boolean(user && user.role === "student");
+
   useEffect(() => {
     if (user?.stream) setCurrentStream(user.stream);
     if (user?.class) setCurrentClass(user.class);
-  }, [user?.stream, user?.class]);
+  }, [user?.stream, user?.class, user?.role]);
+
+  const updateStream = (st) => {
+    if (isStudentLocked) {
+      showToast(`Stream locked to ${user.stream} per your registered student enrollment.`, "info");
+      return;
+    }
+    setCurrentStream(st);
+  };
+
+  const updateClass = (cls) => {
+    if (isStudentLocked) {
+      showToast(`Class locked to Class ${user.class} per your registered student enrollment.`, "info");
+      return;
+    }
+    setCurrentClass(cls);
+  };
 
   const showToast = (message, type = "info") => {
     setToast({ message, type });
@@ -233,9 +251,12 @@ export const AppProvider = ({ children }) => {
         currentSection,
         setCurrentSection,
         currentStream,
-        setCurrentStream,
+        setCurrentStream: updateStream,
         currentClass,
-        setCurrentClass,
+        setCurrentClass: updateClass,
+        isStudentLocked,
+        updateStream,
+        updateClass,
         currentSubject,
         setCurrentSubject,
         currentVideo,
