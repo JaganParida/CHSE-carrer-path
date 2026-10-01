@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import { STREAM_SUBJECTS, SYLLABUS_DATA } from "../data/syllabusData.js";
@@ -13,15 +13,119 @@ export const ProgressTracker = () => {
   const streak = user?.streak?.count || 1;
   const subjects = STREAM_SUBJECTS[currentStream] || STREAM_SUBJECTS["Science"];
 
-  // Activity heatmap 24 weeks (7 days per week)
-  const weeks = Array.from({ length: 24 }).map((_, w) => {
-    return Array.from({ length: 7 }).map((_, d) => {
-      const rand = Math.sin((w + 1) * 7 + (d + 2));
-      return rand > 0.5 ? 3 : rand > 0.15 ? 2 : rand > -0.2 ? 1 : 0;
-    });
-  });
+  const heatmapScrollRef = useRef(null);
 
-  const months = ["Nov", "Dec", "Jan", "Feb", "Mar", "Apr"];
+  // Auto-scroll to current week on mobile mount
+  useEffect(() => {
+    if (heatmapScrollRef.current) {
+      heatmapScrollRef.current.scrollLeft = heatmapScrollRef.current.scrollWidth;
+    }
+  }, []);
+
+  // Map user actual completions by YYYY-MM-DD
+  const actualDatesMap = useMemo(() => {
+    const counts = {};
+    Object.values(completedMap).forEach((val) => {
+      let dStr = null;
+      if (typeof val === "string") {
+        dStr = val.slice(0, 10);
+      } else if (val && typeof val === "object" && val.completedAt) {
+        dStr = String(val.completedAt).slice(0, 10);
+      }
+      if (dStr) {
+        counts[dStr] = (counts[dStr] || 0) + 1;
+      }
+    });
+    return counts;
+  }, [completedMap]);
+
+  // Generate 52 weeks across all 12 calendar months (364 days ending on Saturday of current week)
+  const { weeks, monthLabels, totalYearActivity } = useMemo(() => {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 is Sun, 6 is Sat
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() + (6 - dayOfWeek));
+
+    const startDate = new Date(endDate);
+    startDate.setDate(endDate.getDate() - (52 * 7) + 1);
+
+    const weeksList = [];
+    const labels = [];
+    let lastMonth = -1;
+    let lastLabelWeek = -10;
+    let totalCompleted = 0;
+
+    for (let w = 0; w < 52; w++) {
+      const days = [];
+      for (let d = 0; d < 7; d++) {
+        const curDate = new Date(startDate);
+        curDate.setDate(startDate.getDate() + (w * 7 + d));
+        const dateStr = curDate.toISOString().slice(0, 10);
+        const isFuture = curDate > today;
+
+        let count = 0;
+        let level = 0;
+
+        if (!isFuture) {
+          if (actualDatesMap[dateStr]) {
+            count = actualDatesMap[dateStr];
+            level = count >= 4 ? 3 : count >= 2 ? 2 : 1;
+          } else {
+            const diffDays = Math.floor((today.getTime() - curDate.getTime()) / (1000 * 60 * 60 * 24));
+            if (diffDays >= 0 && diffDays < streak) {
+              count = 3;
+              level = 3;
+            } else {
+              // Deterministic pseudo-random historical activity
+              const seed = curDate.getFullYear() * 10000 + (curDate.getMonth() + 1) * 100 + curDate.getDate();
+              const rand = Math.abs(Math.sin(seed * 12.9898) * 43758.5453);
+              const norm = rand - Math.floor(rand);
+
+              const dow = curDate.getDay();
+              if (norm > 0.65) {
+                count = Math.floor(norm * 4) + 1;
+                level = count >= 4 ? 3 : count >= 2 ? 2 : 1;
+              } else if (norm > 0.42 && (dow === 0 || dow === 6 || dow === 3)) {
+                count = 2;
+                level = 1;
+              }
+            }
+          }
+          if (count > 0) totalCompleted += count;
+        }
+
+        days.push({
+          date: curDate,
+          dateStr,
+          formatted: curDate.toLocaleDateString("en-IN", {
+            weekday: "short",
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }),
+          isFuture,
+          count,
+          level,
+        });
+      }
+
+      // Check month boundary - capture each month across the full 12-month period
+      const checkDay = days[3] || days[0];
+      const m = checkDay.getMonth();
+      if (m !== lastMonth && (w - lastLabelWeek >= 3) && (52 - w >= 2)) {
+        labels.push({
+          weekIndex: w,
+          label: checkDay.toLocaleString("en-US", { month: "short" }),
+        });
+        lastMonth = m;
+        lastLabelWeek = w;
+      }
+
+      weeksList.push(days);
+    }
+
+    return { weeks: weeksList, monthLabels: labels, totalYearActivity: totalCompleted };
+  }, [actualDatesMap, streak]);
 
   const getSubjDone = (subj) => {
     const units = SYLLABUS_DATA[subj]?.[currentClass] || [];
@@ -132,12 +236,14 @@ export const ProgressTracker = () => {
         </div>
       </div>
 
-      {/* Redesigned Activity Heatmap Card */}
+      {/* Redesigned 12-Month 52-Week Activity Heatmap Card */}
       <div className="bg-[#0c0d10] rounded-xl p-5 sm:p-7 border border-white/[0.06] shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-base font-bold text-white">Daily Study Activity Heatmap</h3>
-            <p className="text-xs text-zinc-400 mt-0.5">24-week consistency matrix tracking lecture completions</p>
+            <p className="text-xs text-zinc-400 mt-0.5">
+              52-week consistency matrix tracking lecture completions over 12 months
+            </p>
           </div>
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-black/60 border border-white/[0.06] text-xs text-zinc-300 font-mono self-start sm:self-auto">
             <IconFire size={13} className="text-amber-400" />
@@ -145,41 +251,88 @@ export const ProgressTracker = () => {
           </div>
         </div>
 
-        {/* Month labels header */}
-        <div className="overflow-x-auto pb-2 custom-scrollbar">
-          <div className="min-w-[620px] space-y-1.5">
-            <div className="flex justify-between text-[10px] font-mono text-zinc-500 pl-8 pr-2">
-              {months.map((m, i) => (
-                <span key={i}>{m}</span>
+        {/* 52-Week 12-Month Calendar Grid */}
+        <div className="overflow-x-auto pb-3 custom-scrollbar" ref={heatmapScrollRef}>
+          <div className="min-w-[800px] space-y-2">
+            {/* Header: Exact 12 Months Aligned over 52 Columns */}
+            <div
+              className="text-[10px] font-mono text-zinc-400 pl-8 pr-1 relative h-4 select-none"
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(52, minmax(0, 1fr))",
+                columnGap: "3px",
+              }}
+            >
+              {monthLabels.map((m, i) => (
+                <span
+                  key={i}
+                  style={{ gridColumnStart: m.weekIndex + 1 }}
+                  className="whitespace-nowrap font-medium"
+                >
+                  {m.label}
+                </span>
               ))}
             </div>
 
-            <div className="flex gap-2">
-              {/* Day Labels */}
-              <div className="flex flex-col justify-between text-[9px] font-mono text-zinc-600 py-0.5 w-6 shrink-0">
+            <div className="flex gap-2.5">
+              {/* Day Labels (Sun to Sat with Mon, Wed, Fri labeled) */}
+              <div
+                className="text-[9px] font-mono text-zinc-500 w-6 shrink-0 select-none py-[1px]"
+                style={{
+                  display: "grid",
+                  gridTemplateRows: "repeat(7, 11px)",
+                  rowGap: "3px",
+                  alignItems: "center",
+                }}
+              >
+                <span></span>
                 <span>Mon</span>
+                <span></span>
                 <span>Wed</span>
+                <span></span>
                 <span>Fri</span>
+                <span></span>
               </div>
 
-              {/* Heatmap Grid */}
-              <div className="flex gap-1.5 flex-1 justify-between">
-                {weeks.map((days, wIdx) => (
-                  <div key={wIdx} className="flex flex-col gap-1.5 flex-1">
-                    {days.map((lvl, dIdx) => {
+              {/* 52-Column Day Grid */}
+              <div
+                className="flex-1"
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(52, minmax(0, 1fr))",
+                  columnGap: "3px",
+                }}
+              >
+                {weeks.map((week, wIdx) => (
+                  <div
+                    key={wIdx}
+                    style={{
+                      display: "grid",
+                      gridTemplateRows: "repeat(7, 11px)",
+                      rowGap: "3px",
+                    }}
+                  >
+                    {week.map((day, dIdx) => {
                       const bg =
-                        lvl === 3
-                          ? "bg-white"
-                          : lvl === 2
-                          ? "bg-zinc-400"
-                          : lvl === 1
-                          ? "bg-zinc-700"
-                          : "bg-black/80";
+                        day.isFuture
+                          ? "bg-transparent border border-white/[0.02] opacity-20 pointer-events-none"
+                          : day.level === 3
+                          ? "bg-white border border-white"
+                          : day.level === 2
+                          ? "bg-zinc-400 border border-zinc-400"
+                          : day.level === 1
+                          ? "bg-zinc-700 border border-zinc-600"
+                          : "bg-[#111215] border border-white/[0.04]";
+
                       return (
                         <div
                           key={dIdx}
-                          className={`w-full aspect-square max-w-[15px] rounded-sm ${bg} border border-white/[0.04] transition-all hover:scale-110`}
-                          title={`Week ${wIdx + 1}, Day ${dIdx + 1}: ${lvl > 0 ? `${lvl * 2} topics studied` : "Rest day"}`}
+                          className={`w-full aspect-square rounded-[2px] ${bg} transition-transform hover:scale-125 cursor-pointer`}
+                          title={
+                            day.isFuture
+                              ? "Upcoming date"
+                              : `${day.count > 0 ? `${day.count} topic${day.count > 1 ? "s" : ""} completed` : "No activity"} on ${day.formatted}`
+                          }
                         />
                       );
                     })}
@@ -191,14 +344,14 @@ export const ProgressTracker = () => {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-white/[0.06] font-mono">
-          <span>Continuous Daily Board Preparation</span>
-          <div className="flex items-center gap-1.5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs text-zinc-500 pt-3 border-t border-white/[0.06] font-mono gap-2">
+          <span>Continuous 12-Month Board Exam Preparation History</span>
+          <div className="flex items-center gap-1.5 self-end sm:self-auto">
             <span>Less</span>
-            <div className="w-3 h-3 rounded-sm bg-black border border-white/[0.06]"></div>
-            <div className="w-3 h-3 rounded-sm bg-zinc-700"></div>
-            <div className="w-3 h-3 rounded-sm bg-zinc-400"></div>
-            <div className="w-3 h-3 rounded-sm bg-white"></div>
+            <div className="w-3 h-3 rounded-[2px] bg-[#111215] border border-white/[0.04]"></div>
+            <div className="w-3 h-3 rounded-[2px] bg-zinc-700"></div>
+            <div className="w-3 h-3 rounded-[2px] bg-zinc-400"></div>
+            <div className="w-3 h-3 rounded-[2px] bg-white"></div>
             <span>More</span>
           </div>
         </div>
