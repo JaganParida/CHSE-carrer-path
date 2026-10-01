@@ -5,7 +5,7 @@ import { useAuth } from "./AuthContext.jsx";
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-  const { user, updateProfile } = useAuth();
+  const { user, updateProfile, setAuthModalOpen, setAuthMode } = useAuth();
 
   const [currentSection, setCurrentSection] = useState("dashboard");
   const [currentStream, setCurrentStream] = useState(user?.stream || "Science");
@@ -147,7 +147,12 @@ export const AppProvider = ({ children }) => {
   };
 
   const toggleComplete = async (chapterId) => {
-    if (!user) return;
+    if (!user) {
+      if (setAuthMode) setAuthMode("login");
+      if (setAuthModalOpen) setAuthModalOpen(true);
+      showToast("Please sign in or create an account to save your study progress.", "info");
+      return;
+    }
     const completed = { ...(user.completedTopics || {}) };
     const isDone = Boolean(completed[chapterId]);
     if (isDone) {
@@ -159,7 +164,7 @@ export const AppProvider = ({ children }) => {
     }
     updateProfile({ completedTopics: completed });
 
-    // Optional server sync
+    // Server sync with session cookie
     try {
       await fetch(`/api/user/complete/${chapterId}`, {
         method: "POST",
@@ -169,15 +174,20 @@ export const AppProvider = ({ children }) => {
   };
 
   const toggleSave = async (chapterId) => {
-    if (!user) return;
+    if (!user) {
+      if (setAuthMode) setAuthMode("login");
+      if (setAuthModalOpen) setAuthModalOpen(true);
+      showToast("Please sign in to bookmark chapters to your personal study list.", "info");
+      return;
+    }
     let saved = [...(user.savedVideos || [])];
     const idx = saved.indexOf(chapterId);
     if (idx >= 0) {
       saved.splice(idx, 1);
-      showToast("Removed from saved bookmarks.", "info");
+      showToast("Removed from bookmarks.", "info");
     } else {
       saved.push(chapterId);
-      showToast("Chapter bookmarked!", "success");
+      showToast("Chapter bookmarked to your library!", "success");
     }
     updateProfile({ savedVideos: saved });
 
@@ -190,6 +200,12 @@ export const AppProvider = ({ children }) => {
   };
 
   const saveNote = async (chapterId, text, subject) => {
+    if (!user) {
+      if (setAuthMode) setAuthMode("login");
+      if (setAuthModalOpen) setAuthModalOpen(true);
+      showToast("Please sign in to save personal chapter notes.", "info");
+      return;
+    }
     const updated = {
       ...notes,
       [chapterId]: {

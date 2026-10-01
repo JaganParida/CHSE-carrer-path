@@ -1,31 +1,37 @@
-import React from 'react';
-import { useApp } from '../context/AppContext';
-import { useAuth } from '../context/AuthContext';
-import { BookOpenIcon, VideoIcon, ChartBarIcon, NoteIcon, CompassIcon, ShieldCheckIcon } from './Icons';
+import React from "react";
+import { useApp } from "../context/AppContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
+import {
+  IconDashboard,
+  IconVideo,
+  IconChart,
+  IconNote,
+  IconMap,
+  IconCrown,
+} from "./Icons.jsx";
 
-export default function MobileBottomNav({ currentTab, setCurrentTab }) {
-  const { activeChapter } = useApp();
-  const { user } = useAuth();
-  const isAdmin = user?.role === 'admin';
+export default function MobileBottomNav() {
+  const { currentSection, setCurrentSection, currentVideo } = useApp();
+  const { isAdmin } = useAuth();
 
   const navItems = [
-    { id: 'dashboard', label: 'Syllabus', icon: BookOpenIcon },
-    { id: 'player', label: 'Watch', icon: VideoIcon, disabled: !activeChapter },
-    { id: 'progress', label: 'Progress', icon: ChartBarIcon },
-    { id: 'notes', label: 'Notes', icon: NoteIcon },
-    { id: 'careers', label: 'Careers', icon: CompassIcon },
+    { id: "dashboard", label: "Syllabus", icon: IconDashboard },
+    { id: "player", label: "Lecture", icon: IconVideo, disabled: !currentVideo },
+    { id: "progress", label: "Progress", icon: IconChart },
+    { id: "notes", label: "Notes", icon: IconNote },
+    { id: "career", label: "Careers", icon: IconMap },
   ];
 
   if (isAdmin) {
-    navItems.push({ id: 'admin', label: 'Admin', icon: ShieldCheckIcon });
+    navItems.push({ id: "admin", label: "Admin", icon: IconCrown });
   }
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/90 backdrop-blur-xl border-t border-slate-800/80 px-2 py-1.5 safe-area-bottom">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-slate-800/90 px-2 py-1 safe-area-bottom">
       <div className="flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentTab === item.id;
+          const isActive = currentSection === item.id;
           const isDisabled = item.disabled;
 
           return (
@@ -33,22 +39,25 @@ export default function MobileBottomNav({ currentTab, setCurrentTab }) {
               key={item.id}
               disabled={isDisabled}
               onClick={() => {
-                if (!isDisabled) setCurrentTab(item.id);
+                if (!isDisabled) {
+                  setCurrentSection(item.id);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
               }}
-              className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all relative ${
-                isActive 
-                  ? 'text-indigo-400 font-semibold' 
-                  : isDisabled 
-                    ? 'text-slate-600 opacity-40 cursor-not-allowed'
-                    : 'text-slate-400 hover:text-slate-200'
+              className={`flex flex-col items-center justify-center py-1.5 px-3 rounded-xl transition-all relative ${
+                isActive
+                  ? "text-blue-400 font-bold"
+                  : isDisabled
+                  ? "text-slate-600 opacity-40 cursor-not-allowed"
+                  : "text-slate-400 hover:text-slate-200"
               }`}
             >
-              <div className={`p-1 rounded-lg transition-transform ${isActive ? 'scale-110' : ''}`}>
-                <Icon className="w-5 h-5" />
+              <div className={`p-1 rounded-lg transition-transform ${isActive ? "scale-110" : ""}`}>
+                <Icon size={18} />
               </div>
               <span className="text-[10px] tracking-tight mt-0.5">{item.label}</span>
               {isActive && (
-                <span className="absolute bottom-0.5 w-1 h-1 bg-indigo-500 rounded-full" />
+                <span className="absolute bottom-0.5 w-1 h-1 bg-blue-500 rounded-full" />
               )}
             </button>
           );

@@ -1,148 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { useApp } from './context/AppContext';
-import { useAuth } from './context/AuthContext';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import Dashboard from './components/Dashboard';
-import SubjectView from './components/SubjectView';
-import VideoPlayer from './components/VideoPlayer';
-import CareerGuide from './components/CareerGuide';
-import ProgressTracker from './components/ProgressTracker';
-import NotesView from './components/NotesView';
-import AdminStudio from './components/AdminStudio';
-import AuthModal from './components/AuthModal';
-import SearchModal from './components/SearchModal';
-import MobileBottomNav from './components/MobileBottomNav';
-import Footer from './components/Footer';
+import React, { useEffect } from "react";
+import { useApp } from "./context/AppContext.jsx";
+import { useAuth } from "./context/AuthContext.jsx";
+import Navbar from "./components/Navbar.jsx";
+import Hero from "./components/Hero.jsx";
+import Dashboard from "./components/Dashboard.jsx";
+import SubjectView from "./components/SubjectView.jsx";
+import VideoPlayer from "./components/VideoPlayer.jsx";
+import CareerGuide from "./components/CareerGuide.jsx";
+import ProgressTracker from "./components/ProgressTracker.jsx";
+import NotesView from "./components/NotesView.jsx";
+import AdminStudio from "./components/AdminStudio.jsx";
+import AuthModal from "./components/AuthModal.jsx";
+import SearchModal from "./components/SearchModal.jsx";
+import MobileBottomNav from "./components/MobileBottomNav.jsx";
+import Footer from "./components/Footer.jsx";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const { currentSection, setCurrentSection, toast, setSearchModalOpen } = useApp();
+  const { setAuthModalOpen, setAuthMode } = useAuth();
 
-  const { activeChapter, activeSubject, selectChapter } = useApp();
-  const { user } = useAuth();
-
-  // Listen to open search event
+  // Global keyboard shortcuts (Ctrl+K for search)
   useEffect(() => {
-    const handleOpenSearch = () => setIsSearchModalOpen(true);
-    const handleOpenAuth = () => setIsAuthModalOpen(true);
-    const handleOpenAdmin = () => setActiveTab('admin');
-
-    window.addEventListener('open-search-modal', handleOpenSearch);
-    window.addEventListener('open-auth-modal', handleOpenAuth);
-    window.addEventListener('open-admin', handleOpenAdmin);
-
-    return () => {
-      window.removeEventListener('open-search-modal', handleOpenSearch);
-      window.removeEventListener('open-auth-modal', handleOpenAuth);
-      window.removeEventListener('open-admin', handleOpenAdmin);
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchModalOpen(true);
+      }
     };
-  }, []);
-
-  // When chapter is selected from anywhere, switch to player tab automatically if not already
-  const handleChapterSelect = (chapter) => {
-    selectChapter(chapter);
-    setActiveTab('player');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [setSearchModalOpen]);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200 relative pb-16 md:pb-0">
-      {/* Background ambient subtle gradients */}
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-blue-600/30 selection:text-blue-200 relative pb-16 md:pb-0">
+      {/* Subtle clean background atmosphere (restrained 2-color slate base) */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-900/10 rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -right-40 w-96 h-96 bg-violet-900/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 left-1/3 w-96 h-96 bg-blue-900/10 rounded-full blur-3xl" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-blue-600/5 blur-[140px] rounded-full" />
       </div>
 
       {/* Main Navbar */}
-      <Navbar
-        onOpenSearch={() => setIsSearchModalOpen(true)}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
-        onOpenAdmin={() => setActiveTab('admin')}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
+      <Navbar />
 
-      {/* Main View Router */}
+      {/* Main View Router driven by single AppContext currentSection */}
       <main className="flex-1 z-10">
-        {activeTab === 'dashboard' && (
-          <>
-            <Hero 
-              onExploreSyllabus={() => {
-                const el = document.getElementById('syllabus-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              onOpenSearch={() => setIsSearchModalOpen(true)}
-            />
-            
-            <div id="syllabus-section" className="scroll-mt-20">
-              <Dashboard onSelectChapter={handleChapterSelect} />
+        {currentSection === "dashboard" && (
+          <div className="animate-fadeIn">
+            <Hero />
+            <div id="syllabus-section" className="scroll-mt-16">
+              <Dashboard />
             </div>
-
-            {activeSubject && (
-              <div className="border-t border-slate-800/80 bg-slate-950/50">
-                <SubjectView onSelectChapter={handleChapterSelect} />
-              </div>
-            )}
-          </>
-        )}
-
-        {activeTab === 'player' && (
-          <div className="py-6 sm:py-10 animate-fadeIn">
-            <VideoPlayer onBackToSyllabus={() => setActiveTab('dashboard')} />
           </div>
         )}
 
-        {activeTab === 'progress' && (
-          <div className="py-6 sm:py-10 animate-fadeIn">
-            <ProgressTracker />
+        {currentSection === "subject" && (
+          <div className="py-2 animate-fadeIn">
+            <SubjectView />
           </div>
         )}
 
-        {activeTab === 'notes' && (
-          <div className="py-6 sm:py-10 animate-fadeIn">
-            <NotesView />
+        {currentSection === "player" && (
+          <div className="py-2 animate-fadeIn">
+            <VideoPlayer />
           </div>
         )}
 
-        {activeTab === 'careers' && (
-          <div className="py-6 sm:py-10 animate-fadeIn">
+        {currentSection === "career" && (
+          <div className="py-2 animate-fadeIn">
             <CareerGuide />
           </div>
         )}
 
-        {activeTab === 'admin' && (
-          <div className="py-6 sm:py-10 animate-fadeIn">
-            <AdminStudio onBackToSyllabus={() => setActiveTab('dashboard')} />
+        {currentSection === "progress" && (
+          <div className="py-2 animate-fadeIn">
+            <ProgressTracker />
+          </div>
+        )}
+
+        {currentSection === "notes" && (
+          <div className="py-2 animate-fadeIn">
+            <NotesView />
+          </div>
+        )}
+
+        {currentSection === "admin" && (
+          <div className="py-2 animate-fadeIn">
+            <AdminStudio />
           </div>
         )}
       </main>
 
       {/* Footer */}
-      <Footer 
-        onOpenAdmin={() => setActiveTab('admin')}
-        onOpenAuth={() => setIsAuthModalOpen(true)}
-      />
+      <Footer />
 
       {/* Mobile Navigation Dock */}
-      <MobileBottomNav 
-        currentTab={activeTab} 
-        setCurrentTab={setActiveTab} 
-      />
+      <MobileBottomNav />
 
       {/* Command Palette Search Modal */}
-      <SearchModal 
-        isOpen={isSearchModalOpen}
-        onClose={() => setIsSearchModalOpen(false)}
-      />
+      <SearchModal />
 
       {/* Student / Admin Auth Modal */}
-      <AuthModal 
-        isOpen={isAuthModalOpen}
-        onClose={() => setIsAuthModalOpen(false)}
-      />
+      <AuthModal />
+
+      {/* Global Interactive Toast Notification */}
+      {toast && (
+        <div className="fixed top-5 right-5 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl bg-slate-900 border border-slate-700 shadow-2xl text-xs font-semibold text-white animate-bounce-subtle">
+          <span
+            className={`w-2.5 h-2.5 rounded-full ${
+              toast.type === "success"
+                ? "bg-emerald-400"
+                : toast.type === "error"
+                ? "bg-rose-400"
+                : "bg-blue-400"
+            }`}
+          />
+          <span>{toast.message}</span>
+        </div>
+      )}
     </div>
   );
 }

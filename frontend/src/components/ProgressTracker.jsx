@@ -5,7 +5,7 @@ import { STREAM_SUBJECTS, SYLLABUS_DATA, SUBJ_THEMES } from "../data/syllabusDat
 import { IconCheck, IconFire, IconVideo, IconClock } from "./Icons.jsx";
 
 export const ProgressTracker = () => {
-  const { user } = useAuth();
+  const { user, setAuthModalOpen, setAuthMode } = useAuth();
   const { currentStream, currentClass } = useApp();
 
   const completedMap = user?.completedTopics || {};
@@ -41,6 +41,30 @@ export const ProgressTracker = () => {
           Track completed chapters, retention streak, and syllabus coverage across all subjects.
         </p>
       </div>
+
+      {/* Guest Student Sign In Prompt Banner */}
+      {!user && (
+        <div className="p-4 rounded-2xl bg-blue-600/10 border border-blue-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center shrink-0">
+              <IconCheck size={18} />
+            </div>
+            <div>
+              <div className="text-sm font-bold text-white">Create a free account to sync your progress</div>
+              <div className="text-xs text-slate-400">Chapters you mark as complete will be saved across all your devices.</div>
+            </div>
+          </div>
+          <button
+            onClick={() => {
+              setAuthMode("register");
+              setAuthModalOpen(true);
+            }}
+            className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shrink-0 transition-all shadow-md shadow-blue-500/20"
+          >
+            Sign In or Register
+          </button>
+        </div>
+      )}
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

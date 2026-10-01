@@ -15,12 +15,13 @@ import {
 } from "./Icons.jsx";
 
 export const AdminStudio = () => {
-  const { isAdmin } = useAuth();
+  const { isAdmin, user, setAuthModalOpen, setAuthMode } = useAuth();
   const {
     currentStream,
     setCurrentStream,
     currentClass,
     setCurrentClass,
+    setCurrentSection,
     adminUpdateVideoLink,
     adminClearVideoLink,
     getChapterVideo,
@@ -73,6 +74,41 @@ export const AdminStudio = () => {
     adminUpdateVideoLink(editingChapter.id, inputUrl, inputTitle, inputDesc);
     setEditingChapter(null);
   };
+
+  if (!user) {
+    return (
+      <div className="max-w-xl mx-auto px-4 py-16 text-center animate-fadeIn">
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-8 sm:p-10 shadow-2xl space-y-6">
+          <div className="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/30 flex items-center justify-center mx-auto shadow-lg shadow-amber-500/10">
+            <IconCrown size={28} />
+          </div>
+          <div>
+            <h2 className="text-2xl font-black text-white tracking-tight">Admin Studio Access</h2>
+            <p className="text-xs sm:text-sm text-slate-400 mt-2 leading-relaxed">
+              Adding and editing YouTube lecture links across CHSE streams requires an administrator account.
+            </p>
+          </div>
+          <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center">
+            <button
+              onClick={() => {
+                setAuthMode("login");
+                setAuthModalOpen(true);
+              }}
+              className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold shadow-lg shadow-blue-500/25 transition-all"
+            >
+              Sign In as Administrator
+            </button>
+            <button
+              onClick={() => setCurrentSection("dashboard")}
+              className="px-5 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold border border-slate-700 transition-all"
+            >
+              Back to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
