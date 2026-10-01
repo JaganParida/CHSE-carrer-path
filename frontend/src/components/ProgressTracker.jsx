@@ -39,9 +39,9 @@ export const ProgressTracker = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-7 font-sans">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-zinc-800">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-6 border-b border-white/[0.06]">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-mono mb-2">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#0c0d10] border border-white/[0.06] text-zinc-300 text-xs font-mono mb-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
             <span>ACADEMIC ANALYTICS & RETENTION MATRIX</span>
           </div>
@@ -54,7 +54,7 @@ export const ProgressTracker = () => {
         </div>
 
         {/* Class Switcher */}
-        <div className="flex bg-zinc-900 p-1 rounded-lg border border-zinc-800 shrink-0 self-start sm:self-auto">
+        <div className="flex bg-[#0c0d10] p-1 rounded-lg border border-white/[0.06] shrink-0 self-start sm:self-auto">
           {["11", "12"].map((cls) => (
             <button
               key={cls}
@@ -73,9 +73,9 @@ export const ProgressTracker = () => {
 
       {/* Guest Student Sign In Prompt Banner */}
       {!user && (
-        <div className="p-4 sm:p-5 rounded-xl bg-zinc-950 border border-zinc-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-xl bg-[#0c0d10] border border-white/[0.06] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-200 flex items-center justify-center shrink-0">
+            <div className="w-10 h-10 rounded-lg bg-white/[0.04] text-zinc-200 flex items-center justify-center shrink-0">
               <IconCheck size={18} />
             </div>
             <div>
@@ -97,32 +97,32 @@ export const ProgressTracker = () => {
 
       {/* Key Metrics Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
-          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-emerald-400 flex items-center justify-center mb-3">
+        <div className="bg-[#0c0d10] p-4 sm:p-5 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
             <IconCheck size={16} />
           </div>
           <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{Object.keys(completedMap).length}</div>
           <div className="text-xs text-zinc-400 font-medium mt-1">Chapters Mastered</div>
         </div>
 
-        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
-          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-amber-400 flex items-center justify-center mb-3">
+        <div className="bg-[#0c0d10] p-4 sm:p-5 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center mb-3">
             <IconFire size={16} />
           </div>
           <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{streak} Days</div>
           <div className="text-xs text-zinc-400 font-medium mt-1">Active Study Streak</div>
         </div>
 
-        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
-          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-zinc-300 flex items-center justify-center mb-3">
+        <div className="bg-[#0c0d10] p-4 sm:p-5 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-white/[0.04] text-zinc-300 flex items-center justify-center mb-3">
             <IconVideo size={16} />
           </div>
           <div className="text-2xl sm:text-3xl font-bold text-white font-mono">{savedIds.length}</div>
           <div className="text-xs text-zinc-400 font-medium mt-1">Saved for Revision</div>
         </div>
 
-        <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 shadow-sm">
-          <div className="w-8 h-8 rounded-lg bg-black border border-zinc-800 text-zinc-300 flex items-center justify-center mb-3">
+        <div className="bg-[#0c0d10] p-4 sm:p-5 rounded-xl border border-white/[0.06] shadow-sm">
+          <div className="w-8 h-8 rounded-lg bg-white/[0.04] text-zinc-300 flex items-center justify-center mb-3">
             <IconClock size={16} />
           </div>
           <div className="text-2xl sm:text-3xl font-bold text-white font-mono">
@@ -132,14 +132,14 @@ export const ProgressTracker = () => {
         </div>
       </div>
 
-      {/* Redesigned Activity Heatmap Card (Clean, centered, no weird empty voids) */}
-      <div className="bg-zinc-950 rounded-xl p-5 sm:p-7 border border-zinc-850 shadow-sm space-y-4">
+      {/* Redesigned Activity Heatmap Card */}
+      <div className="bg-[#0c0d10] rounded-xl p-5 sm:p-7 border border-white/[0.06] shadow-sm space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h3 className="text-base font-bold text-white">Daily Study Activity Heatmap</h3>
             <p className="text-xs text-zinc-400 mt-0.5">24-week consistency matrix tracking lecture completions</p>
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-black border border-zinc-800 text-xs text-zinc-300 font-mono self-start sm:self-auto">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-black/60 border border-white/[0.06] text-xs text-zinc-300 font-mono self-start sm:self-auto">
             <IconFire size={13} className="text-amber-400" />
             <span>{streak} day streak active</span>
           </div>
@@ -174,11 +174,11 @@ export const ProgressTracker = () => {
                           ? "bg-zinc-400"
                           : lvl === 1
                           ? "bg-zinc-700"
-                          : "bg-black";
+                          : "bg-black/80";
                       return (
                         <div
                           key={dIdx}
-                          className={`w-full aspect-square max-w-[15px] rounded-sm ${bg} border border-zinc-800/80 transition-all hover:scale-110`}
+                          className={`w-full aspect-square max-w-[15px] rounded-sm ${bg} border border-white/[0.04] transition-all hover:scale-110`}
                           title={`Week ${wIdx + 1}, Day ${dIdx + 1}: ${lvl > 0 ? `${lvl * 2} topics studied` : "Rest day"}`}
                         />
                       );
@@ -191,11 +191,11 @@ export const ProgressTracker = () => {
         </div>
 
         {/* Legend */}
-        <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-850 font-mono">
+        <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-white/[0.06] font-mono">
           <span>Continuous Daily Board Preparation</span>
           <div className="flex items-center gap-1.5">
             <span>Less</span>
-            <div className="w-3 h-3 rounded-sm bg-black border border-zinc-800"></div>
+            <div className="w-3 h-3 rounded-sm bg-black border border-white/[0.06]"></div>
             <div className="w-3 h-3 rounded-sm bg-zinc-700"></div>
             <div className="w-3 h-3 rounded-sm bg-zinc-400"></div>
             <div className="w-3 h-3 rounded-sm bg-white"></div>
@@ -205,7 +205,7 @@ export const ProgressTracker = () => {
       </div>
 
       {/* Subject-Wise Progress Bars */}
-      <div className="bg-zinc-950 rounded-xl p-5 sm:p-7 border border-zinc-850 shadow-sm space-y-5">
+      <div className="bg-[#0c0d10] rounded-xl p-5 sm:p-7 border border-white/[0.06] shadow-sm space-y-5">
         <div>
           <h3 className="text-base font-bold text-white">
             Subject Breakdown — Class {currentClass} ({currentStream} Stream)
@@ -219,14 +219,14 @@ export const ProgressTracker = () => {
           {subjects.map((subj) => {
             const { total, done, pct } = getSubjDone(subj);
             return (
-              <div key={subj} className="space-y-2 p-3.5 rounded-lg bg-black border border-zinc-850">
+              <div key={subj} className="space-y-2 p-3.5 rounded-lg bg-black/60 border border-white/[0.04]">
                 <div className="flex items-center justify-between text-xs font-medium">
                   <span className="text-white text-sm font-semibold">{subj}</span>
                   <span className="text-zinc-400 font-mono">
                     <b className="text-white font-bold">{done}</b> of {total} chapters ({pct}%)
                   </span>
                 </div>
-                <div className="w-full h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                <div className="w-full h-1.5 bg-black/80 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-white transition-all duration-500 rounded-full"
                     style={{ width: `${pct}%` }}

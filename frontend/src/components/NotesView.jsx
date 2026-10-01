@@ -78,15 +78,15 @@ export const NotesView = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6 font-sans">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-[#1f2127]">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-white/[0.06]">
         <div>
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#111215] border border-[#23252a] text-zinc-300 text-xs font-mono mb-2">
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#0c0d10] border border-white/[0.06] text-zinc-300 text-xs font-mono mb-2">
             <span className="w-1.5 h-1.5 rounded-full bg-zinc-200"></span>
             <span>PERSONAL STUDY NOTEPAD</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-100 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
             My Chapter Notes
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1 max-w-xl leading-relaxed">
@@ -96,20 +96,20 @@ export const NotesView = () => {
 
         <button
           onClick={handleExportAll}
-          className="self-start sm:self-auto px-3.5 py-2 rounded-lg bg-zinc-100 hover:bg-white text-xs font-semibold text-zinc-950 flex items-center gap-2 shadow-sm transition-colors"
+          className="self-start sm:self-auto px-3.5 py-2 rounded-lg bg-white hover:bg-zinc-200 text-xs font-semibold text-black flex items-center gap-2 shadow-sm transition-colors"
         >
-          <IconDownload size={14} className="text-zinc-950" />
+          <IconDownload size={14} className="text-black" />
           <span>Export All Notes (.txt)</span>
         </button>
       </div>
 
       {/* Mobile-Only Tab Switcher */}
-      <div className="md:hidden flex bg-[#111215] p-1 rounded-lg border border-[#23252a]">
+      <div className="md:hidden flex bg-[#0c0d10] p-1 rounded-lg border border-white/[0.06]">
         <button
           onClick={() => setMobileTab("list")}
           className={`flex-1 py-1.5 rounded-md text-xs font-semibold transition-all ${
             mobileTab === "list"
-              ? "bg-zinc-100 text-zinc-950 shadow-sm"
+              ? "bg-white text-black shadow-sm"
               : "text-zinc-400 hover:text-white"
           }`}
         >
@@ -119,7 +119,7 @@ export const NotesView = () => {
           onClick={() => setMobileTab("editor")}
           className={`flex-1 py-1.5 rounded-md text-xs font-semibold transition-all ${
             mobileTab === "editor"
-              ? "bg-zinc-100 text-zinc-950 shadow-sm"
+              ? "bg-white text-black shadow-sm"
               : "text-zinc-400 hover:text-white"
           }`}
         >
@@ -131,15 +131,15 @@ export const NotesView = () => {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-5 items-start">
         {/* Left: Notes List */}
         <div
-          className={`md:col-span-4 bg-[#111215] rounded-xl border border-[#23252a] p-4 sm:p-5 space-y-3 max-h-[640px] flex flex-col shadow-sm ${
+          className={`md:col-span-4 bg-[#0c0d10] rounded-xl border border-white/[0.06] p-4 sm:p-5 space-y-3 max-h-[640px] flex flex-col shadow-sm ${
             mobileTab === "editor" ? "hidden md:flex" : "flex"
           }`}
         >
-          <div className="flex items-center justify-between pb-2 border-b border-[#1f2127]">
+          <div className="flex items-center justify-between pb-2 border-b border-white/[0.06]">
             <span className="text-xs font-mono uppercase tracking-wider text-zinc-400">
               Saved Chapters
             </span>
-            <span className="px-2 py-0.5 rounded-md bg-[#0c0d0f] border border-[#23252a] text-[10px] text-zinc-300 font-mono font-medium">
+            <span className="px-2 py-0.5 rounded-md bg-black/60 border border-white/[0.06] text-[10px] text-zinc-300 font-mono font-medium">
               {noteKeys.length}
             </span>
           </div>
@@ -153,7 +153,7 @@ export const NotesView = () => {
                 value={filterQuery}
                 onChange={(e) => setFilterQuery(e.target.value)}
                 placeholder="Filter saved notes..."
-                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-400 transition-colors"
+                className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-black/60 border border-white/[0.06] text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/20 transition-colors"
               />
             </div>
           )}
@@ -166,7 +166,7 @@ export const NotesView = () => {
                 <p>No notes written yet. Start watching any syllabus video lecture to jot notes.</p>
                 <button
                   onClick={() => setCurrentSection("dashboard")}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-100 text-zinc-950 text-xs font-semibold hover:bg-white transition-all shadow-sm"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-all shadow-sm"
                 >
                   <span>Browse Syllabus</span>
                   <IconArrowRight size={12} />
@@ -189,8 +189,8 @@ export const NotesView = () => {
                     }}
                     className={`p-3 rounded-lg cursor-pointer transition-all border ${
                       isSelected
-                        ? "bg-zinc-100 text-zinc-950 shadow-sm font-semibold border-white"
-                        : "bg-[#0c0d0f] border-[#23252a] hover:border-[#343842] text-zinc-300"
+                        ? "bg-white text-black shadow-sm font-semibold border-white"
+                        : "bg-black/60 border-white/[0.04] hover:border-white/[0.12] text-zinc-300"
                     }`}
                   >
                     <div className="text-xs font-semibold truncate flex items-center justify-between">
@@ -211,24 +211,24 @@ export const NotesView = () => {
 
         {/* Right: Note Content / Editor */}
         <div
-          className={`md:col-span-8 bg-[#111215] rounded-xl border border-[#23252a] p-4 sm:p-6 space-y-4 shadow-sm ${
+          className={`md:col-span-8 bg-[#0c0d10] rounded-xl border border-white/[0.06] p-4 sm:p-6 space-y-4 shadow-sm ${
             mobileTab === "list" ? "hidden md:block" : "block"
           }`}
         >
           {activeNote && currentKey ? (
             <>
               {/* Top Bar inside Editor */}
-              <div className="flex items-center justify-between pb-3 border-b border-[#1f2127]">
+              <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setMobileTab("list")}
-                    className="md:hidden p-1.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-400 hover:text-white"
+                    className="md:hidden p-1.5 rounded-lg bg-black/60 border border-white/[0.06] text-zinc-400 hover:text-white"
                     title="Back to notes list"
                   >
                     <IconArrowLeft size={14} />
                   </button>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-zinc-100 truncate max-w-[200px] sm:max-w-md">
+                    <h3 className="text-base sm:text-lg font-bold text-white truncate max-w-[200px] sm:max-w-md">
                       {currentKey}
                     </h3>
                     <div className="text-[11px] text-zinc-400 font-mono mt-0.5">
@@ -240,7 +240,7 @@ export const NotesView = () => {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={handleExportSingle}
-                    className="p-1.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 hover:text-zinc-100 hover:border-zinc-400 transition-colors"
+                    className="p-1.5 rounded-lg bg-black/60 border border-white/[0.06] text-zinc-300 hover:text-white hover:border-white/20 transition-colors"
                     title="Export single note"
                   >
                     <IconDownload size={14} />
@@ -258,7 +258,7 @@ export const NotesView = () => {
                 value={activeNote.text}
                 onChange={(e) => saveNote(currentKey, e.target.value, activeNote.subject)}
                 placeholder="Write your key points, formulas, definitions, and exam reminders here..."
-                className="w-full p-3.5 sm:p-4 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-xs sm:text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-zinc-400 resize-none font-sans leading-relaxed transition-colors"
+                className="w-full p-3.5 sm:p-4 rounded-lg bg-black/60 border border-white/[0.06] text-xs sm:text-sm text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/20 resize-none font-sans leading-relaxed transition-colors"
               ></textarea>
             </>
           ) : (

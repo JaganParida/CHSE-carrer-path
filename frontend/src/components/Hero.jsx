@@ -52,13 +52,13 @@ export const Hero = () => {
   const completedCount = Object.keys(user?.completedTopics || {}).length;
 
   return (
-    <section className="relative overflow-hidden py-8 sm:py-12 border-b border-zinc-800 bg-black font-sans">
+    <section className="relative overflow-hidden py-8 sm:py-12 border-b border-white/[0.06] bg-black font-sans">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
           {/* Left Column: Heading, Scope & CTAs */}
           <div className="lg:col-span-6 space-y-4 text-center lg:text-left">
             {/* Student Welcome / Status Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-zinc-950 border border-zinc-800 text-zinc-300 text-xs font-mono">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#0e0f12] border border-white/[0.06] text-zinc-300 text-xs font-mono">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
               <span>
                 {user ? `ENROLLED: CLASS ${currentClass} · ${currentStream.toUpperCase()} STREAM` : "CHSE ODISHA (+2) SYLLABUS"}
@@ -82,7 +82,7 @@ export const Hero = () => {
             {/* Switchers (Only enabled for admin; students are locked to their enrollment) */}
             {isAdmin ? (
               <div className="pt-1 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-2">
-                <div className="flex bg-zinc-950 p-1 rounded-lg border border-zinc-800">
+                <div className="flex bg-[#0e0f12] p-1 rounded-lg border border-white/[0.06]">
                   {["Science", "Commerce", "Arts"].map((st) => (
                     <button
                       key={st}
@@ -102,7 +102,7 @@ export const Hero = () => {
                   ))}
                 </div>
 
-                <div className="flex bg-zinc-950 p-1 rounded-lg border border-zinc-800">
+                <div className="flex bg-[#0e0f12] p-1 rounded-lg border border-white/[0.06]">
                   {["11", "12"].map((cls) => (
                     <button
                       key={cls}
@@ -121,11 +121,11 @@ export const Hero = () => {
             ) : user ? (
               /* Enrolled Student Quick Summary Bar */
               <div className="pt-1 flex items-center justify-center lg:justify-start gap-3 text-xs font-mono">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-850 text-zinc-300">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0e0f12] border border-white/[0.06] text-zinc-300">
                   <IconFire size={13} className="text-amber-400" />
                   <span>{streak} Day Streak</span>
                 </div>
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-950 border border-zinc-850 text-zinc-300">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0e0f12] border border-white/[0.06] text-zinc-300">
                   <IconCheck size={13} className="text-emerald-400" />
                   <span>{completedCount} Chapters Done</span>
                 </div>
@@ -147,7 +147,7 @@ export const Hero = () => {
                   setCurrentSection("progress");
                   window.scrollTo({ top: 0, behavior: "smooth" });
                 }}
-                className="px-3.5 py-2.5 rounded-lg bg-zinc-950 hover:bg-zinc-900 border border-zinc-800 text-zinc-300 text-xs font-medium transition-colors"
+                className="px-3.5 py-2.5 rounded-lg bg-[#0e0f12] hover:bg-white/[0.04] border border-white/[0.06] text-zinc-300 text-xs font-medium transition-colors"
               >
                 View Study Analytics
               </button>
@@ -156,9 +156,9 @@ export const Hero = () => {
 
           {/* Right Column: Interactive Subject Quick-Preview Widget */}
           <div className="lg:col-span-6">
-            <div className="bg-zinc-950 rounded-xl border border-zinc-850 p-4 sm:p-5 shadow-sm space-y-3.5">
+            <div className="bg-[#0c0d10] rounded-xl border border-white/[0.06] p-4 sm:p-5 shadow-sm space-y-3.5">
               {/* Widget Header & Subject Tabs */}
-              <div className="flex items-center justify-between pb-3 border-b border-zinc-850">
+              <div className="flex items-center justify-between pb-3 border-b border-white/[0.06]">
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   <span className="text-xs font-mono font-semibold text-white">
@@ -179,7 +179,7 @@ export const Hero = () => {
                     className={`px-2.5 py-1 rounded-md text-[11px] font-medium whitespace-nowrap transition-colors ${
                       activePreviewSubject === s
                         ? "bg-white text-black font-bold shadow-sm"
-                        : "bg-black text-zinc-400 border border-zinc-800 hover:text-white"
+                        : "bg-black/60 text-zinc-400 border border-white/[0.06] hover:text-white"
                     }`}
                   >
                     {s}
@@ -195,25 +195,30 @@ export const Hero = () => {
                     <div
                       key={ch.id}
                       onClick={() => handlePlayChapter(ch)}
-                      className="p-3 rounded-lg bg-black border border-zinc-850 hover:border-zinc-700 cursor-pointer transition-all flex items-center justify-between gap-3 group"
+                      className="p-3 rounded-lg bg-black/60 border border-white/[0.04] hover:border-white/[0.14] cursor-pointer transition-all flex items-center justify-between gap-3 group"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-8 h-8 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 flex items-center justify-center shrink-0 group-hover:bg-white group-hover:text-black transition-colors">
-                          <IconPlay size={12} />
+                        <div className="w-8 h-8 rounded-md bg-white/[0.04] flex items-center justify-center text-zinc-400 group-hover:bg-white group-hover:text-black shrink-0 transition-colors">
+                          <IconPlay size={13} />
                         </div>
                         <div className="min-w-0">
-                          <div className="text-xs font-semibold text-zinc-100 group-hover:text-white truncate">
-                            {video.title}
+                          <div className="text-xs font-semibold text-zinc-200 group-hover:text-white truncate transition-colors">
+                            {ch.title}
                           </div>
-                          <div className="text-[10px] text-zinc-400 font-mono truncate mt-0.5">
-                            {ch.unitName?.split(":")[0] || "Unit"} · {activePreviewSubject}
+                          <div className="text-[11px] text-zinc-500 truncate mt-0.5 font-mono">
+                            {activePreviewSubject} · {ch.unitName?.split(":")[0] || "Unit"}
                           </div>
                         </div>
                       </div>
 
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 text-zinc-300 border border-zinc-800 shrink-0">
-                        Play
-                      </span>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <span className="text-[11px] font-mono text-zinc-500 hidden sm:inline">
+                          {video?.duration || "Lecture"}
+                        </span>
+                        <span className="text-xs font-medium text-zinc-400 group-hover:text-white group-hover:translate-x-0.5 transition-all">
+                          →
+                        </span>
+                      </div>
                     </div>
                   );
                 })}

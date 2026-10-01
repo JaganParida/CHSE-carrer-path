@@ -30,18 +30,18 @@ body {
   background: #000000;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #202125;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #2e3037;
 }
 
 /* Minimalist border utilities */
 .hairline-border {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
 .hairline-divider {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }

@@ -33,7 +33,7 @@ export const VideoPlayer = () => {
   if (!currentVideo) {
     return (
       <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-        <div className="max-w-md mx-auto p-6 rounded-xl bg-zinc-950 border border-zinc-800 space-y-3.5">
+        <div className="max-w-md mx-auto p-6 rounded-xl bg-[#0c0d10] border border-white/[0.06] space-y-3.5">
           <IconBook size={28} className="mx-auto text-zinc-300" />
           <h2 className="text-lg font-bold text-white">No Lecture Selected</h2>
           <p className="text-xs text-zinc-400">
@@ -98,7 +98,7 @@ export const VideoPlayer = () => {
   return (
     <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 font-sans">
       {/* Precision Top Header (Zero overlap on mobile) */}
-      <div className="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-lg bg-zinc-950 border border-zinc-850">
+      <div className="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-lg bg-[#0c0d10] border border-white/[0.06]">
         <button
           onClick={() => setCurrentSection("subject")}
           className="flex items-center gap-1.5 text-xs font-semibold text-zinc-300 hover:text-white transition-colors min-w-0 truncate"
@@ -108,12 +108,12 @@ export const VideoPlayer = () => {
         </button>
 
         <div className="flex items-center gap-2 shrink-0">
-          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black text-zinc-400 border border-zinc-800 hidden sm:inline">
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/60 text-zinc-400 border border-white/[0.06] hidden sm:inline">
             Class {currentClass}
           </span>
           <button
             onClick={() => setCurrentSection("dashboard")}
-            className="flex items-center gap-1 px-2.5 py-1 rounded bg-black hover:bg-zinc-900 border border-zinc-800 text-[11px] font-mono text-zinc-400 hover:text-white transition-colors"
+            className="flex items-center gap-1 px-2.5 py-1 rounded bg-black/60 hover:bg-white/[0.04] border border-white/[0.06] text-[11px] font-mono text-zinc-400 hover:text-white transition-colors"
           >
             <span>Close</span>
             <IconClose size={12} />
@@ -126,7 +126,7 @@ export const VideoPlayer = () => {
         {/* Left Column: Player & Notes */}
         <div className="lg:col-span-8 space-y-4">
           {/* 16:9 Video Container */}
-          <div className="aspect-video w-full rounded-xl overflow-hidden bg-black border border-zinc-800 shadow-2xl relative">
+          <div className="aspect-video w-full rounded-xl overflow-hidden bg-black border border-white/[0.06] shadow-2xl relative">
             {currentVideo.youtubeId ? (
               <iframe
                 src={`https://www.youtube.com/embed/${currentVideo.youtubeId}?autoplay=1&rel=0&modestbranding=1`}
@@ -136,8 +136,8 @@ export const VideoPlayer = () => {
                 className="w-full h-full border-0"
               ></iframe>
             ) : (
-              <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-zinc-950 text-zinc-400">
-                <div className="w-10 h-10 rounded-lg bg-black border border-zinc-800 text-zinc-300 flex items-center justify-center mb-2.5">
+              <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-[#0c0d10] text-zinc-400">
+                <div className="w-10 h-10 rounded-lg bg-black/60 border border-white/[0.06] text-zinc-300 flex items-center justify-center mb-2.5">
                   <IconClock size={18} />
                 </div>
                 <h3 className="text-sm font-semibold text-white mb-1">
@@ -151,12 +151,12 @@ export const VideoPlayer = () => {
           </div>
 
           {/* Controls Bar */}
-          <div className="bg-zinc-950 p-3 rounded-xl border border-zinc-850 flex items-center justify-between gap-2.5 flex-wrap">
+          <div className="bg-[#0c0d10] p-3 rounded-xl border border-white/[0.06] flex items-center justify-between gap-2.5 flex-wrap">
             <div className="flex items-center gap-1.5 sm:gap-2">
               <button
                 onClick={() => handleNavigate(-1)}
                 disabled={currentIndex <= 0}
-                className="p-1.5 rounded-lg bg-black hover:bg-zinc-900 disabled:opacity-30 border border-zinc-800 text-zinc-300 transition-colors"
+                className="p-1.5 rounded-lg bg-black/60 hover:bg-white/[0.04] disabled:opacity-30 border border-white/[0.06] text-zinc-300 transition-colors"
                 title="Previous chapter"
               >
                 <IconSkipBack size={14} />
@@ -165,7 +165,7 @@ export const VideoPlayer = () => {
               <button
                 onClick={() => handleNavigate(1)}
                 disabled={currentIndex >= playlist.length - 1}
-                className="p-1.5 rounded-lg bg-black hover:bg-zinc-900 disabled:opacity-30 border border-zinc-800 text-zinc-300 transition-colors"
+                className="p-1.5 rounded-lg bg-black/60 hover:bg-white/[0.04] disabled:opacity-30 border border-white/[0.06] text-zinc-300 transition-colors"
                 title="Next chapter"
               >
                 <IconSkipForward size={14} />
@@ -182,7 +182,7 @@ export const VideoPlayer = () => {
                 className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium border flex items-center gap-1.5 transition-colors ${
                   isSaved
                     ? "bg-white text-black border-white"
-                    : "bg-black text-zinc-300 border-zinc-800 hover:text-white"
+                    : "bg-black/60 text-zinc-300 border-white/[0.06] hover:text-white"
                 }`}
               >
                 {isSaved ? <IconBookmarkFilled size={12} /> : <IconBookmark size={12} />}
@@ -204,10 +204,10 @@ export const VideoPlayer = () => {
           </div>
 
           {/* Chapter Details and Auto-Saving Notepad */}
-          <div className="bg-zinc-950 p-4 sm:p-5 rounded-xl border border-zinc-850 space-y-3.5">
+          <div className="bg-[#0c0d10] p-4 sm:p-5 rounded-xl border border-white/[0.06] space-y-3.5">
             <div>
               <div className="flex items-center gap-2 mb-1 flex-wrap">
-                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-black text-zinc-400 border border-zinc-800">
+                <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-black/60 text-zinc-400 border border-white/[0.06]">
                   {currentSubject} · Class {currentClass}
                 </span>
                 {isDone && (
@@ -223,7 +223,7 @@ export const VideoPlayer = () => {
             </div>
 
             {/* Smart Auto-Saving Notes Box */}
-            <div className="pt-3.5 border-t border-zinc-850">
+            <div className="pt-3.5 border-t border-white/[0.06]">
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-mono uppercase tracking-wider text-zinc-400">
                   Chapter Study Notes
@@ -237,15 +237,15 @@ export const VideoPlayer = () => {
                 value={noteText}
                 onChange={handleNoteChange}
                 placeholder="Write your key points, formulas, definitions, and exam reminders here... Notes autosave in real-time."
-                className="w-full p-3 rounded-lg bg-black border border-zinc-800 text-sm text-zinc-200 placeholder-zinc-500 focus:border-zinc-400 outline-none resize-none font-sans"
+                className="w-full p-3 rounded-lg bg-black/60 border border-white/[0.06] text-sm text-zinc-200 placeholder-zinc-500 focus:border-white/20 outline-none resize-none font-sans"
               ></textarea>
             </div>
           </div>
         </div>
 
         {/* Right Column: Playlist Sidebar */}
-        <div className="lg:col-span-4 bg-zinc-950 rounded-xl border border-zinc-850 p-3.5 space-y-2.5">
-          <div className="flex items-center justify-between pb-2.5 border-b border-zinc-850">
+        <div className="lg:col-span-4 bg-[#0c0d10] rounded-xl border border-white/[0.06] p-3.5 space-y-2.5">
+          <div className="flex items-center justify-between pb-2.5 border-b border-white/[0.06]">
             <div>
               <h3 className="text-sm font-semibold text-white">Subject Playlist</h3>
               <div className="text-[10px] text-zinc-500 font-mono">{playlist.length} chapters total</div>
@@ -266,12 +266,12 @@ export const VideoPlayer = () => {
                   className={`p-2 rounded-lg text-xs flex items-center gap-2.5 cursor-pointer transition-colors ${
                     isActive
                       ? "bg-white text-black shadow-sm font-semibold"
-                      : "text-zinc-300 hover:bg-zinc-900 border border-transparent"
+                      : "text-zinc-300 hover:bg-white/[0.04] border border-transparent"
                   }`}
                 >
                   <span
                     className={`w-5 h-5 rounded flex items-center justify-center shrink-0 font-mono font-bold text-[10px] ${
-                      isActive ? "bg-black text-white" : "bg-black text-zinc-400 border border-zinc-800"
+                      isActive ? "bg-black text-white" : "bg-black/60 text-zinc-400 border border-white/[0.06]"
                     }`}
                   >
                     {idx + 1}
