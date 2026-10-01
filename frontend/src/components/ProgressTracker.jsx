@@ -110,15 +110,18 @@ export const ProgressTracker = () => {
       }
 
       // Check month boundary - capture each month across the full 12-month period
-      const checkDay = days[3] || days[0];
-      const m = checkDay.getMonth();
-      if (m !== lastMonth && (w - lastLabelWeek >= 3) && (52 - w >= 2)) {
-        labels.push({
-          weekIndex: w,
-          label: checkDay.toLocaleString("en-US", { month: "short" }),
-        });
-        lastMonth = m;
-        lastLabelWeek = w;
+      const checkDayObj = days[3] || days[0];
+      const checkDate = checkDayObj?.date;
+      if (checkDate instanceof Date && !isNaN(checkDate)) {
+        const m = checkDate.getMonth();
+        if (m !== lastMonth && (w - lastLabelWeek >= 3) && (52 - w >= 2)) {
+          labels.push({
+            weekIndex: w,
+            label: checkDate.toLocaleString("en-US", { month: "short" }),
+          });
+          lastMonth = m;
+          lastLabelWeek = w;
+        }
       }
 
       weeksList.push(days);
