@@ -88,11 +88,11 @@ export default function SearchModal() {
       className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/80 backdrop-blur-md animate-fadeIn"
     >
       <div
-        className="relative w-full max-w-2xl bg-[#111215] border border-[#27292f] rounded-xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-2xl bg-[#0c0d10] border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
-        <div className="flex items-center px-4 py-3 border-b border-[#1f2127] bg-[#0c0d0f]">
+        <div className="flex items-center px-4 py-3 border-b border-white/[0.06] bg-[#08090b]">
           <IconSearch size={16} className="text-zinc-400 mr-3 flex-shrink-0" />
           <input
             ref={inputRef}
@@ -105,21 +105,21 @@ export default function SearchModal() {
           {query && (
             <button
               onClick={() => setQuery("")}
-              className="text-[11px] text-zinc-400 hover:text-white px-2 py-0.5 rounded-md bg-[#18191d] border border-[#23252a] mr-2 transition-colors"
+              className="text-[11px] text-zinc-400 hover:text-white px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.06] mr-2 transition-colors"
             >
               Clear
             </button>
           )}
           <button
             onClick={() => setSearchModalOpen(false)}
-            className="p-1 text-zinc-400 hover:text-white hover:bg-[#18191d] rounded-md transition-colors"
+            className="p-1 text-zinc-400 hover:text-white hover:bg-white/[0.04] rounded-md transition-colors"
           >
             <IconClose size={16} />
           </button>
         </div>
 
         {/* Subject Filter Pills */}
-        <div className="flex items-center gap-1.5 px-4 py-2 bg-[#111215] border-b border-[#1f2127] overflow-x-auto text-xs custom-scrollbar">
+        <div className="flex items-center gap-1.5 px-4 py-2 bg-[#0c0d10] border-b border-white/[0.06] overflow-x-auto text-xs custom-scrollbar">
           <span className="text-zinc-500 uppercase tracking-wider text-[10px] font-mono mr-1">
             Subject:
           </span>
@@ -128,7 +128,7 @@ export default function SearchModal() {
             className={`px-2.5 py-1 rounded-md transition-colors whitespace-nowrap text-xs font-semibold ${
               selectedSubjectFilter === "all"
                 ? "bg-zinc-100 text-zinc-950 shadow-sm"
-                : "bg-[#0c0d0f] text-zinc-400 border border-[#23252a] hover:text-zinc-200"
+                : "bg-black/60 text-zinc-400 border border-white/[0.06] hover:text-zinc-200"
             }`}
           >
             All
@@ -140,7 +140,7 @@ export default function SearchModal() {
               className={`px-2.5 py-1 rounded-md transition-colors whitespace-nowrap text-xs font-semibold ${
                 selectedSubjectFilter === s
                   ? "bg-zinc-100 text-zinc-950 shadow-sm"
-                  : "bg-[#0c0d0f] text-zinc-400 border border-[#23252a] hover:text-zinc-200"
+                  : "bg-black/60 text-zinc-400 border border-white/[0.06] hover:text-zinc-200"
               }`}
             >
               {s}
@@ -149,7 +149,7 @@ export default function SearchModal() {
         </div>
 
         {/* Results List */}
-        <div className="max-h-[380px] overflow-y-auto divide-y divide-[#1f2127] custom-scrollbar">
+        <div className="max-h-[380px] overflow-y-auto divide-y divide-white/[0.04] custom-scrollbar">
           {filtered.length === 0 ? (
             <div className="py-12 text-center text-xs text-zinc-500 space-y-1">
               <p className="font-semibold text-zinc-400">No matching chapters found</p>
@@ -160,10 +160,10 @@ export default function SearchModal() {
               <div
                 key={item.id || index}
                 onClick={() => handleSelect(item)}
-                className="p-3.5 hover:bg-[#18191d] cursor-pointer flex items-center justify-between gap-3 transition-colors group"
+                className="p-3.5 hover:bg-white/[0.02] cursor-pointer flex items-center justify-between gap-3 transition-colors group"
               >
                 <div className="flex items-start gap-3 min-w-0">
-                  <div className="w-8 h-8 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-300 flex items-center justify-center shrink-0 mt-0.5 group-hover:border-zinc-400 transition-colors">
+                  <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] text-zinc-300 flex items-center justify-center shrink-0 mt-0.5 group-hover:border-white/[0.15] transition-colors">
                     <IconBook size={14} />
                   </div>
                   <div className="min-w-0">
@@ -180,11 +180,11 @@ export default function SearchModal() {
 
                 <div className="flex items-center gap-2 shrink-0">
                   {item.isAvailable && (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#0c0d0f] text-zinc-300 border border-[#23252a]">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/60 text-zinc-300 border border-white/[0.06]">
                       Video Ready
                     </span>
                   )}
-                  <div className="w-7 h-7 rounded-md bg-[#0c0d0f] border border-[#23252a] text-zinc-400 group-hover:text-zinc-100 flex items-center justify-center transition-colors">
+                  <div className="w-7 h-7 rounded-md bg-black/60 border border-white/[0.06] text-zinc-400 group-hover:text-zinc-100 flex items-center justify-center transition-colors">
                     <IconArrowRight size={12} />
                   </div>
                 </div>
@@ -194,7 +194,7 @@ export default function SearchModal() {
         </div>
 
         {/* Footer shortcuts */}
-        <div className="px-4 py-2 bg-[#0c0d0f] border-t border-[#1f2127] flex items-center justify-between text-[11px] text-zinc-500 font-mono">
+        <div className="px-4 py-2 bg-[#08090b] border-t border-white/[0.06] flex items-center justify-between text-[11px] text-zinc-500 font-mono">
           <span>{filtered.length} chapters available</span>
           <div className="flex items-center gap-3">
             <span>[ESC] to close</span>

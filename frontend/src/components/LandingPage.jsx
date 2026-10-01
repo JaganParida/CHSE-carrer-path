@@ -180,7 +180,7 @@ export const LandingPage = () => {
   return (
     <div className="min-h-screen bg-black text-zinc-100 flex flex-col font-sans selection:bg-white selection:text-black antialiased">
       {/* Precision Top Navigation Bar */}
-      <header className="sticky top-0 z-40 w-full bg-black/80 backdrop-blur-xl border-b border-zinc-800/80">
+      <header className="sticky top-0 z-40 w-full bg-black/95 backdrop-blur-xl border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 rounded-md bg-white text-black flex items-center justify-center font-black shadow-sm">
@@ -190,7 +190,7 @@ export const LandingPage = () => {
               <span className="font-bold text-sm tracking-tight text-white">
                 CHSE<span className="text-zinc-500 font-light">Tube</span>
               </span>
-              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border border-zinc-800 text-zinc-400 hidden sm:inline">
+              <span className="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded border border-white/[0.06] text-zinc-400 hidden sm:inline">
                 Odisha (+2)
               </span>
             </div>
@@ -224,14 +224,14 @@ export const LandingPage = () => {
       </header>
 
       {/* SECTION 1: HERO (Clean, No Badges, Single CTA, Interactive Software Preview) */}
-      <section className="relative overflow-hidden pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-zinc-800/80 bg-black">
+      <section className="relative overflow-hidden pt-16 sm:pt-24 pb-16 sm:pb-24 border-b border-white/[0.06] bg-black">
         {/* Soft background radial mask */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-white/[0.02] blur-[140px] pointer-events-none rounded-full" />
 
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
           {/* Main Headline */}
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-[1.1] max-w-4xl mx-auto">
-            The Digital Study Platform Built for <span className="text-zinc-500 font-medium">CHSE Odisha (+2)</span>.
+            The Digital Study Platform Built for <span className="text-zinc-500 font-medium">CHSE Odisha (+2)</span>
           </h1>
 
           {/* Subtitle */}
@@ -251,7 +251,7 @@ export const LandingPage = () => {
           </div>
 
           {/* Metric Bar */}
-          <div className="mt-12 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-y md:divide-y-0 divide-zinc-800/80 border border-zinc-800/80 rounded-xl bg-zinc-950/60 font-mono text-center overflow-hidden">
+          <div className="mt-12 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-0 divide-x divide-y md:divide-y-0 divide-white/[0.04] border border-white/[0.06] rounded-xl bg-[#0c0d10] font-mono text-center overflow-hidden">
             <div className="p-3.5 sm:p-4">
               <div className="text-[10px] text-zinc-500 uppercase tracking-wider">Access</div>
               <div className="text-xs sm:text-sm font-semibold text-zinc-200 mt-1">100% Free Forever</div>
@@ -272,13 +272,13 @@ export const LandingPage = () => {
 
           {/* Interactive Live Product Preview Mockup */}
           <div className="mt-14 max-w-5xl mx-auto text-left">
-            <div className="rounded-xl border border-zinc-800 bg-zinc-950 shadow-2xl overflow-hidden">
+            <div className="rounded-xl border border-white/[0.06] bg-[#0c0d10] shadow-2xl overflow-hidden">
               {/* Window Chrome Header */}
-              <div className="px-4 py-3 bg-[#0d0e12] border-b border-zinc-800 flex items-center justify-between text-xs font-mono">
+              <div className="px-4 py-3 bg-[#08090b] border-b border-white/[0.06] flex items-center justify-between text-xs font-mono">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/[0.1]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/[0.1]" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-white/[0.1]" />
                   <span className="text-zinc-500 ml-2 hidden sm:inline">portal.chsetube.edu · Class 12 Science</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -288,18 +288,18 @@ export const LandingPage = () => {
               </div>
 
               {/* Mock Workspace Interior */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-zinc-800">
+              <div className="grid grid-cols-1 lg:grid-cols-12 divide-y lg:divide-y-0 lg:divide-x divide-white/[0.04]">
                 {/* Left: Syllabus Tree Preview */}
-                <div className="lg:col-span-4 p-4 space-y-3 bg-[#090a0d]">
+                <div className="lg:col-span-4 p-4 space-y-3 bg-[#08090b]/60">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-white font-mono">Physics · 24 Chapters</span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400">
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-black/60 border border-white/[0.06] text-zinc-400">
                       Unit 1 of 5
                     </span>
                   </div>
 
                   <div className="space-y-1.5">
-                    <div className="p-2.5 rounded-lg bg-zinc-900/90 border border-zinc-700/80 flex items-center justify-between gap-2">
+                    <div className="p-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="w-4 h-4 rounded bg-emerald-400/20 text-emerald-400 flex items-center justify-center shrink-0">
                           <IconCheck size={10} />
@@ -309,7 +309,7 @@ export const LandingPage = () => {
                       <span className="text-[10px] font-mono text-zinc-500 shrink-0">38 min</span>
                     </div>
 
-                    <div className="p-2.5 rounded-lg bg-zinc-800/40 border border-zinc-700/40 flex items-center justify-between gap-2">
+                    <div className="p-2.5 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2 min-w-0">
                         <span className="w-4 h-4 rounded bg-white text-black flex items-center justify-center shrink-0">
                           <IconPlay size={8} />
@@ -319,9 +319,9 @@ export const LandingPage = () => {
                       <span className="text-[10px] font-mono text-emerald-400 shrink-0">Playing</span>
                     </div>
 
-                    <div className="p-2.5 rounded-lg bg-transparent border border-zinc-850 flex items-center justify-between gap-2 text-zinc-500">
+                    <div className="p-2.5 rounded-lg bg-transparent border border-white/[0.04] flex items-center justify-between gap-2 text-zinc-500">
                       <div className="flex items-center gap-2 min-w-0">
-                        <span className="w-4 h-4 rounded border border-zinc-800 flex items-center justify-center shrink-0 text-[10px] font-mono">
+                        <span className="w-4 h-4 rounded border border-white/[0.06] flex items-center justify-center shrink-0 text-[10px] font-mono">
                           3
                         </span>
                         <span className="text-xs truncate">Capacitance & Dielectrics</span>
@@ -329,9 +329,9 @@ export const LandingPage = () => {
                       <span className="text-[10px] font-mono shrink-0">44 min</span>
                     </div>
 
-                    <div className="p-2.5 rounded-lg bg-transparent border border-zinc-850 flex items-center justify-between gap-2 text-zinc-500">
+                    <div className="p-2.5 rounded-lg bg-transparent border border-white/[0.04] flex items-center justify-between gap-2 text-zinc-500">
                       <div className="flex items-center gap-2 min-w-0">
-                        <span className="w-4 h-4 rounded border border-zinc-800 flex items-center justify-center shrink-0 text-[10px] font-mono">
+                        <span className="w-4 h-4 rounded border border-white/[0.06] flex items-center justify-center shrink-0 text-[10px] font-mono">
                           4
                         </span>
                         <span className="text-xs truncate">Current Electricity & Ohm's Law</span>
@@ -342,12 +342,12 @@ export const LandingPage = () => {
                 </div>
 
                 {/* Right: Theater Screen + Synced Notes */}
-                <div className="lg:col-span-8 p-4 sm:p-5 flex flex-col justify-between bg-black">
+                <div className="lg:col-span-8 p-4 sm:p-5 flex flex-col justify-between bg-black/60">
                   {/* Mock Video Canvas */}
-                  <div className="aspect-video w-full rounded-lg bg-zinc-950 border border-zinc-800 relative flex items-center justify-center overflow-hidden group">
+                  <div className="aspect-video w-full rounded-lg bg-black border border-white/[0.06] relative flex items-center justify-center overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10" />
                     <div className="text-center z-20 space-y-2 p-4">
-                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center mx-auto shadow-md">
+                      <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/[0.1] text-white flex items-center justify-center mx-auto shadow-md">
                         <IconPlay size={18} />
                       </div>
                       <div className="text-xs font-semibold text-white">Electrostatic Potential & Capacitance</div>
@@ -356,8 +356,8 @@ export const LandingPage = () => {
                   </div>
 
                   {/* Synchronized Chapter Notepad Mock */}
-                  <div className="mt-3 p-3 rounded-lg bg-zinc-950 border border-zinc-850 font-mono text-[11px] space-y-1">
-                    <div className="flex items-center justify-between text-zinc-500 pb-1 border-b border-zinc-900">
+                  <div className="mt-3 p-3 rounded-lg bg-[#090a0d] border border-white/[0.06] font-mono text-[11px] space-y-1">
+                    <div className="flex items-center justify-between text-zinc-500 pb-1 border-b border-white/[0.06]">
                       <span className="flex items-center gap-1.5 text-zinc-400 font-medium">
                         <IconNote size={11} /> Auto-Saving Study Notepad
                       </span>
@@ -378,7 +378,7 @@ export const LandingPage = () => {
       </section>
 
       {/* SECTION 2: CURRICULUM ARCHITECTURE (Interactive Split View, Not Box-Inside-Box) */}
-      <section id="curriculum" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-zinc-950/40 scroll-mt-14">
+      <section id="curriculum" className="py-16 sm:py-24 border-b border-white/[0.06] bg-transparent scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Eyebrow & Header */}
           <div className="max-w-3xl mb-12">
@@ -393,7 +393,7 @@ export const LandingPage = () => {
             </p>
 
             {/* Stream Switcher Tabs */}
-            <div className="mt-6 inline-flex bg-zinc-900 p-1 rounded-lg border border-zinc-800">
+            <div className="mt-6 inline-flex bg-[#0c0d10] p-1 rounded-lg border border-white/[0.06]">
               {["Science", "Commerce", "Arts"].map((st) => (
                 <button
                   key={st}
@@ -416,7 +416,7 @@ export const LandingPage = () => {
           {/* Split Screen Layout */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             {/* Left Column: Stream Profile & Direct Enrollment CTA */}
-            <div className="lg:col-span-5 p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-5">
+            <div className="lg:col-span-5 p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-5">
               <div>
                 <div className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 mb-1">
                   {activeStream.tag}
@@ -433,7 +433,7 @@ export const LandingPage = () => {
                 {activeStream.description}
               </p>
 
-              <div className="pt-2 border-t border-zinc-850 space-y-2 text-xs font-mono">
+              <div className="pt-2 border-t border-white/[0.06] space-y-2 text-xs font-mono">
                 <div className="flex items-center justify-between text-zinc-400">
                   <span>Total Video Coverage:</span>
                   <span className="text-white font-bold">{activeStream.chaptersTotal}</span>
@@ -468,8 +468,8 @@ export const LandingPage = () => {
                     key={idx}
                     className={`rounded-xl border transition-all ${
                       isExpanded
-                        ? "border-zinc-700 bg-zinc-900/60 shadow-md"
-                        : "border-zinc-850 bg-zinc-950 hover:border-zinc-700"
+                        ? "border-white/[0.14] bg-[#0e0f12] shadow-sm"
+                        : "border-white/[0.06] bg-[#0c0d10] hover:border-white/[0.12]"
                     }`}
                   >
                     <button
@@ -477,7 +477,7 @@ export const LandingPage = () => {
                       className="w-full p-4 flex items-center justify-between gap-3 text-left"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-7 h-7 rounded bg-zinc-900 border border-zinc-800 text-zinc-300 flex items-center justify-center shrink-0">
+                        <div className="w-7 h-7 rounded bg-white/[0.04] border border-white/[0.06] text-zinc-300 flex items-center justify-center shrink-0">
                           <IconBook size={13} />
                         </div>
                         <div>
@@ -487,7 +487,7 @@ export const LandingPage = () => {
                       </div>
 
                       <div className="flex items-center gap-3 shrink-0">
-                        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+                        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-black/60 border border-white/[0.06] text-zinc-300">
                           {sub.chapters}
                         </span>
                         <IconChevronDown
@@ -500,7 +500,7 @@ export const LandingPage = () => {
                     </button>
 
                     {isExpanded && (
-                      <div className="px-4 pb-4 pt-1 text-xs text-zinc-400 border-t border-zinc-800/80 space-y-2">
+                      <div className="px-4 pb-4 pt-1 text-xs text-zinc-400 border-t border-white/[0.06] space-y-2">
                         <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">
                           Syllabus Units & Prescribed Chapters:
                         </div>
@@ -518,7 +518,7 @@ export const LandingPage = () => {
       </section>
 
       {/* SECTION 3: HOW IT WORKS (Architectural Numbered Process) */}
-      <section id="how-it-works" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-black scroll-mt-14">
+      <section id="how-it-works" className="py-16 sm:py-24 border-b border-white/[0.06] bg-black scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-14">
             <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
@@ -533,32 +533,32 @@ export const LandingPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
-              <span className="text-2xl font-black font-mono text-zinc-700">01</span>
+            <div className="p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-600">01</span>
               <h3 className="text-sm font-bold text-white">Enroll Stream & Class</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 Choose Class 11 or 12 and your stream. Your dashboard is automatically locked to prevent clutter from other courses.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
-              <span className="text-2xl font-black font-mono text-zinc-700">02</span>
+            <div className="p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-600">02</span>
               <h3 className="text-sm font-bold text-white">Clean Collapsed Units</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 All syllabus units start clean and collapsed. Expand one chapter at a time to stay calm and structured.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
-              <span className="text-2xl font-black font-mono text-zinc-700">03</span>
+            <div className="p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-600">03</span>
               <h3 className="text-sm font-bold text-white">Distraction-Free Theater</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 Stream verified high-definition YouTube masterclasses with zero algorithm traps, recommendations, or comments.
               </p>
             </div>
 
-            <div className="p-6 rounded-xl border border-zinc-850 bg-zinc-950/60 relative space-y-3">
-              <span className="text-2xl font-black font-mono text-zinc-700">04</span>
+            <div className="p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] relative space-y-3">
+              <span className="text-2xl font-black font-mono text-zinc-600">04</span>
               <h3 className="text-sm font-bold text-white">Auto-Saving Notepad</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 Record formulas and definitions while streaming. Everything synchronizes automatically and exports as text anytime.
@@ -569,7 +569,7 @@ export const LandingPage = () => {
       </section>
 
       {/* SECTION 4: PLATFORM ADVANTAGES (Bento Grid) */}
-      <section id="features" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-zinc-950/40 scroll-mt-14">
+      <section id="features" className="py-16 sm:py-24 border-b border-white/[0.06] bg-transparent scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-14">
             <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
@@ -585,8 +585,8 @@ export const LandingPage = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Bento 1: Large Span 2 */}
-            <div className="md:col-span-2 p-6 sm:p-8 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
+            <div className="md:col-span-2 p-6 sm:p-8 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] text-white flex items-center justify-center">
                 <IconBook size={16} />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-white">
@@ -596,15 +596,15 @@ export const LandingPage = () => {
                 Unlike generic national portals that follow standard CBSE tracks, CHSETube is organized directly around CHSE Council guidelines—including Odisha-specific unit splits and Biology Botany/Zoology demarcation.
               </p>
               <div className="pt-2 flex flex-wrap gap-2 font-mono text-[10px]">
-                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">Council Guidelines</span>
-                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">Unit-by-Unit</span>
-                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">Odisha Board Mapped</span>
+                <span className="px-2 py-1 rounded bg-black/60 border border-white/[0.06] text-zinc-300">Council Guidelines</span>
+                <span className="px-2 py-1 rounded bg-black/60 border border-white/[0.06] text-zinc-300">Unit-by-Unit</span>
+                <span className="px-2 py-1 rounded bg-black/60 border border-white/[0.06] text-zinc-300">Odisha Board Mapped</span>
               </div>
             </div>
 
             {/* Bento 2 */}
-            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
+            <div className="p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] text-white flex items-center justify-center">
                 <IconVideo size={16} />
               </div>
               <h3 className="text-base font-bold text-white">Distraction-Free Theater</h3>
@@ -614,8 +614,8 @@ export const LandingPage = () => {
             </div>
 
             {/* Bento 3 */}
-            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
+            <div className="p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] text-white flex items-center justify-center">
                 <IconNote size={16} />
               </div>
               <h3 className="text-base font-bold text-white">Real-Time Revision Notes</h3>
@@ -625,8 +625,8 @@ export const LandingPage = () => {
             </div>
 
             {/* Bento 4 */}
-            <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
+            <div className="p-6 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] text-white flex items-center justify-center">
                 <IconChart size={16} />
               </div>
               <h3 className="text-base font-bold text-white">24-Week Consistency Matrix</h3>
@@ -636,8 +636,8 @@ export const LandingPage = () => {
             </div>
 
             {/* Bento 5: Large Span 2 */}
-            <div className="md:col-span-2 p-6 sm:p-8 rounded-xl border border-zinc-800 bg-zinc-950 space-y-4">
-              <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center">
+            <div className="md:col-span-2 p-6 sm:p-8 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-4">
+              <div className="w-8 h-8 rounded-lg bg-white/[0.04] border border-white/[0.06] text-white flex items-center justify-center">
                 <IconMap size={16} />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-white">
@@ -647,10 +647,10 @@ export const LandingPage = () => {
                 Full milestone roadmaps for JEE Main, NEET UG, OUAT Veterinary, CA Foundation, CUET UG, CLAT, and civil services—including eligibility, exam timelines, and syllabus strategies.
               </p>
               <div className="pt-2 flex flex-wrap gap-2 font-mono text-[10px]">
-                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">JEE Main / OJEE</span>
-                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">NEET / OUAT</span>
-                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">CA / CMA / CS</span>
-                <span className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">CUET UG / CLAT</span>
+                <span className="px-2 py-1 rounded bg-black/60 border border-white/[0.06] text-zinc-300">JEE Main / OJEE</span>
+                <span className="px-2 py-1 rounded bg-black/60 border border-white/[0.06] text-zinc-300">NEET / OUAT</span>
+                <span className="px-2 py-1 rounded bg-black/60 border border-white/[0.06] text-zinc-300">CA / CMA / CS</span>
+                <span className="px-2 py-1 rounded bg-black/60 border border-white/[0.06] text-zinc-300">CUET UG / CLAT</span>
               </div>
             </div>
           </div>
@@ -658,7 +658,7 @@ export const LandingPage = () => {
       </section>
 
       {/* SECTION 5: CAREER ROADMAPS */}
-      <section id="roadmaps" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-black scroll-mt-14">
+      <section id="roadmaps" className="py-16 sm:py-24 border-b border-white/[0.06] bg-black scroll-mt-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mb-14">
             <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
@@ -673,54 +673,54 @@ export const LandingPage = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+            <div className="p-5 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-black/60 border border-white/[0.06] text-zinc-300">
                 Engineering & Tech
               </span>
               <h3 className="text-sm font-bold text-white">B.Tech / JEE Roadmap</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 Milestones for JEE Main, JEE Advanced, and OJEE state admissions to top NITs, IITs, IIITs, and government engineering colleges.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-white/[0.06]">
                 4 Years · Exam: JEE Main
               </div>
             </div>
 
-            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+            <div className="p-5 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-black/60 border border-white/[0.06] text-zinc-300">
                 Medicine & Life Sciences
               </span>
               <h3 className="text-sm font-bold text-white">MBBS & Allied Sciences</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 NEET UG, OUAT Veterinary, BDS, B.Pharm, and Nursing admission tracks for SCB Cuttack, MKCG Berhampur, and VIMSAR Burla.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-white/[0.06]">
                 5.5 Years · Exam: NEET UG
               </div>
             </div>
 
-            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+            <div className="p-5 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-black/60 border border-white/[0.06] text-zinc-300">
                 Commerce & Finance
               </span>
               <h3 className="text-sm font-bold text-white">Chartered Accountancy</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 Complete ICAI CA Foundation, Intermediate, and Articleship roadmap alongside university B.Com Honours graduation.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-white/[0.06]">
                 4.5 Years · Exam: CA Foundation
               </div>
             </div>
 
-            <div className="p-5 rounded-xl border border-zinc-850 bg-zinc-950 space-y-3">
-              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
+            <div className="p-5 rounded-xl border border-white/[0.06] bg-[#0c0d10] space-y-3">
+              <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-black/60 border border-white/[0.06] text-zinc-300">
                 Humanities & Law
               </span>
               <h3 className="text-sm font-bold text-white">Law & Civil Services</h3>
               <p className="text-xs text-zinc-400 leading-relaxed font-normal">
                 National Law Universities via CLAT Integrated BA-LLB, Central Universities via CUET UG, and early OPSC/UPSC strategy.
               </p>
-              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-zinc-850">
+              <div className="text-[11px] font-mono text-zinc-500 pt-2 border-t border-white/[0.06]">
                 3–5 Years · Exam: CUET / CLAT
               </div>
             </div>
@@ -729,7 +729,7 @@ export const LandingPage = () => {
       </section>
 
       {/* SECTION 6: FAQ ACCORDION (Line-divider style, NO chunky boxes) */}
-      <section id="faq" className="py-16 sm:py-24 border-b border-zinc-800/80 bg-zinc-950/40 scroll-mt-14">
+      <section id="faq" className="py-16 sm:py-24 border-b border-white/[0.06] bg-transparent scroll-mt-14">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mb-12">
             <div className="text-[11px] font-mono text-zinc-500 uppercase tracking-widest mb-2">
@@ -743,7 +743,7 @@ export const LandingPage = () => {
             </p>
           </div>
 
-          <div className="divide-y divide-zinc-800/80 border-y border-zinc-800/80">
+          <div className="divide-y divide-white/[0.06] border-y border-white/[0.06]">
             {faqs.map((faq, idx) => {
               const isOpen = activeFaq === idx;
               return (
@@ -796,7 +796,7 @@ export const LandingPage = () => {
             </button>
             <button
               onClick={() => openAuth("login")}
-              className="w-full sm:w-auto px-5 py-3 rounded-lg bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 text-xs sm:text-sm font-medium transition-all"
+              className="w-full sm:w-auto px-5 py-3 rounded-lg bg-[#0e0f12] hover:bg-white/[0.04] border border-white/[0.06] text-zinc-300 text-xs sm:text-sm font-medium transition-all"
             >
               Sign In to Dashboard
             </button>
@@ -805,7 +805,7 @@ export const LandingPage = () => {
       </section>
 
       {/* Minimalist Public Student Footer (Strictly Student Links, Zero Admin Mentions) */}
-      <footer className="border-t border-zinc-850 bg-black py-10 text-center text-xs text-zinc-500 font-mono">
+      <footer className="border-t border-white/[0.06] bg-black py-10 text-center text-xs text-zinc-500 font-mono">
         <div className="max-w-7xl mx-auto px-4 space-y-2">
           <div className="flex items-center justify-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />

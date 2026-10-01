@@ -408,7 +408,7 @@ export const AdminStudio = () => {
                               {ch.unitName?.split(":")[0] || "Unit"}
                             </span>
                             {video.isAvailable ? (
-                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-200 border border-zinc-700 flex items-center gap-1">
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.08] text-zinc-200 border border-white/[0.1] flex items-center gap-1">
                                 <IconCheck size={10} /> Active YouTube Link
                               </span>
                             ) : (

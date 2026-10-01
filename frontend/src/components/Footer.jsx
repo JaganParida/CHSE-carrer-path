@@ -14,7 +14,7 @@ export default function Footer() {
   const { user, isAdmin } = useAuth();
 
   return (
-    <footer className="mt-16 border-t border-[#1f2127] bg-[#090a0c] text-zinc-400 text-xs">
+    <footer className="mt-16 border-t border-white/[0.06] bg-[#090a0c] text-zinc-400 text-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {/* Brand info */}
@@ -164,13 +164,13 @@ export default function Footer() {
 
             {/* ONLY visible to authenticated Administrators */}
             {isAdmin && (
-              <div className="pt-3 mt-3 border-t border-[#1f2127]">
+              <div className="pt-3 mt-3 border-t border-white/[0.06]">
                 <button
                   onClick={() => {
                     setCurrentSection("admin");
                     window.scrollTo({ top: 0, behavior: "smooth" });
                   }}
-                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[#111215] text-amber-300 border border-[#23252a] hover:border-amber-400/40 text-[11px] font-mono transition-colors"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/[0.04] text-amber-300 border border-white/[0.08] hover:border-amber-400/40 text-[11px] font-mono transition-colors"
                 >
                   <IconCrown size={12} />
                   <span>Admin Studio Console</span>
@@ -180,7 +180,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 border-t border-[#1f2127] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500 font-mono">
+        <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500 font-mono">
           <p>© {new Date().getFullYear()} CHSETube (CHSE Odisha). Free educational platform.</p>
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 text-zinc-400">

@@ -71,7 +71,7 @@ export const Hero = () => {
               {user ? (
                 <>Welcome back, <span className="text-zinc-400">{user.name?.split(" ")[0]}</span></>
               ) : (
-                <>Master Your CHSE Board Exams with <span className="text-zinc-400">Precision</span>.</>
+                <>Master Your CHSE Board Exams with <span className="text-zinc-400">Precision</span></>
               )}
             </h1>
 

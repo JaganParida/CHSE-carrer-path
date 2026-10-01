@@ -57,18 +57,18 @@ export const AuthModal = () => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-md bg-[#111215] rounded-xl border border-[#27292f] p-6 sm:p-8 shadow-2xl relative text-zinc-100"
+        className="w-full max-w-md bg-[#0c0d10] rounded-xl border border-white/[0.08] p-6 sm:p-8 shadow-2xl relative text-zinc-100"
       >
         <button
           onClick={() => setAuthModalOpen(false)}
-          className="absolute top-5 right-5 p-1.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-zinc-400 hover:text-zinc-100 transition-colors"
+          className="absolute top-5 right-5 p-1.5 rounded-lg bg-white/[0.04] border border-white/[0.06] text-zinc-400 hover:text-zinc-100 transition-colors"
         >
           <IconClose size={16} />
         </button>
 
         {/* Modal Header */}
         <div className="text-center mb-6">
-          <div className="w-10 h-10 rounded-lg bg-[#18191d] border border-[#27292f] mx-auto flex items-center justify-center text-zinc-200 mb-3 shadow-sm">
+          <div className="w-10 h-10 rounded-lg bg-white/[0.04] border border-white/[0.06] mx-auto flex items-center justify-center text-zinc-200 mb-3 shadow-sm">
             <IconUser size={18} />
           </div>
           <h2 className="text-xl font-bold text-zinc-100 tracking-tight">
@@ -92,7 +92,7 @@ export const AuthModal = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your student name"
-                className="w-full px-3.5 py-2.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-sm text-zinc-100 placeholder-zinc-500 focus:border-zinc-400 outline-none transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-lg bg-black/60 border border-white/[0.06] text-sm text-zinc-100 placeholder-zinc-500 focus:border-white/20 outline-none transition-colors"
               />
             </div>
           )}
@@ -106,7 +106,7 @@ export const AuthModal = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="youremail@example.com"
               autoComplete="email"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-sm text-zinc-100 placeholder-zinc-500 focus:border-zinc-400 outline-none transition-colors"
+              className="w-full px-3.5 py-2.5 rounded-lg bg-black/60 border border-white/[0.06] text-sm text-zinc-100 placeholder-zinc-500 focus:border-white/20 outline-none transition-colors"
             />
           </div>
 
@@ -130,7 +130,7 @@ export const AuthModal = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
                 autoComplete={authMode === "login" ? "current-password" : "new-password"}
-                className="w-full pl-3.5 pr-10 py-2.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-sm text-zinc-100 placeholder-zinc-500 focus:border-zinc-400 outline-none transition-colors font-sans"
+                className="w-full pl-3.5 pr-10 py-2.5 rounded-lg bg-black/60 border border-white/[0.06] text-sm text-zinc-100 placeholder-zinc-500 focus:border-white/20 outline-none transition-colors font-sans"
               />
               <button
                 type="button"
@@ -147,7 +147,7 @@ export const AuthModal = () => {
             <div className="grid grid-cols-2 gap-3 pt-1">
               <div>
                 <label className="text-xs font-semibold text-zinc-300 block mb-1">Class (+2)</label>
-                <div className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-[#0c0d0f] border border-[#23252a]">
+                <div className="grid grid-cols-2 gap-1 p-1 rounded-lg bg-black/60 border border-white/[0.06]">
                   {["11", "12"].map((cls) => (
                     <button
                       key={cls}
@@ -170,7 +170,7 @@ export const AuthModal = () => {
                 <select
                   value={stream}
                   onChange={(e) => setStream(e.target.value)}
-                  className="w-full px-3 py-2.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] text-xs font-semibold text-zinc-200 focus:border-zinc-400 outline-none transition-colors"
+                  className="w-full px-3 py-2.5 rounded-lg bg-black/60 border border-white/[0.06] text-xs font-semibold text-zinc-200 focus:border-white/20 outline-none transition-colors"
                 >
                   <option value="Science">Science</option>
                   <option value="Commerce">Commerce</option>
