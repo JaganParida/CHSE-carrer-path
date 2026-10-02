@@ -37,7 +37,40 @@ const getCookieOptions = () => {
   };
 };
 
-// @route   POST /api/auth/register
+export const formatUserJSON = (user) => {
+  if (!user) return null;
+  const uid = user._id ? user._id.toString() : user.id;
+  let completed = {};
+  if (user.completedTopics instanceof Map) {
+    user.completedTopics.forEach((v, k) => {
+      completed[k] = v;
+    });
+  } else if (user.completedTopics && typeof user.completedTopics === "object") {
+    if (typeof user.completedTopics.toJSON === "function") {
+      completed = user.completedTopics.toJSON();
+    } else {
+      completed = { ...user.completedTopics };
+    }
+  }
+
+  return {
+    _id: uid,
+    id: uid,
+    name: user.name,
+    email: user.email,
+    role: user.role || "student",
+    stream: user.stream || "Science",
+    class: user.class || "12",
+    school: user.school || "",
+    avatarUrl: user.avatarUrl || "",
+    streak: user.streak || { count: 0, lastDate: "" },
+    savedVideos: Array.isArray(user.savedVideos) ? user.savedVideos : [],
+    completedTopics: completed,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  };
+};
+
 // @route   POST /api/auth/register
 // @desc    Register a new student & set secure cookie
 router.post("/register", async (req, res) => {
@@ -101,20 +134,7 @@ router.post("/register", async (req, res) => {
       role: "student",
     });
 
-    const userData = {
-      id: savedUser._id,
-      name: savedUser.name,
-      email: savedUser.email,
-      role: savedUser.role,
-      stream: savedUser.stream,
-      class: savedUser.class,
-      school: savedUser.school,
-      avatarUrl: savedUser.avatarUrl,
-      streak: savedUser.streak,
-      savedVideos: savedUser.savedVideos,
-      completedTopics: savedUser.completedTopics,
-    };
-
+    const userData = formatUserJSON(savedUser);
     const token = generateToken(userData);
 
     // Set secure HttpOnly cookie
@@ -209,20 +229,7 @@ router.post("/login", async (req, res) => {
     };
     await user.save();
 
-    const userData = {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-      stream: user.stream,
-      class: user.class,
-      school: user.school,
-      avatarUrl: user.avatarUrl,
-      streak: user.streak,
-      savedVideos: user.savedVideos,
-      completedTopics: user.completedTopics,
-    };
-
+    const userData = formatUserJSON(user);
     const token = generateToken(userData);
 
     // Set secure HttpOnly cookie
@@ -247,7 +254,7 @@ router.post("/login", async (req, res) => {
 router.get("/me", protect, async (req, res) => {
   return res.json({
     success: true,
-    user: req.user,
+    user: formatUserJSON(req.user),
   });
 });
 
@@ -285,26 +292,7 @@ router.put("/update", protect, async (req, res) => {
       }
     }
 
-    const updatedUser = user
-      ? {
-          id: user._id,
-          name: user.name,
-          email: user.email,
-          role: user.role,
-          stream: user.stream,
-          class: user.class,
-          school: user.school,
-          avatarUrl: user.avatarUrl,
-          streak: user.streak,
-          savedVideos: user.savedVideos,
-          completedTopics: user.completedTopics,
-        }
-      : {
-          ...req.user,
-          name: name ? name.trim() : req.user.name,
-          stream: stream || req.user.stream,
-          class: userClass || req.user.class,
-        };
+    const updatedUser = user ? formatUserJSON(user) : formatUserJSON(req.user);
 
     return res.json({
       success: true,

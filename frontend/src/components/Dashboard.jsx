@@ -37,10 +37,14 @@ export const Dashboard = () => {
 
   const getSubjectProgress = (subj) => {
     const units = SYLLABUS_DATA[subj]?.[currentClass] || [];
-    const total = units.reduce((acc, u) => acc + (u.chapters?.length || 0), 0);
-    const done = Object.keys(completedMap).filter((k) =>
-      k.startsWith(subj.toLowerCase().slice(0, 2) + currentClass)
-    ).length;
+    let total = 0;
+    let done = 0;
+    units.forEach((u) => {
+      u.chapters?.forEach((ch) => {
+        total++;
+        if (completedMap[ch.id]) done++;
+      });
+    });
     return {
       total,
       done,
@@ -122,30 +126,60 @@ export const Dashboard = () => {
         </div>
       </div>
 
-      {/* Overview Metrics Row */}
+      {/* Overview Metrics Row (Live Database-Backed) */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div className="bg-[#0c0d10] p-4 rounded-xl border border-white/[0.06] shadow-sm">
-          <div className="w-8 h-8 rounded-lg bg-white/[0.04] text-zinc-300 flex items-center justify-center mb-2.5">
+        <div
+          onClick={() => {
+            setCurrentSection("progress");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="bg-[#0c0d10] p-4 rounded-xl border border-white/[0.06] hover:border-white/[0.18] transition-all cursor-pointer shadow-sm group"
+          title="Click to view all bookmarked / watch later videos"
+        >
+          <div className="w-8 h-8 rounded-lg bg-white/[0.04] text-zinc-300 group-hover:bg-white group-hover:text-black transition-colors flex items-center justify-center mb-2.5">
             <IconVideo size={15} />
           </div>
           <div className="text-xl font-bold text-white font-mono">{savedIds.length}</div>
-          <div className="text-xs text-zinc-400 mt-0.5">Bookmarked Chapters</div>
+          <div className="text-xs text-zinc-400 mt-0.5 flex items-center justify-between">
+            <span>Bookmarked Videos</span>
+            <span className="text-[10px] text-zinc-500 font-mono group-hover:text-zinc-300">View →</span>
+          </div>
         </div>
 
-        <div className="bg-[#0c0d10] p-4 rounded-xl border border-white/[0.06] shadow-sm">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-2.5">
+        <div
+          onClick={() => {
+            setCurrentSection("progress");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="bg-[#0c0d10] p-4 rounded-xl border border-white/[0.06] hover:border-white/[0.18] transition-all cursor-pointer shadow-sm group"
+          title="Click to view detailed syllabus completion progress"
+        >
+          <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500 group-hover:text-black transition-colors flex items-center justify-center mb-2.5">
             <IconCheck size={15} />
           </div>
           <div className="text-xl font-bold text-white font-mono">{Object.keys(completedMap).length}</div>
-          <div className="text-xs text-zinc-400 mt-0.5">Completed Topics</div>
+          <div className="text-xs text-zinc-400 mt-0.5 flex items-center justify-between">
+            <span>Completed Topics</span>
+            <span className="text-[10px] text-zinc-500 font-mono group-hover:text-zinc-300">Track →</span>
+          </div>
         </div>
 
-        <div className="bg-[#0c0d10] p-4 rounded-xl border border-white/[0.06] shadow-sm">
-          <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center mb-2.5">
+        <div
+          onClick={() => {
+            setCurrentSection("progress");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="bg-[#0c0d10] p-4 rounded-xl border border-white/[0.06] hover:border-white/[0.18] transition-all cursor-pointer shadow-sm group"
+          title="Click to view 52-week study heatmap"
+        >
+          <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 group-hover:bg-amber-500 group-hover:text-black transition-colors flex items-center justify-center mb-2.5">
             <IconFire size={15} />
           </div>
           <div className="text-xl font-bold text-white font-mono">{streakCount} {streakCount === 1 ? "Day" : "Days"}</div>
-          <div className="text-xs text-zinc-400 mt-0.5">Study Streak</div>
+          <div className="text-xs text-zinc-400 mt-0.5 flex items-center justify-between">
+            <span>Study Streak</span>
+            <span className="text-[10px] text-zinc-500 font-mono group-hover:text-zinc-300">Heatmap →</span>
+          </div>
         </div>
 
         <div className="bg-[#0c0d10] p-4 rounded-xl border border-white/[0.06] shadow-sm">

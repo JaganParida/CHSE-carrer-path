@@ -1,13 +1,35 @@
 import React, { useMemo, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
 import { useApp } from "../context/AppContext.jsx";
-import { STREAM_SUBJECTS, SYLLABUS_DATA } from "../data/syllabusData.js";
-import { IconCheck, IconFire, IconVideo, IconClock, IconSparkles, IconBook } from "./Icons.jsx";
+import { STREAM_SUBJECTS, SYLLABUS_DATA, resolveChapterInfo } from "../data/syllabusData.js";
+import {
+  IconCheck,
+  IconFire,
+  IconVideo,
+  IconClock,
+  IconSparkles,
+  IconBook,
+  IconBookmark,
+  IconBookmarkFilled,
+  IconPlay,
+  IconTrash,
+  IconArrowRight,
+} from "./Icons.jsx";
 import { calculateStreak } from "../utils/streak.js";
 
 export const ProgressTracker = () => {
   const { user, setAuthModalOpen, setAuthMode } = useAuth();
-  const { currentStream, currentClass, setCurrentClass, setCurrentSection } = useApp();
+  const {
+    currentStream,
+    currentClass,
+    setCurrentClass,
+    setCurrentSection,
+    setCurrentSubject,
+    playVideo,
+    toggleComplete,
+    toggleSave,
+    getChapterVideo,
+  } = useApp();
 
   const completedMap = user?.completedTopics || {};
   const savedIds = user?.savedVideos || [];
@@ -113,12 +135,49 @@ export const ProgressTracker = () => {
 
   const getSubjDone = (subj) => {
     const units = SYLLABUS_DATA[subj]?.[currentClass] || [];
-    const total = units.reduce((acc, u) => acc + (u.chapters?.length || 0), 0);
-    const done = Object.keys(completedMap).filter((k) =>
-      k.startsWith(subj.toLowerCase().slice(0, 2) + currentClass)
-    ).length;
+    let total = 0;
+    let done = 0;
+    units.forEach((u) => {
+      u.chapters?.forEach((ch) => {
+        total++;
+        if (completedMap[ch.id]) done++;
+      });
+    });
     return { total, done, pct: total ? Math.round((done / total) * 100) : 0 };
   };
+
+  const savedChapterList = useMemo(() => {
+    return savedIds
+      .map((id) => {
+        const meta = resolveChapterInfo(id);
+        if (!meta) {
+          return {
+            id,
+            meta: {
+              title: `Chapter ${id}`,
+              subject: "Saved Lecture",
+              class: currentClass,
+              stream: currentStream,
+              unit: "Study Resource",
+            },
+            video: getChapterVideo({ id, title: `Chapter ${id}` }),
+            isDone: Boolean(completedMap[id]),
+          };
+        }
+        const video = getChapterVideo({
+          id,
+          title: meta.title,
+          videoUrl: meta.videoUrl,
+        });
+        return {
+          id,
+          meta,
+          video,
+          isDone: Boolean(completedMap[id]),
+        };
+      })
+      .filter(Boolean);
+  }, [savedIds, completedMap, getChapterVideo, currentClass, currentStream]);
 
   const totalMinutes = Object.keys(completedMap).length * 45;
   const hours = Math.floor(totalMinutes / 60);
@@ -373,6 +432,152 @@ export const ProgressTracker = () => {
             );
           })}
         </div>
+      </div>
+
+      {/* Bookmarked Videos & Watch Later Section */}
+      <div id="saved-videos" className="bg-[#0c0d10] rounded-xl p-5 sm:p-7 border border-white/[0.06] shadow-sm space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.04]">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center shrink-0">
+              <IconBookmarkFilled size={16} />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-white">Bookmarked Videos & Watch Later</h3>
+              <p className="text-xs text-zinc-400 mt-0.5">
+                Saved lectures and chapters preserved in your account for rapid revision
+              </p>
+            </div>
+          </div>
+          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-md bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-zinc-300 self-start sm:self-auto">
+            <span className="text-amber-400 font-bold">{savedChapterList.length}</span>
+            <span>saved {savedChapterList.length === 1 ? "video" : "videos"}</span>
+          </div>
+        </div>
+
+        {savedChapterList.length === 0 ? (
+          <div className="py-12 px-4 rounded-xl bg-black/40 border border-dashed border-white/[0.08] text-center space-y-3">
+            <div className="w-12 h-12 rounded-xl bg-white/[0.04] text-zinc-500 mx-auto flex items-center justify-center">
+              <IconBookmark size={22} />
+            </div>
+            <div className="space-y-1 max-w-sm mx-auto">
+              <div className="text-sm font-semibold text-white">No bookmarked videos yet</div>
+              <p className="text-xs text-zinc-400">
+                Click the bookmark icon next to any chapter in the syllabus or video player to bookmark it for quick exam prep.
+              </p>
+            </div>
+            <button
+              onClick={() => {
+                setCurrentSection("syllabus");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white text-black text-xs font-semibold hover:bg-zinc-200 transition-all shadow-sm"
+            >
+              <span>Browse Syllabus</span>
+              <IconArrowRight size={13} />
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {savedChapterList.map((item) => (
+              <div
+                key={item.id}
+                className="group rounded-xl bg-black/60 border border-white/[0.06] hover:border-white/[0.18] p-4 flex flex-col justify-between gap-3.5 transition-all shadow-sm"
+              >
+                {/* Top: Thumbnail & Details */}
+                <div className="space-y-3">
+                  {/* Video Thumbnail Preview */}
+                  <div
+                    onClick={() => playVideo(item.video, item.meta.subject, item.meta.class)}
+                    className="relative aspect-video rounded-lg overflow-hidden bg-black/80 border border-white/[0.06] cursor-pointer select-none flex items-center justify-center group/thumb"
+                    title={`Watch: ${item.meta.title}`}
+                  >
+                    {item.video?.thumbnailUrl ? (
+                      <>
+                        <img
+                          src={item.video.thumbnailUrl}
+                          alt={item.meta.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover/thumb:scale-105"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.currentTarget.style.display = "none";
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-black/40 group-hover/thumb:bg-black/20 transition-colors flex items-center justify-center">
+                          <div className="w-8 h-8 rounded-full bg-white/95 text-black flex items-center justify-center shadow-lg transition-transform group-hover/thumb:scale-110">
+                            <IconPlay size={13} className="ml-0.5" />
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center bg-[#0e0f12] text-zinc-500 p-2 text-center">
+                        <IconClock size={18} className="text-zinc-500 mb-1" />
+                        <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-tight">Coming Soon</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Metadata and Title */}
+                  <div>
+                    <div className="flex items-center gap-1.5 flex-wrap mb-1.5">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white/[0.04] text-zinc-300 border border-white/[0.06]">
+                        {item.meta.subject}
+                      </span>
+                      <span className="text-[10px] font-mono text-zinc-400">
+                        Class {item.meta.class}
+                      </span>
+                      {item.isDone && (
+                        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 inline-flex items-center gap-1 ml-auto">
+                          <IconCheck size={10} /> Done
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="text-sm font-semibold text-white line-clamp-2 leading-snug group-hover:text-zinc-100">
+                      {item.meta.title}
+                    </h4>
+                    {item.meta.unit && (
+                      <p className="text-[11px] text-zinc-400 font-mono mt-1 truncate">
+                        {item.meta.unit}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="pt-3 border-t border-white/[0.04] flex items-center justify-between gap-2">
+                  <button
+                    onClick={() => playVideo(item.video, item.meta.subject, item.meta.class)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white hover:bg-zinc-200 text-black text-xs font-semibold transition-all shadow-sm flex-1 justify-center"
+                  >
+                    <IconPlay size={12} />
+                    <span>Watch</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleComplete(item.id)}
+                    className={`p-2 rounded-lg border text-xs transition-colors ${
+                      item.isDone
+                        ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
+                        : "bg-white/[0.03] border-white/[0.06] text-zinc-400 hover:text-white"
+                    }`}
+                    title={item.isDone ? "Mark as Incomplete" : "Mark as Completed"}
+                  >
+                    <IconCheck size={14} />
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleSave(item.id)}
+                    className="p-2 rounded-lg border bg-white/[0.03] border-white/[0.06] text-zinc-400 hover:text-red-400 hover:border-red-500/30 transition-colors"
+                    title="Remove from saved bookmarks"
+                  >
+                    <IconTrash size={14} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

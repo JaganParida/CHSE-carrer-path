@@ -52,6 +52,16 @@ export const protect = async (req, res, next) => {
         savedVideos: [],
         completedTopics: {},
       };
+    } else {
+      user.id = user._id ? user._id.toString() : decoded.id;
+      if (user.completedTopics instanceof Map) {
+        user.completedTopics = Object.fromEntries(user.completedTopics);
+      } else if (!user.completedTopics) {
+        user.completedTopics = {};
+      }
+      if (!Array.isArray(user.savedVideos)) {
+        user.savedVideos = [];
+      }
     }
     req.user = user;
     next();

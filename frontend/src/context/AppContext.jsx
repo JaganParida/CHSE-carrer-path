@@ -115,10 +115,16 @@ export const AppProvider = ({ children }) => {
   // Initial load from DB and window focus synchronization
   useEffect(() => {
     fetchVideoLinks();
-    const handleFocus = () => fetchVideoLinks();
+    const handleFocus = () => {
+      fetchVideoLinks();
+      if (user?._id) {
+        fetchStudentStateFromDB();
+        fetchUserNotes();
+      }
+    };
     window.addEventListener("focus", handleFocus);
     return () => window.removeEventListener("focus", handleFocus);
-  }, []);
+  }, [user?._id]);
 
   // Admin function: Update or add YouTube video link for any chapter directly into MongoDB database
   const adminUpdateVideoLink = async (
@@ -352,13 +358,27 @@ export const AppProvider = ({ children }) => {
       streak: { count: newStreak, lastDate: newStreak > 0 ? new Date().toISOString() : "" },
     });
 
-    // Server sync with session cookie
+    // Server sync with MongoDB Atlas database
     try {
-      await fetch(`/api/user/complete/${chapterId}`, {
+      const headers = { "Content-Type": "application/json" };
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      const res = await fetch(`/api/user/complete/${chapterId}`, {
         method: "POST",
+        headers,
         credentials: "include",
       });
-    } catch (e) {}
+      const data = await res.json();
+      if (data.success && data.completedTopics) {
+        updateProfile({
+          completedTopics: data.completedTopics,
+          streak: data.streak || { count: newStreak, lastDate: new Date().toISOString() },
+        });
+      }
+    } catch (e) {
+      console.error("Error persisting completed topic to MongoDB:", e);
+    }
   };
 
   const toggleSave = async (chapterId) => {
@@ -379,12 +399,24 @@ export const AppProvider = ({ children }) => {
     }
     updateProfile({ savedVideos: saved });
 
+    // Server sync with MongoDB Atlas database
     try {
-      await fetch(`/api/user/save/${chapterId}`, {
+      const headers = { "Content-Type": "application/json" };
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      const res = await fetch(`/api/user/save/${chapterId}`, {
         method: "POST",
+        headers,
         credentials: "include",
       });
-    } catch (e) {}
+      const data = await res.json();
+      if (data.success && Array.isArray(data.savedVideos)) {
+        updateProfile({ savedVideos: data.savedVideos });
+      }
+    } catch (e) {
+      console.error("Error persisting bookmark to MongoDB:", e);
+    }
   };
 
   // Fetch student's notes directly from MongoDB Atlas and auto-sync any local offline notes
@@ -454,9 +486,36 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Fetch live student state (completed topics, bookmarks/watch later, streak) from MongoDB Atlas
+  const fetchStudentStateFromDB = async () => {
+    if (!user) return;
+    try {
+      const headers = {};
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      const res = await fetch("/api/user/state", {
+        headers,
+        credentials: "include",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.success && data.user) {
+        updateProfile({
+          completedTopics: data.user.completedTopics || {},
+          savedVideos: Array.isArray(data.user.savedVideos) ? data.user.savedVideos : [],
+          streak: data.user.streak || { count: 0, lastDate: "" },
+        });
+      }
+    } catch (err) {
+      console.warn("Could not fetch live student state from DB:", err);
+    }
+  };
+
   useEffect(() => {
     if (user?._id) {
       fetchUserNotes();
+      fetchStudentStateFromDB();
     } else {
       setNotes({});
     }
@@ -565,6 +624,7 @@ export const AppProvider = ({ children }) => {
         toggleSave,
         notes,
         fetchUserNotes,
+        fetchStudentStateFromDB,
         saveNote,
         deleteNote,
         searchModalOpen,

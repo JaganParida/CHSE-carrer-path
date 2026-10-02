@@ -13,8 +13,15 @@ router.post("/complete/:chapterId", async (req, res) => {
   try {
     const { chapterId } = req.params;
     const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
 
-    const completed = user.completedTopics || new Map();
+    let completed = user.completedTopics;
+    if (!completed || !(completed instanceof Map)) {
+      completed = new Map(Object.entries(user.completedTopics || {}));
+    }
+
     const isDone = completed.has(chapterId);
 
     if (isDone) {
@@ -31,16 +38,22 @@ router.post("/complete/:chapterId", async (req, res) => {
     };
     await user.save();
 
+    const completedObj = {};
+    completed.forEach((v, k) => {
+      completedObj[k] = v;
+    });
+
     return res.json({
       success: true,
       isDone: !isDone,
-      completedTopics: user.completedTopics,
+      completedTopics: completedObj,
       streak: user.streak,
     });
   } catch (err) {
+    console.error("Complete topic error:", err);
     return res.status(500).json({
       success: false,
-      message: "Failed to update completion status.",
+      message: err.message || "Failed to update completion status.",
     });
   }
 });
@@ -51,6 +64,13 @@ router.post("/save/:chapterId", async (req, res) => {
   try {
     const { chapterId } = req.params;
     const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    if (!Array.isArray(user.savedVideos)) {
+      user.savedVideos = [];
+    }
 
     const index = user.savedVideos.indexOf(chapterId);
     let isSaved = false;
@@ -70,9 +90,48 @@ router.post("/save/:chapterId", async (req, res) => {
       savedVideos: user.savedVideos,
     });
   } catch (err) {
+    console.error("Save video error:", err);
     return res.status(500).json({
       success: false,
-      message: "Failed to update saved videos.",
+      message: err.message || "Failed to update saved videos.",
+    });
+  }
+});
+
+// @route   GET /api/user/state
+// @desc    Get live student database state (completed topics, bookmarks, streak, enrollment)
+router.get("/state", async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).select("-password");
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found." });
+    }
+
+    const completedObj = {};
+    if (user.completedTopics instanceof Map) {
+      user.completedTopics.forEach((v, k) => {
+        completedObj[k] = v;
+      });
+    } else if (user.completedTopics && typeof user.completedTopics === "object") {
+      Object.assign(completedObj, user.completedTopics);
+    }
+
+    return res.json({
+      success: true,
+      user: {
+        id: user._id.toString(),
+        stream: user.stream || "Science",
+        class: user.class || "12",
+        savedVideos: Array.isArray(user.savedVideos) ? user.savedVideos : [],
+        completedTopics: completedObj,
+        streak: user.streak || { count: 0, lastDate: "" },
+      },
+    });
+  } catch (err) {
+    console.error("Get user state error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve student state.",
     });
   }
 });
