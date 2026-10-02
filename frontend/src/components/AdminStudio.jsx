@@ -29,6 +29,7 @@ export const AdminStudio = () => {
     currentClass,
     setCurrentClass,
     setCurrentSection,
+    fetchVideoLinks,
     adminUpdateVideoLink,
     adminClearVideoLink,
     getChapterVideo,
@@ -45,6 +46,13 @@ export const AdminStudio = () => {
   const subjectsList = STREAM_SUBJECTS[activeTabStream] || STREAM_SUBJECTS["Science"];
   const [selectedSubject, setSelectedSubject] = useState(subjectsList[0] || "Physics");
   const [filterMode, setFilterMode] = useState("all");
+
+  // Sync latest video links from MongoDB when Admin Studio is active
+  useEffect(() => {
+    if (isAdmin && adminTab === "videos" && fetchVideoLinks) {
+      fetchVideoLinks();
+    }
+  }, [isAdmin, adminTab, activeTabStream, activeTabClass, selectedSubject]);
 
   const [editingChapter, setEditingChapter] = useState(null);
   const [inputUrl, setInputUrl] = useState("");
@@ -143,9 +151,13 @@ export const AdminStudio = () => {
   // Chapters computation for Video Manager
   const syllabus = SYLLABUS_DATA[selectedSubject]?.[activeTabClass] || [];
   const allChapters = [];
-  syllabus.forEach((unit) => {
+  syllabus.forEach((unit, uIdx) => {
     unit.chapters?.forEach((ch) => {
-      allChapters.push({ ...ch, unitName: unit.unit });
+      allChapters.push({
+        ...ch,
+        unitName: unit.unit || `Unit ${uIdx + 1}`,
+        unitId: unit.unitId || `unit_${uIdx + 1}`,
+      });
     });
   });
 
@@ -168,10 +180,20 @@ export const AdminStudio = () => {
     setInputDesc(effective.desc || "");
   };
 
-  const handleSaveVideo = (e) => {
+  const handleSaveVideo = async (e) => {
     e.preventDefault();
     if (!editingChapter) return;
-    adminUpdateVideoLink(editingChapter.id, inputUrl, inputTitle, inputDesc);
+    await adminUpdateVideoLink(
+      editingChapter.id,
+      inputUrl,
+      inputTitle,
+      inputDesc,
+      selectedSubject,
+      activeTabStream,
+      activeTabClass,
+      editingChapter.unitName,
+      editingChapter.unitId
+    );
     setEditingChapter(null);
   };
 
@@ -450,7 +472,18 @@ export const AdminStudio = () => {
 
                         {video.isAvailable && (
                           <button
-                            onClick={() => adminClearVideoLink(ch.id)}
+                            onClick={() => {
+                              if (window.confirm(`Clear video link for "${ch.title}"? This will update live in MongoDB for all students.`)) {
+                                adminClearVideoLink(
+                                  ch.id,
+                                  selectedSubject,
+                                  activeTabStream,
+                                  activeTabClass,
+                                  ch.unitName,
+                                  ch.unitId
+                                );
+                              }
+                            }}
                             className="p-1.5 rounded-lg bg-[#0c0d0f] hover:bg-rose-500/10 border border-[#23252a] text-zinc-400 hover:text-rose-400 transition-colors"
                             title="Remove link"
                           >

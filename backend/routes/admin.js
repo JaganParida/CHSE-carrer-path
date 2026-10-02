@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import Video from "../models/Video.js";
 import User from "../models/User.js";
 import { protect, requireAdmin } from "../middleware/auth.js";
@@ -119,6 +120,11 @@ router.put("/videos/:chapterId", async (req, res) => {
     const { videoUrl, title, desc, unitName, unitId, subject, stream, class: userClass, order } = req.body;
     let video = await Video.findOne({ chapterId: req.params.chapterId });
 
+    const validUserId =
+      req.user?._id && mongoose.Types.ObjectId.isValid(req.user._id)
+        ? req.user._id
+        : undefined;
+
     if (!video) {
       // Upsert: Create a new video entry if it didn't exist in MongoDB yet
       video = new Video({
@@ -132,7 +138,7 @@ router.put("/videos/:chapterId", async (req, res) => {
         desc: desc || "",
         videoUrl: videoUrl ? videoUrl.trim() : "",
         order: order || 0,
-        updatedBy: req.user._id,
+        updatedBy: validUserId,
       });
     } else {
       if (videoUrl !== undefined) video.videoUrl = videoUrl.trim();
@@ -144,7 +150,7 @@ router.put("/videos/:chapterId", async (req, res) => {
       if (stream) video.stream = stream;
       if (userClass) video.class = userClass;
       if (order !== undefined) video.order = order;
-      video.updatedBy = req.user._id;
+      if (validUserId) video.updatedBy = validUserId;
     }
 
     await video.save();
@@ -158,7 +164,7 @@ router.put("/videos/:chapterId", async (req, res) => {
     console.error("Update video error:", err);
     return res.status(500).json({
       success: false,
-      message: "Failed to update video link.",
+      message: err.message || "Failed to update video link.",
     });
   }
 });
@@ -167,18 +173,33 @@ router.put("/videos/:chapterId", async (req, res) => {
 // @desc    Clear/remove YouTube video link from chapter without deleting syllabus entry
 router.delete("/videos/:chapterId/link", async (req, res) => {
   try {
-    const video = await Video.findOne({ chapterId: req.params.chapterId });
+    let video = await Video.findOne({ chapterId: req.params.chapterId });
+    const validUserId =
+      req.user?._id && mongoose.Types.ObjectId.isValid(req.user._id)
+        ? req.user._id
+        : undefined;
+
     if (!video) {
-      return res.status(404).json({
-        success: false,
-        message: "Chapter not found.",
+      video = new Video({
+        chapterId: req.params.chapterId,
+        stream: req.body?.stream || "Science",
+        class: req.body?.class || "12",
+        subject: req.body?.subject || "General",
+        unitId: req.body?.unitId || "unit_1",
+        unitName: req.body?.unitName || "General Unit",
+        title: req.body?.title || req.params.chapterId,
+        videoUrl: "",
+        youtubeId: "",
+        isAvailable: false,
+        updatedBy: validUserId,
       });
+    } else {
+      video.videoUrl = "";
+      video.youtubeId = "";
+      video.isAvailable = false;
+      if (validUserId) video.updatedBy = validUserId;
     }
 
-    video.videoUrl = "";
-    video.youtubeId = "";
-    video.isAvailable = false;
-    video.updatedBy = req.user._id;
     await video.save();
 
     return res.json({
@@ -187,9 +208,10 @@ router.delete("/videos/:chapterId/link", async (req, res) => {
       video,
     });
   } catch (err) {
+    console.error("Clear video link error:", err);
     return res.status(500).json({
       success: false,
-      message: "Failed to clear video link.",
+      message: err.message || "Failed to clear video link.",
     });
   }
 });

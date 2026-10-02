@@ -76,17 +76,20 @@ videoSchema.index({ isAvailable: 1 });
 // Helper to extract YouTube video ID from URL
 videoSchema.methods.extractYouTubeId = function (url) {
   if (!url) return "";
-  const match = url.match(
+  const trimmed = url.trim();
+  if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+  const match = trimmed.match(
     /(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([^&\n?#]+)/
   );
   return match ? match[1] : "";
 };
 
 videoSchema.pre("save", function (next) {
-  if (this.videoUrl) {
+  if (this.videoUrl && this.videoUrl.trim()) {
     this.youtubeId = this.extractYouTubeId(this.videoUrl);
     this.isAvailable = Boolean(this.youtubeId);
   } else {
+    this.videoUrl = "";
     this.youtubeId = "";
     this.isAvailable = false;
   }

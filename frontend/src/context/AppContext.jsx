@@ -66,79 +66,179 @@ export const AppProvider = ({ children }) => {
     }, 3200);
   };
 
-  // Helper to extract YouTube video ID
+  // Helper to extract YouTube video ID (supporting raw 11-char IDs and full watch/share URLs)
   const getYouTubeId = (url) => {
     if (!url) return "";
-    const match = url.match(
+    const trimmed = url.trim();
+    if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+    const match = trimmed.match(
       /(?:youtube\.com\/(?:watch\?v=|embed\/|live\/)|youtu\.be\/)([^&\n?#]+)/
     );
     return match ? match[1] : "";
   };
 
-  // Admin function: Update or add YouTube video link for any chapter
-  const adminUpdateVideoLink = async (chapterId, newUrl, title, desc, subject, stream, userClass) => {
+  // Fetch all video links directly from MongoDB Atlas so updates made by admin are immediately visible to all users
+  const fetchVideoLinks = async () => {
+    try {
+      const res = await fetch("/api/videos", {
+        headers: { "Cache-Control": "no-cache" },
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.success && Array.isArray(data.videos)) {
+        const map = {};
+        data.videos.forEach((v) => {
+          if (v.chapterId) {
+            map[v.chapterId] = {
+              videoUrl: v.videoUrl || "",
+              title: v.title || undefined,
+              desc: v.desc || undefined,
+              youtubeId: v.youtubeId || "",
+              isAvailable: Boolean(v.isAvailable),
+              updatedAt: v.updatedAt,
+            };
+          }
+        });
+        setVideoLinks((prev) => {
+          const merged = { ...prev, ...map };
+          try {
+            localStorage.setItem("chsetube_video_links", JSON.stringify(merged));
+          } catch (e) {}
+          return merged;
+        });
+      }
+    } catch (err) {
+      console.warn("Could not fetch remote video links from DB, using cache:", err);
+    }
+  };
+
+  // Initial load from DB and window focus synchronization
+  useEffect(() => {
+    fetchVideoLinks();
+    const handleFocus = () => fetchVideoLinks();
+    window.addEventListener("focus", handleFocus);
+    return () => window.removeEventListener("focus", handleFocus);
+  }, []);
+
+  // Admin function: Update or add YouTube video link for any chapter directly into MongoDB database
+  const adminUpdateVideoLink = async (
+    chapterId,
+    newUrl,
+    title,
+    desc,
+    subject,
+    stream,
+    userClass,
+    unitName,
+    unitId
+  ) => {
+    const trimmedUrl = (newUrl || "").trim();
+    const ytId = getYouTubeId(trimmedUrl);
+
+    // Optimistic client update so admin immediately sees changes
     const updated = {
       ...videoLinks,
       [chapterId]: {
-        videoUrl: newUrl.trim(),
+        videoUrl: trimmedUrl,
         title: title ? title.trim() : undefined,
         desc: desc ? desc.trim() : undefined,
+        youtubeId: ytId,
+        isAvailable: Boolean(ytId),
         updatedAt: new Date().toISOString(),
       },
     };
     setVideoLinks(updated);
-    localStorage.setItem("chsetube_video_links", JSON.stringify(updated));
+    try {
+      localStorage.setItem("chsetube_video_links", JSON.stringify(updated));
+    } catch (e) {}
 
-    // Backend API sync with credentials include
+    // Persist to MongoDB database so all students and devices receive the update
     try {
       const headers = { "Content-Type": "application/json" };
       const localToken = localStorage.getItem("chsetube_token");
       if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
 
-      await fetch(`/api/admin/videos/${chapterId}`, {
+      const res = await fetch(`/api/admin/videos/${chapterId}`, {
         method: "PUT",
         headers,
         credentials: "include",
         body: JSON.stringify({
-          videoUrl: newUrl,
-          title,
-          desc,
+          videoUrl: trimmedUrl,
+          title: title ? title.trim() : undefined,
+          desc: desc ? desc.trim() : undefined,
           subject: subject || currentSubject,
           stream: stream || currentStream,
           class: userClass || currentClass,
+          unitName: unitName || "General Unit",
+          unitId: unitId || "unit_1",
         }),
       });
-    } catch (e) {
-      console.warn("Backend admin sync offline, saved to client cache.");
-    }
 
-    showToast("YouTube lecture link updated successfully!", "success");
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || `Server responded with ${res.status}`);
+      }
+
+      // Re-fetch all video links from DB to guarantee 100% database synchronization
+      await fetchVideoLinks();
+      showToast("Video link saved to database and live for all students!", "success");
+    } catch (e) {
+      console.error("Backend admin sync error:", e);
+      showToast(`Warning: Saved locally, but DB sync error: ${e.message}`, "error");
+    }
   };
 
-  // Admin function: Clear video link
-  const adminClearVideoLink = async (chapterId) => {
+  // Admin function: Clear video link directly in MongoDB database
+  const adminClearVideoLink = async (
+    chapterId,
+    subject,
+    stream,
+    userClass,
+    unitName,
+    unitId
+  ) => {
     const updated = { ...videoLinks };
     if (updated[chapterId]) {
       updated[chapterId].videoUrl = "";
+      updated[chapterId].youtubeId = "";
+      updated[chapterId].isAvailable = false;
     } else {
-      updated[chapterId] = { videoUrl: "" };
+      updated[chapterId] = { videoUrl: "", youtubeId: "", isAvailable: false };
     }
     setVideoLinks(updated);
-    localStorage.setItem("chsetube_video_links", JSON.stringify(updated));
+    try {
+      localStorage.setItem("chsetube_video_links", JSON.stringify(updated));
+    } catch (e) {}
 
     try {
-      const headers = {};
+      const headers = { "Content-Type": "application/json" };
       const localToken = localStorage.getItem("chsetube_token");
       if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
 
-      await fetch(`/api/admin/videos/${chapterId}/link`, {
+      const res = await fetch(`/api/admin/videos/${chapterId}/link`, {
         method: "DELETE",
         headers,
         credentials: "include",
+        body: JSON.stringify({
+          subject: subject || currentSubject,
+          stream: stream || currentStream,
+          class: userClass || currentClass,
+          unitName: unitName || "General Unit",
+          unitId: unitId || "unit_1",
+        }),
       });
-    } catch (e) {}
 
-    showToast("Video link cleared for this chapter.", "info");
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed to remove video link.");
+      }
+
+      await fetchVideoLinks();
+      showToast("Video link removed from database for all students.", "info");
+    } catch (e) {
+      console.error("Backend admin clear video error:", e);
+      showToast(`Cleared locally, but DB sync error: ${e.message}`, "error");
+    }
   };
 
   // Helper to get effective videoUrl for any chapter (checking admin overrides)
@@ -270,6 +370,7 @@ export const AppProvider = ({ children }) => {
         currentVideo,
         setCurrentVideo,
         videoLinks,
+        fetchVideoLinks,
         adminUpdateVideoLink,
         adminClearVideoLink,
         getChapterVideo,

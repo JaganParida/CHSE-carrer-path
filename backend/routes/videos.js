@@ -32,8 +32,8 @@ router.get("/", async (req, res) => {
       .sort({ order: 1, createdAt: 1 })
       .lean();
 
-    // Cache at Vercel Edge for 60 seconds with 5-minute stale-while-revalidate window
-    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+    // Ensure real-time consistency so admin updates are immediately live for all students
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 
     return res.json({
       success: true,
