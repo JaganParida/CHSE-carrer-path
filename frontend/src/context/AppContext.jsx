@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { SYLLABUS_DATA, STREAM_SUBJECTS } from "../data/syllabusData.js";
+import { SYLLABUS_DATA, STREAM_SUBJECTS, resolveChapterInfo } from "../data/syllabusData.js";
 import { useAuth } from "./AuthContext.jsx";
 import { calculateStreak } from "../utils/streak.js";
 
@@ -241,6 +241,68 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // Batch sync any video links present in localStorage to MongoDB Atlas
+  const syncAllLocalLinksToDB = async () => {
+    try {
+      let localData = {};
+      try {
+        const raw = localStorage.getItem("chsetube_video_links");
+        if (raw) localData = JSON.parse(raw);
+      } catch (e) {}
+
+      const entries = Object.entries(localData).filter(
+        ([k, v]) => v && v.videoUrl && v.videoUrl.trim()
+      );
+
+      if (entries.length === 0) {
+        showToast("No local video links found to sync.", "info");
+        return { success: true, syncedCount: 0 };
+      }
+
+      const items = entries.map(([chId, val]) => {
+        const meta = resolveChapterInfo(chId) || {};
+        return {
+          chapterId: chId,
+          videoUrl: val.videoUrl,
+          title: val.title || meta.title || chId,
+          desc: val.desc !== undefined ? val.desc : meta.desc || "",
+          subject: meta.subject || currentSubject,
+          stream: meta.stream || currentStream,
+          class: meta.class || currentClass,
+          unitName: meta.unitName || meta.unit || "General Unit",
+          unitId: meta.unitId || "unit_1",
+        };
+      });
+
+      const headers = { "Content-Type": "application/json" };
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      const res = await fetch("/api/admin/videos/batch-sync", {
+        method: "POST",
+        headers,
+        credentials: "include",
+        body: JSON.stringify({ items }),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || `Server responded with ${res.status}`);
+      }
+
+      await fetchVideoLinks();
+      showToast(
+        `Successfully synced ${data.syncedCount || items.length} videos to MongoDB database!`,
+        "success"
+      );
+      return { success: true, syncedCount: data.syncedCount || items.length };
+    } catch (e) {
+      console.error("Batch sync error:", e);
+      showToast(`Batch sync error: ${e.message}`, "error");
+      return { success: false, error: e.message };
+    }
+  };
+
   // Helper to get effective videoUrl for any chapter (checking admin overrides)
   const getChapterVideo = (ch) => {
     if (!ch) return null;
@@ -325,32 +387,155 @@ export const AppProvider = ({ children }) => {
     } catch (e) {}
   };
 
+  // Fetch student's notes directly from MongoDB Atlas and auto-sync any local offline notes
+  const fetchUserNotes = async () => {
+    if (!user) return;
+    try {
+      const headers = {};
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      const res = await fetch("/api/user/notes", {
+        headers,
+        credentials: "include",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.success && Array.isArray(data.notes)) {
+        const notesMap = {};
+        data.notes.forEach((n) => {
+          if (n.chapterId) {
+            notesMap[n.chapterId] = {
+              text: n.content || "",
+              subject: n.subject || "General",
+              updatedAt: n.updatedAt,
+            };
+          }
+        });
+
+        // Migrate any offline/local notes not yet stored in DB
+        let localNotes = {};
+        try {
+          const raw = localStorage.getItem("chsetube_notes");
+          if (raw) localNotes = JSON.parse(raw);
+        } catch (e) {}
+
+        const unsynced = [];
+        Object.entries(localNotes).forEach(([chId, val]) => {
+          if (val && val.text && val.text.trim() && !notesMap[chId]) {
+            unsynced.push({
+              chapterId: chId,
+              content: val.text,
+              subject: val.subject || "General",
+            });
+            notesMap[chId] = val;
+          }
+        });
+
+        if (unsynced.length > 0) {
+          fetch("/api/user/notes/batch-sync", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...(localToken ? { Authorization: `Bearer ${localToken}` } : {}),
+            },
+            credentials: "include",
+            body: JSON.stringify({ notes: unsynced }),
+          }).catch(() => {});
+        }
+
+        setNotes(notesMap);
+        try {
+          localStorage.setItem("chsetube_notes", JSON.stringify(notesMap));
+        } catch (e) {}
+      }
+    } catch (err) {
+      console.warn("Could not fetch user notes from MongoDB:", err);
+    }
+  };
+
+  useEffect(() => {
+    if (user?._id) {
+      fetchUserNotes();
+    } else {
+      setNotes({});
+    }
+  }, [user?._id]);
+
+  // Save note to database explicitly when requested (e.g., clicking Save button)
   const saveNote = async (chapterId, text, subject) => {
     if (!user) {
       if (setAuthMode) setAuthMode("login");
       if (setAuthModalOpen) setAuthModalOpen(true);
-      showToast("Please sign in to save personal chapter notes.", "info");
-      return;
+      showToast("Please sign in to save study notes to your account.", "info");
+      return { success: false, reason: "unauthenticated" };
     }
+
+    const trimmed = (text || "").trim();
     const updated = {
       ...notes,
       [chapterId]: {
-        text,
+        text: text || "",
         subject: subject || currentSubject,
         updatedAt: new Date().toISOString(),
       },
     };
     setNotes(updated);
-    localStorage.setItem("chsetube_notes", JSON.stringify(updated));
+    try {
+      localStorage.setItem("chsetube_notes", JSON.stringify(updated));
+    } catch (e) {}
 
     try {
-      await fetch(`/api/user/notes/${chapterId}`, {
+      const headers = { "Content-Type": "application/json" };
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      const res = await fetch(`/api/user/notes/${chapterId}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         credentials: "include",
-        body: JSON.stringify({ content: text, subject: subject || currentSubject }),
+        body: JSON.stringify({ content: trimmed, subject: subject || currentSubject }),
       });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.message || "Failed to save note");
+      }
+
+      showToast("Note saved to database successfully!", "success");
+      return { success: true };
+    } catch (e) {
+      console.error("Backend save note error:", e);
+      showToast(`Warning: Saved locally, but DB sync error: ${e.message}`, "error");
+      return { success: false, error: e.message };
+    }
+  };
+
+  // Delete note from database and client cache
+  const deleteNote = async (chapterId) => {
+    const updated = { ...notes };
+    delete updated[chapterId];
+    setNotes(updated);
+    try {
+      localStorage.setItem("chsetube_notes", JSON.stringify(updated));
     } catch (e) {}
+
+    try {
+      const headers = {};
+      const localToken = localStorage.getItem("chsetube_token");
+      if (localToken) headers["Authorization"] = `Bearer ${localToken}`;
+
+      await fetch(`/api/user/notes/${chapterId}`, {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+      });
+      showToast("Note removed from database.", "info");
+      return { success: true };
+    } catch (e) {
+      console.error("Delete note error:", e);
+      return { success: false };
+    }
   };
 
   return (
@@ -371,6 +556,7 @@ export const AppProvider = ({ children }) => {
         setCurrentVideo,
         videoLinks,
         fetchVideoLinks,
+        syncAllLocalLinksToDB,
         adminUpdateVideoLink,
         adminClearVideoLink,
         getChapterVideo,
@@ -378,7 +564,9 @@ export const AppProvider = ({ children }) => {
         toggleComplete,
         toggleSave,
         notes,
+        fetchUserNotes,
         saveNote,
+        deleteNote,
         searchModalOpen,
         setSearchModalOpen,
         toast,

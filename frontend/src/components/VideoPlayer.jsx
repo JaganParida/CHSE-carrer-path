@@ -55,22 +55,34 @@ export const VideoPlayer = () => {
   const isDone = Boolean(completedMap[currentVideo.id]);
   const isSaved = (user?.savedVideos || []).includes(currentVideo.id);
 
-  // Chapter Note
+  // Chapter Note - Manual DB save on button click
   const [noteText, setNoteText] = useState(notes[currentVideo.id]?.text || "");
-  const [saveStatus, setSaveStatus] = useState("Auto-saved");
+  const [isSavingNote, setIsSavingNote] = useState(false);
+  const [saveStatus, setSaveStatus] = useState(() => (notes[currentVideo.id]?.text ? "Saved to DB" : ""));
 
   useEffect(() => {
-    setNoteText(notes[currentVideo.id]?.text || "");
-  }, [currentVideo.id]);
+    const existing = notes[currentVideo.id]?.text || "";
+    setNoteText(existing);
+    setSaveStatus(existing ? "Saved to DB" : "");
+  }, [currentVideo.id, notes[currentVideo.id]?.text]);
+
+  const isNoteDirty = noteText !== (notes[currentVideo.id]?.text || "");
 
   const handleNoteChange = (e) => {
-    const val = e.target.value;
-    setNoteText(val);
-    setSaveStatus("Saving...");
-    saveNote(currentVideo.id, val, currentSubject);
-    setTimeout(() => {
-      setSaveStatus("Saved");
-    }, 500);
+    setNoteText(e.target.value);
+    setSaveStatus("Unsaved changes");
+  };
+
+  const handleSaveNote = async () => {
+    setIsSavingNote(true);
+    setSaveStatus("Saving to DB...");
+    const res = await saveNote(currentVideo.id, noteText, currentSubject);
+    setIsSavingNote(false);
+    if (res?.success) {
+      setSaveStatus("Saved to DB");
+    } else {
+      setSaveStatus("Save failed");
+    }
   };
 
   // Build subject playlist
@@ -227,21 +239,47 @@ export const VideoPlayer = () => {
               </p>
             </div>
 
-            {/* Smart Auto-Saving Notes Box */}
+            {/* Chapter Study Notes Box with Manual Save to DB */}
             <div className="pt-3.5 border-t border-white/[0.06]">
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-mono uppercase tracking-wider text-zinc-400">
-                  Chapter Study Notes
-                </label>
-                <span className="text-[11px] font-mono text-zinc-500">
-                  {saveStatus}
-                </span>
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
+                <div className="flex items-center gap-2">
+                  <label className="text-xs font-mono uppercase tracking-wider text-zinc-400">
+                    Chapter Study Notes
+                  </label>
+                  {saveStatus && (
+                    <span
+                      className={`text-[10px] font-mono px-2 py-0.5 rounded ${
+                        isNoteDirty
+                          ? "bg-amber-500/10 text-amber-300 border border-amber-500/20"
+                          : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                      }`}
+                    >
+                      {saveStatus}
+                    </span>
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleSaveNote}
+                  disabled={isSavingNote || (!isNoteDirty && !noteText)}
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm ${
+                    isNoteDirty
+                      ? "bg-white hover:bg-zinc-200 text-black ring-1 ring-white/50 cursor-pointer"
+                      : "bg-[#18191d] text-zinc-400 border border-white/[0.08] hover:text-white"
+                  } disabled:opacity-40 disabled:cursor-not-allowed`}
+                  title="Persist notes to MongoDB Atlas database"
+                >
+                  <IconCheck size={12} className={isNoteDirty ? "text-black" : "text-emerald-400"} />
+                  <span>{isSavingNote ? "Saving..." : isNoteDirty ? "Save Note to DB" : "Saved"}</span>
+                </button>
               </div>
+
               <textarea
                 rows="4"
                 value={noteText}
                 onChange={handleNoteChange}
-                placeholder="Write your key points, formulas, definitions, and exam reminders here... Notes autosave in real-time."
+                placeholder="Write your key points, formulas, definitions, and exam reminders here... Click 'Save Note to DB' to store in database."
                 className="w-full p-3 rounded-lg bg-black/60 border border-white/[0.06] text-sm text-zinc-200 placeholder-zinc-500 focus:border-white/20 outline-none resize-none font-sans"
               ></textarea>
             </div>

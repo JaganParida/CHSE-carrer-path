@@ -216,6 +216,75 @@ router.delete("/videos/:chapterId/link", async (req, res) => {
   }
 });
 
+// @route   POST /api/admin/videos/batch-sync
+// @desc    Batch sync multiple video links (e.g. from local cache / offline updates) to MongoDB Atlas
+router.post("/videos/batch-sync", async (req, res) => {
+  try {
+    const { items } = req.body;
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No video items provided for batch sync.",
+      });
+    }
+
+    const validUserId =
+      req.user?._id && mongoose.Types.ObjectId.isValid(req.user._id)
+        ? req.user._id
+        : undefined;
+
+    let syncedCount = 0;
+
+    for (const item of items) {
+      if (!item.chapterId) continue;
+
+      let video = await Video.findOne({ chapterId: item.chapterId });
+      const trimmedUrl = (item.videoUrl || "").trim();
+
+      if (!video) {
+        video = new Video({
+          chapterId: item.chapterId,
+          stream: item.stream || "Science",
+          class: item.class || "12",
+          subject: item.subject || "General",
+          unitId: item.unitId || "unit_1",
+          unitName: item.unitName || "General Unit",
+          title: item.title || item.chapterId,
+          desc: item.desc || "",
+          videoUrl: trimmedUrl,
+          order: item.order || 0,
+          updatedBy: validUserId,
+        });
+      } else {
+        if (trimmedUrl !== undefined) video.videoUrl = trimmedUrl;
+        if (item.title) video.title = item.title.trim();
+        if (item.desc !== undefined) video.desc = item.desc.trim();
+        if (item.unitName) video.unitName = item.unitName.trim();
+        if (item.unitId) video.unitId = item.unitId.trim();
+        if (item.subject) video.subject = item.subject.trim();
+        if (item.stream) video.stream = item.stream;
+        if (item.class) video.class = item.class;
+        if (validUserId) video.updatedBy = validUserId;
+      }
+
+      await video.save();
+      syncedCount++;
+    }
+
+    return res.json({
+      success: true,
+      message: `Successfully synchronized ${syncedCount} video links to database.`,
+      syncedCount,
+    });
+  } catch (err) {
+    console.error("Batch sync error:", err);
+    return res.status(500).json({
+      success: false,
+      message: err.message || "Failed to batch sync videos.",
+    });
+  }
+});
+
 // @route   GET /api/admin/students
 // @desc    Get all registered students with full progress details and completion timestamps
 router.get("/students", async (req, res) => {

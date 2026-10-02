@@ -18,6 +18,8 @@ import {
   IconSearch,
   IconClock,
   IconChevronDown,
+  IconCloudUpload,
+  IconSync,
 } from "./Icons.jsx";
 import { calculateStreak } from "../utils/streak.js";
 
@@ -30,12 +32,20 @@ export const AdminStudio = () => {
     setCurrentClass,
     setCurrentSection,
     fetchVideoLinks,
+    syncAllLocalLinksToDB,
     adminUpdateVideoLink,
     adminClearVideoLink,
     getChapterVideo,
     playVideo,
     showToast,
   } = useApp();
+
+  const [syncingLocal, setSyncingLocal] = useState(false);
+  const handleSyncAllLocal = async () => {
+    setSyncingLocal(true);
+    await syncAllLocalLinksToDB();
+    setSyncingLocal(false);
+  };
 
   // Top-level tab switcher: Video Manager vs Student Progress
   const [adminTab, setAdminTab] = useState("videos"); // "videos" | "students"
@@ -58,6 +68,17 @@ export const AdminStudio = () => {
   const [inputUrl, setInputUrl] = useState("");
   const [inputTitle, setInputTitle] = useState("");
   const [inputDesc, setInputDesc] = useState("");
+
+  const localLinksCount = React.useMemo(() => {
+    try {
+      const raw = localStorage.getItem("chsetube_video_links");
+      if (!raw) return 0;
+      const parsed = JSON.parse(raw);
+      return Object.values(parsed).filter((v) => v && v.videoUrl && v.videoUrl.trim()).length;
+    } catch {
+      return 0;
+    }
+  }, [syncingLocal, editingChapter]);
 
   // Student Progress & Activity states
   const [students, setStudents] = useState([]);
@@ -260,6 +281,35 @@ export const AdminStudio = () => {
                 <p className="text-xs text-zinc-400 mt-1 max-w-2xl leading-relaxed">
                   Assign or modify YouTube lecture videos for any CHSE Odisha stream, class, subject, or chapter. Changes reflect immediately across student portals and sync to MongoDB.
                 </p>
+                <div className="mt-3.5 flex flex-wrap items-center gap-2.5">
+                  <button
+                    onClick={handleSyncAllLocal}
+                    disabled={syncingLocal}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 text-xs font-semibold transition-all shadow-sm disabled:opacity-50"
+                    title="Sync all video links stored in this browser's local cache directly into MongoDB Atlas"
+                  >
+                    <IconCloudUpload size={14} className={syncingLocal ? "animate-pulse text-sky-400" : "text-sky-400"} />
+                    <span>{syncingLocal ? "Syncing to Database..." : "Sync All Local Links to DB"}</span>
+                    {localLinksCount > 0 && (
+                      <span className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-600 rounded text-[10px] text-zinc-300 font-mono">
+                        {localLinksCount} links
+                      </span>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (fetchVideoLinks) {
+                        fetchVideoLinks();
+                        showToast("Refreshed latest links from database.", "info");
+                      }
+                    }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0c0d0f] hover:bg-zinc-900 border border-[#23252a] text-zinc-400 hover:text-zinc-200 text-xs transition-colors"
+                    title="Refresh video links from MongoDB database"
+                  >
+                    <IconSync size={13} />
+                    <span>Refresh DB</span>
+                  </button>
+                </div>
               </div>
 
               <div className="flex flex-col sm:items-end gap-1.5 shrink-0 bg-[#0c0d0f] p-3.5 rounded-lg border border-[#23252a]">
@@ -786,8 +836,13 @@ export const AdminStudio = () => {
                   onChange={(e) => setInputUrl(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-lg bg-[#0c0d0f] border border-[#23252a] focus:border-zinc-400 text-sm text-zinc-100 placeholder-zinc-500 font-mono outline-none transition-colors"
                 />
-                <p className="text-[11px] text-zinc-500 mt-1">
-                  Accepts full YouTube watch URLs, short youtu.be links, or raw video IDs.
+                <p className="text-[11px] text-zinc-500 mt-1 flex flex-wrap items-center justify-between gap-1">
+                  <span>Accepts full YouTube watch URLs, short youtu.be links, or raw video IDs.</span>
+                  {inputUrl && (
+                    <span className="text-emerald-400 font-medium flex items-center gap-1">
+                      <IconCheck size={11} /> Pre-filled from existing setup
+                    </span>
+                  )}
                 </p>
               </div>
 
@@ -815,20 +870,26 @@ export const AdminStudio = () => {
                 ></textarea>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-3 border-t border-[#1f2127]">
-                <button
-                  type="button"
-                  onClick={() => setEditingChapter(null)}
-                  className="px-4 py-2 rounded-lg text-xs font-medium text-zinc-300 hover:text-white bg-[#0c0d0f] border border-[#23252a] transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 rounded-lg text-xs font-semibold text-zinc-950 bg-zinc-100 hover:bg-white shadow-sm transition-all"
-                >
-                  Save & Publish Video
-                </button>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-[#1f2127]">
+                <div className="text-[11px] text-zinc-400 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+                  <span>Saves directly to MongoDB database live for all users</span>
+                </div>
+                <div className="flex items-center justify-end gap-2.5">
+                  <button
+                    type="button"
+                    onClick={() => setEditingChapter(null)}
+                    className="px-4 py-2 rounded-lg text-xs font-medium text-zinc-300 hover:text-white bg-[#0c0d0f] border border-[#23252a] transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-5 py-2 rounded-lg text-xs font-semibold text-zinc-950 bg-zinc-100 hover:bg-white shadow-sm transition-all"
+                  >
+                    Save & Publish Video
+                  </button>
+                </div>
               </div>
             </form>
           </div>

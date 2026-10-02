@@ -3231,10 +3231,20 @@ export const resolveChapterInfo = (chapterId) => {
       for (const unit of units) {
         const found = unit.chapters?.find((ch) => ch.id === chapterId);
         if (found) {
+          let stream = "Science";
+          for (const [s, subjs] of Object.entries(STREAM_SUBJECTS)) {
+            if (subjs.includes(subject)) {
+              stream = s;
+              break;
+            }
+          }
           return {
             subject,
             class: cls,
+            stream,
+            unitId: unit.unitId || "unit_1",
             unit: unit.unit,
+            unitName: unit.unit,
             title: found.title,
             desc: found.desc,
             videoUrl: found.videoUrl,

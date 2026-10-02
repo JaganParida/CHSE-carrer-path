@@ -139,4 +139,39 @@ router.delete("/notes/:chapterId", async (req, res) => {
   }
 });
 
+// @route   POST /api/user/notes/batch-sync
+// @desc    Batch sync multiple local notes to MongoDB database for the logged-in student
+router.post("/notes/batch-sync", async (req, res) => {
+  try {
+    const { notes } = req.body;
+    if (!Array.isArray(notes) || notes.length === 0) {
+      return res.json({ success: true, count: 0 });
+    }
+
+    let syncedCount = 0;
+    for (const item of notes) {
+      if (!item.chapterId || !item.content?.trim()) continue;
+
+      await Note.findOneAndUpdate(
+        { userId: req.user._id, chapterId: item.chapterId },
+        { content: item.content.trim(), subject: item.subject || "General" },
+        { upsert: true, new: true, setDefaultsOnInsert: true }
+      );
+      syncedCount++;
+    }
+
+    return res.json({
+      success: true,
+      message: `Synced ${syncedCount} notes to database.`,
+      syncedCount,
+    });
+  } catch (err) {
+    console.error("Batch sync notes error:", err);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to batch sync notes.",
+    });
+  }
+});
+
 export default router;
